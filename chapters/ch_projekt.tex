@@ -1,0 +1,87 @@
+% !TeX spellcheck = pl_PL
+\chapter{Projekt}\label{ch:project}
+
+\section{Prototyp interfejsu}\label{sec:mockups}
+
+\lipsum[5]
+
+\section{Opis podstawowej architektury systemu}\label{sec:basicArchitecture}
+
+\lipsum[5]
+
+\section{Projekt bazy danych}\label{sec:database}
+
+\subsection{Kategorie}\label{subsec:database:categories}
+
+\begin{enumerate}[label={\textbf{KAT/\protect\threedigits{\theenumi}}}, wide, labelwidth=!, labelindent=0pt, labelsep=0pt, series=reqs]
+    \setlength\itemsep{1.75em}
+    \req{User}\label{kat:User} (Użytkownik)\\
+    \indent\textbf{Opis}: Konto użytkownika aplikacji. Każdy zalogowany użytkownik musi mieć konto użytkownika.
+    \par
+    \textbf{Atrybuty}:
+    \begin{itemize}[series=atr, wide, align=left, leftmargin=190pt]
+        \atr{id}\label{kat:User:id}- identyfikator
+        \atr{login}\label{kat:User:login}- login użytkownika
+        \atr{passwordHash}\label{kat:User:passwordHash}- reprezentacja hasła utworzona przez nałożenie na hasło funkcji skrótu
+    \end{itemize}
+
+    \req{Authority}\label{kat:Authority} (Rola)\\
+    \indent\textbf{Opis}: Rola użytkownika od której zależy zakres uprawnień użytkownika.
+    \par
+    \textbf{Atrybuty}:
+    \begin{itemize}[series=atr, wide, align=left, leftmargin=190pt]
+        \atr{name}\label{kat:Authority:name}- nazwa roli
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Reguły funkcjonowania}\label{subsec:database:functionalRules}
+
+\begin{itemize}[label={\textbf{Reguły dla}}, wide, labelwidth=!, labelindent=0pt]
+    \setlength\itemsep{1.75em}
+    \item\ref{kat:User}\mynobreakpar
+    \begin{enumerate}[label={\textbf{REG/\protect\threedigits{\arabic{enumi}}}}, wide, labelwidth=!, align=left, leftmargin=3cm]
+        %Relacje
+        \item Użytkownik (\ref{kat:User}) musi mieć przynajmniej jedną rolę (\ref{kat:Authority}).
+        \item Użytkownik (\ref{kat:User}) może mieć wiele ról (\ref{kat:Authority}).
+        %CRUD
+        \item \role{Gość} może dodawać nowego użytkownika (\ref{kat:User}).
+        \item \role{Użytkownik} może wyświetlać, edytować i~usuwać swoje dane użytkownika (\ref{kat:User}).
+        \item \role{Administrator} może wyświetlać i~usuwać dane użytkownika (\ref{kat:User}).
+    \end{enumerate}
+    \item\ref{kat:Authority}\mynobreakpar
+    \begin{enumerate}[label={\textbf{REG/\protect\threedigits{\arabic{enumi}}}}, wide, labelwidth=!, align=left, leftmargin=3cm, resume]
+        %Relacje
+        %CRUD
+        \item \role{Administrator} może dodawać, wyświetlać, edytować i~usuwać dane roli (\ref{kat:Authority}).
+    \end{enumerate}
+\end{itemize}
+
+\subsection{Ograniczenia dziedzinowe}\label{subsec:database:restrictions}
+
+\begin{itemize}[label={\textbf{Ograniczenia dla}}, wide, labelwidth=!, labelindent=0pt]
+    \setlength\itemsep{1.75em}
+    \item\ref{kat:User}\mynobreakpar
+    \begin{enumerate}[label={\textbf{OGR/\protect\threedigits{\arabic{enumi}}}}, wide, labelwidth=!, align=left, leftmargin=3cm]
+        %Required
+        \item Atrybut \ref{kat:User:login} jest wymagany.
+        \item Atrybut \ref{kat:User:passwordHash} jest wymagany.
+        %Unique
+        \item Atrybut \ref{kat:User:login} ma unikalną wartość.
+        %Type
+        \item Atrybut \ref{kat:User:login} jest ciągiem znaków składającym się z~liter, cyfr i~dodatkowo mogącym zawierać znaki ".", "\_", "-", "@" o~długości od 1~do 50 znaków.
+        \item Atrybut \ref{kat:User:passwordHash} jest ciągiem znaków o~długości 60 znaków.
+    \end{enumerate}
+    \item\ref{kat:Authority}\mynobreakpar
+    \begin{enumerate}[label={\textbf{OGR/\protect\threedigits{\arabic{enumi}}}}, wide, labelwidth=!, align=left, leftmargin=3cm, resume]
+        \item Atrybut \ref{kat:Authority:name} jest wymagany.
+        \item Atrybut \ref{kat:Authority:name} ma unikalną wartość.
+        \item Atrybut \ref{kat:Authority:name} jest ciągiem znaków składającym się z~liter i~znaków "\_" o~długości od 1~do 255 znaków.
+    \end{enumerate}
+
+\end{itemize}
+
+\subsection{Model informacyjny}\label{subsec:database:domainModel}
+
+\lipsum[5]
+
+\thispagestyle{normal}

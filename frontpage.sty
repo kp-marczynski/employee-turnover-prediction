@@ -1,0 +1,94 @@
+%%% Strona tytułowa
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{frontpage}[2019/10/02 Thesis front page]
+\def\author#1{\gdef\@author{#1}}
+\def\@author{\@latex@error{No \noexpand\author given}\@ehc}
+\def\promotor#1{\gdef\@promotor{#1}}
+\def\@promotor{\@latex@error{No \noexpand\promotor given}\@ehc}
+\def\konsultant#1{\gdef\@konsultant{#1}}
+%% Zakładam, że konsultanci nie będą występowali zbyt często.
+%% Na kartę trafią tylko wtedy gdy będą...
+\def\wydzial#1{\gdef\@wydzial{#1}}
+\def\@wydzial{Wydzia{\l} Mechaniczny}
+\def\album#1{\gdef\@album{#1}}
+\def\@album{111111}
+\def\katedrapromotora#1{\gdef\@katedrapromotora{#1}}
+\def\@katedrapromotora{Zarządzania}
+\def\kierunek#1{\gdef\@kierunek{#1}}
+\gdef\@kierunek{IPS}
+\def\specjalnosc#1{\gdef\@specjalnosc{#1}}
+\gdef\@specjalnosc{\@latex@warning@no@line{No \noexpand\specjalnosc given}\@ehc}
+\def\rodzajpracy#1{\gdef\@rodzajpracy{#1}}
+\gdef\@rodzajpracy{\@latex@warning@no@line{No \noexpand\rodzajpracy given}\@ehc}
+\def\slowakluczowe#1{\gdef\@slowakluczowe{#1}}
+% nowe pola wymagana w szablonie okładki WIZ
+\gdef\@slowakluczowe{\@latex@error{No \noexpand\slowakluczowe given}\@ehc}
+\def\krotkiestreszczenie#1{\gdef\@krotkiestreszczenie{#1}}
+\gdef\@krotkiestreszczenie{\@latex@error{No \noexpand\krotkiestreszczenie given}\@ehc}
+\def\titlen#1{\gdef\@titlen{#1}}
+\gdef\@titlen{\@latex@error{No \noexpand\titlen given}\@ehc}
+%
+\let\lll\undefined
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+\definecolor{col1}{RGB}{35,31,32}
+\definecolor{col2}{RGB}{255,255,255}
+\def\dotfill#1{\cleaders\hbox to #1{.}\hfill}
+\newcommand\dotline[2][.5em]{\leavevmode\hbox to #2{\dotfill{#1}\hfil}}
+\def\dlugoscmaxa{450}
+\def\dlugoscmaxb{500}
+\def\dlugoscmaxc{150}
+\def\dlugoscmaxd{29}
+\def\dlugoscmaxe{32}
+\def\dlugoscmaxf{36}
+\def\dlugoscmaxg{80}
+
+\newenvironment{rightbox}[1]
+{\itemize[
+        nosep,
+        leftmargin=\dimexpr\textwidth-#1\relax,
+        rightmargin=0pt,
+        itemindent=\parindent,
+        listparindent=\parindent,
+]\item[]\relax}
+{\enditemize}
+\renewcommand\maketitle{%
+\pagenumbering{alph}%
+\thispagestyle{empty}
+
+\noindent\begin{minipage}{\textwidth}
+         \begin{figure}[H]
+                 \centering\includegraphics[scale=1]{img/ue_wroc_logo.jpg}
+         \end{figure}
+\end{minipage}
+\vspace{0.5cm}
+\begin{center}
+        \MakeUppercase{Kierunek studiów}\\
+        \@kierunek\\
+        \vspace{1cm}
+        \Large\textbf{\@author}\\
+        \normalsize Nr albumu \@album\\
+        \vspace{1cm}
+        \Large\textbf{\MakeUppercase{Praca magisterska}}\\
+        \vspace{1cm}
+        \huge\textbf{\@title}
+        \vspace{1.25cm}
+\end{center}
+\begin{rightbox}{8.5cm}
+        \noindent Promotor:\\
+        \@promotor\\
+        Katedra \@katedrapromotora\\~\\
+        Pracę akceptuję i wnioskuję o jej dopuszczenie\\
+        do dalszych etapów postępowania.\\~\\
+        ......................................................................\\
+        podpis Promotora
+\end{rightbox}
+\vfill
+\begin{center}
+        \large\textbf{\MakeUppercase{Wrocław 2022}}
+\end{center}
+
+\cleardoublepage
+\restoregeometry
+\pagenumbering{arabic}
+}

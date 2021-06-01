@@ -1,0 +1,16 @@
+.idea
+*.iml
+_minted-praca/
+*.aux
+*.bbl
+*.blg
+*.lof
+*.lop
+*.lot
+*.out
+*.synctex(busy)
+*.toc
+*.log
+*.gz
+*.lol
+*.pyg
