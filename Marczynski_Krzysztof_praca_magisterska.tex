@@ -3,16 +3,29 @@
 % http://wiki.languagetool.org/checking-la-tex-with-languagetool
 \documentclass{dyplom}
 \usepackage[utf8]{inputenc}
+\usepackage{splitbib}
+
+\makeatletter
+\def\SBmisctitle{Wykaz innych źródeł}
+\def\NMSB@titlestyle{simple}
+\def\NMSB@stylesimple#1#2{\if@nobreak\else\bigskip\fi\textbf{\large #1#2}}
+\makeatother
+\begin{category}{Spis literatury}
+    \SBentries{tp-11-latex,aizawa_groundwater_2009,harel_rzecz_2008,kaleta_experimental_2005}
+\end{category}
+\usepackage{bibentry}
 \usepackage{hyperref}
-%%
+%\usepackage{natbib}
+%\setcitestyle{authoryear,open={[},close={]}}
+%
 \usepackage{lipsum}
 
 % Dane o pracy
 \author{Krzysztof Marczyński}
-\title{Analiza czynników związanych z rotacją pracowników w przedsiębiorstwach IT}
+\title{Analiza~poziomu~zadowolenia i~chęci~zmiany~pracy~pracowników~IT z~wykorzystaniem~uczenia~maszynowego}
 \titlen{Analysis of factors related to employee rotation in IT enterprises}
-\promotor{dr hab. Sylwia Stańczyk, prof. UEW}
-\katedrapromotora{Projektowania Systemów Zarządzania}
+\promotor{dr hab. Joanna Radomska, prof. UEW}
+\katedrapromotora{Zarządzania Strategicznego}
 %\konsultant{dr hab. inż. Kazimerz Kabacki}
 \wydzial{Wydział Zarządzania}
 \kierunek{Zarządzanie}
@@ -21,9 +34,12 @@
 \slowakluczowe{rotacja pracowników, selekcja pracowników}
 
 \linespread{1.3}
+\nobibliography*
+
 %todo na koniec sprawdzić czy nie zostały sieroty/wdowy na końcach stron/wierszy
 %todo na koniec zastąpić regexem: " ([a-z]) " na " $1~" i~" - " na "~- "
 \begin{document}
+%    \floatsetup[listing]{capposition=top}
     \sloppy %for words not to leak from right side of container
     \input{chapters/ch_changelog} %todo usunąć przed oddaniem
 

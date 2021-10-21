@@ -86,6 +86,7 @@ linenos
 \usepackage{listings}
 \renewcommand\lstlistingname{Listing}
 \renewcommand\lstlistlistingname{Spis kodów źródłowych}
+\RequirePackage{floatrow} % listing caption above listing
 
 % patch wyrównujący spis listingów do lewego marginesu
 %https://tex.stackexchange.com/questions/58469/why-are-listof-and-listoffigures-styled-differently
@@ -103,7 +104,7 @@ linenos
 \RequirePackage{url}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \pagestyle{outer} % numery stron po lewej i prawej stronie
-\RequirePackage[font=normalsize, justification=centering]{caption}
+\RequirePackage[font=normalsize,justification=raggedright,singlelinecheck=false]{caption}
 
 \setlength{\parindent}{7mm} % wcięcie w pierwszym wierszu akapitu
 \widowpenalty=1000 % żeby nagłówki nie zostawały na dole strony
@@ -179,8 +180,8 @@ linenos
 \end{minipage}
 }
 
-\newcommand{\source}[1]{(źródło: #1)}
-\newcommand{\ownwork}{opr. wł.}
+\newcommand{\source}[1]{{\footnotesize Źródło: #1}}
+\newcommand{\ownwork}{opracowanie własne}
 
 \newcommand{\inlinetodo}[1]{
 \textcolor{red}{todo: (#1)}
@@ -217,4 +218,12 @@ linenos
 \makeatletter
 \newcommand\mynobreakpar{\par\nobreak\@afterheading}
 \makeatother
+
+\RequirePackage{splitbib}
+
+\AtBeginEnvironment{tabular}{\footnotesize}
+
+\newcommand*{\nolink}[1]{%
+        {\protect\NoHyper\cite{#1}\protect\endNoHyper}%
+}
 \endinput % dla porządku
