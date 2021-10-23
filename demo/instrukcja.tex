@@ -4,6 +4,11 @@
 
 \chapter{Jak korzystać z~szablonu pracy}
 
+\textcolor{red}{
+    Niniejszy rozdział zawiera prezentację możliwości przygotowanego szablonu pracy
+    i zostanie usunięty we właściwej pracy.
+}
+
 Klasa przygotowana jest zgodnie z~zaleceniami dostępnymi ze strony \url{} i~może być wykorzystana do składu pracy \textbf{inżynierskiej} lub \textbf{magisterskiej} na wydziale mechanicznym.
 
 Klasa zgodnie z~\href{http://www.wmech.pwr.wroc.pl/88428.dhtml}{wymaganiami Wydziału Mechanicznego} składa stronę tytułową i~stosuje się do zaleceń (czcionka, zasady numeracji, odstępy,\ldots).
@@ -217,7 +222,7 @@ Jak widać na rys.\ref{rysunek:kot} Ala ma kota. \lipsum[9-10]
 
 \begin{figure}[H]
     \centering\includegraphics[width=.4\textwidth]{demo/img/kotek}
-    \caption{Ala ma kota.}\label{rysunek:kot}
+    \caption{Ala ma kota}\label{rysunek:kot}
     \raggedright\source{\ownwork}
 \end{figure}
 
@@ -227,8 +232,8 @@ Co uwzględniono w~tabeli \ref{tabela:coktoma}. \lipsum[13-15]
 
 % Tabela. Nazwa tabeli u~góry.
 \begin{table}[h!]
-    \centering\caption{Co kto ma\nolink{harel_rzecz_2008} (patrz też dodatek~\ref{app:dod1}) \label{tabela:coktoma}}
-    \begin{tabular}{|l|l|l|}% wyrównanie kolumn tabeli -> l~c r~- do lewej, środka, do prawej
+    \raggedright\caption{Co kto ma (patrz też dodatek~\ref{app:dod1}) \label{tabela:coktoma}}
+    \begin{center}\begin{tabular}{|l|l|l|}% wyrównanie kolumn tabeli -> l~c r~- do lewej, środka, do prawej
         \hline
         Ala & ma & kota \\
         \hline
@@ -236,7 +241,10 @@ Co uwzględniono w~tabeli \ref{tabela:coktoma}. \lipsum[13-15]
         \hline
         Ula & ma & małpę\\
         \hline
-    \end{tabular}
+    \end{tabular}\end{center}
+
+
+    \raggedright\source{\bibentry{harel_rzecz_2008}\nolink{harel_rzecz_2008}}
 \end{table}
 
 \lipsum[19-20] Warto wspomnieć, że w\nolink{aizawa_groundwater_2009} rzecz przedstawiona jest zupełnie inaczej. Poniższy wzór:
@@ -302,8 +310,8 @@ W~moim kodzie \ref{listing:moj} zrobiłem coś wspaniałego. \lipsum[4]
 
 \begin{minipage}{\textwidth}
     \begin{table}[H]
-        \centering\caption{Rozwiązania konkurencyjne~- cechy funkcjonalne\label{tabela:rozwiazania-konkurencyjne-funkcjonalne}}
-        \begin{tabular}{|P{.22\textwidth}|P{.09\textwidth}|P{.09\textwidth}|P{.09\textwidth}|P{.09\textwidth}|P{.09\textwidth}|P{.09\textwidth}|}
+        \raggedright\caption{Rozwiązania konkurencyjne~- cechy funkcjonalne\label{tabela:rozwiazania-konkurencyjne-funkcjonalne}}
+        \begin{center}\begin{tabular}{|P{.22\textwidth}|P{.09\textwidth}|P{.09\textwidth}|P{.09\textwidth}|P{.09\textwidth}|P{.09\textwidth}|P{.09\textwidth}|}
             \hline
             & \cellgray{Rozw1}      & \cellgray{Rozw2}          & \cellgray{Rozw3}         & \cellgray{Rozw4}           & \cellgray{Rozw5}      & \cellgray{Rozw6}    \\ \hline
             \cellgray{Funkcjonalność 1}        & \cellgreen{TAK}       & \cellgreen{TAK}           & \cellgreen{TAK}          & \cellgreen{TAK}            & \cellgreen{TAK}       & \cellgreen{TAK}     \\ \hline
@@ -316,15 +324,15 @@ W~moim kodzie \ref{listing:moj} zrobiłem coś wspaniałego. \lipsum[4]
             \cellgray{Funkcjonalność 8}        & \cellgreen{TAK}       & \cellgreen{TAK}           & \cellgreen{TAK}          & \cellgreen{TAK}            & \cellgreen{TAK}       & \cellred{NIE}       \\ \hline
             \cellgray{Funkcjonalność 9}        & \cellgreen{TAK}       & \cellgreen{TAK}           & \cellgreen{TAK}          & \cellgreen{TAK}            & \cellgreen{TAK}       & \cellgreen{TAK}     \\ \hline
             \cellgray{Funkcjonalność 10}       & \cellgreen{TAK}       & \cellgreen{TAK}           & \cellgreen{TAK}          & \cellgreen{TAK}            & \cellgreen{TAK}       & \cellgreen{TAK}     \\ \hline
-        \end{tabular}
+        \end{tabular}\end{center}
         \raggedright\source{\ownwork}
     \end{table}
 \end{minipage}
 
 \begin{minipage}{\textwidth}
     \begin{table}[H]
-        \centering\caption{Sformułowanie problemu\label{tabela:sformulowanie-problemu}}
-        \begin{tabular}{|P{.2\textwidth}|p{.7\textwidth}|}
+        \raggedright\caption{Sformułowanie problemu\label{tabela:sformulowanie-problemu}}
+        \begin{center}\begin{tabular}{|P{.2\textwidth}|p{.7\textwidth}|}
 
             \hline
             \cellgray{Problem} &
@@ -350,15 +358,15 @@ W~moim kodzie \ref{listing:moj} zrobiłem coś wspaniałego. \lipsum[4]
                 \item \inlinetodo{todo}
             \end{itemize} \\
             \hline
-        \end{tabular}
+        \end{tabular}\end{center}
         \raggedright\source{\ownwork}
     \end{table}
 \end{minipage}
 
 \begin{minipage}{\textwidth}
     \begin{table}[H]
-        \centering\caption{Użytkownicy\label{tabela:uzytkownicy}}
-        \begin{tabular}{|P{.15\textwidth}|P{.25\textwidth}|P{.5\textwidth}|}
+        \raggedright\caption{Użytkownicy\label{tabela:uzytkownicy}}
+        \begin{center}\begin{tabular}{|P{.15\textwidth}|P{.25\textwidth}|P{.5\textwidth}|}
 
             \hline
             \cellgray{Nazwa} & \cellgray{Opis} & \cellgray{Odpowiedzialności}\\
@@ -378,7 +386,7 @@ W~moim kodzie \ref{listing:moj} zrobiłem coś wspaniałego. \lipsum[4]
                 \item Zarządzanie definicjami wartości odżywczych, typami diet, typami posiłków, typami dań i~wyposażeniem kuchennym.
             \end{itemize} \\
             \hline
-        \end{tabular}
+        \end{tabular}\end{center}
         \raggedright\source{\ownwork}
     \end{table}
 \end{minipage}
