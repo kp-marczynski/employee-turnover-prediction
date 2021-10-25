@@ -1,0 +1,177 @@
+% !TeX~program = latexmk
+% !TeX spellcheck = pl_PL
+% !TeX~root = example.tex
+
+\chapter{LaTeX demo}
+
+\textcolor{red}{
+    Niniejszy rozdział zawiera prezentację możliwości przygotowanego szablonu pracy
+    i zostanie usunięty we właściwej pracy.
+}
+
+ĄĆĘŁŃÓŚŹŻ ąćęłńóśźż\footnote{Przykład użycia polskich znaków diakrytycznych oraz przypisu w~miejscu}.
+
+Reszta dokumentacji znajduje się w\nolink{docker_compose_reference}.
+
+Jak pisze Harel w\nolink{harel_rzecz_2008}: \lipsum[1]
+
+Natomiast Kaleta uważał\nolink{kaleta_experimental_2005} \lipsum[1]
+
+Jak widać na rys. \ref{fig:network} Docker ma wewnętrzną sieć.
+
+\imagewidth[\bibentry{docker_compose_reference}\nolink{docker_compose_reference}]{0.6}{demo/img/swarm-network}{Docker ma sieć}{network}
+
+Jak widać na rys.\ref{fig:kotek} Ala ma kota. \lipsum[1]
+
+\imagewidth{0.4}{demo/img/kotek}{Ala ma kota}{kotek}
+
+Co uwzględniono w~tabeli \ref{tabela:coktoma}. \lipsum[1]
+
+\noindent\begin{minipage}{\textwidth}
+    \begin{table}[H]
+        \raggedright\caption{Co kto ma (patrz też dodatek~\ref{app:dod1}) \label{tabela:coktoma}}
+        \begin{center}\begin{tabular}{|l|l|l|}% wyrównanie kolumn tabeli -> l~c r~- do lewej, środka, do prawej
+                          \hline
+                          Ala & ma & kota \\
+                          \hline
+                          Ola & ma & psa \\
+                          \hline
+                          Ula & ma & małpę\\
+                          \hline
+        \end{tabular}\end{center}
+        \raggedright\source{\bibentry{harel_rzecz_2008}\nolink{harel_rzecz_2008}}
+        \vspace{0.75cm}
+    \end{table}
+\end{minipage}
+
+W~moim kodzie \ref{listing:liquibase} zrobiłem coś wspaniałego. \lipsum[1]
+% lub {java} albo {bash} albo {text}
+%\noindent\begin{minipage}{\textwidth}
+%\begin{listing}[float=h!]
+%    \caption{Przykładowy algorytm w~języku C} \label{listing:moj}
+%    \begin{minted}{c}
+%        int main()
+%        {
+%        int a=2*3;
+%        printf("**Ala ma kota\n**");
+%        while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_MODE_SELECT)); /* EV5 */
+%        return 0;
+%        }
+%    \end{minted}
+%    \raggedright\source{\ownwork}
+%    \vspace{0.75cm}
+%\end{listing}
+
+%\end{minipage}
+\noindent\begin{minipage}{\textwidth}
+    \begin{lstlisting}[caption={Skrpyt ładujący dane z~pliku CSV}, label={listing:liquibase}]
+    \end{lstlisting}
+    \hspace{.075\textwidth}\begin{minipage}{.85\textwidth}
+    \begin{minted}{xml}
+<changeSet id="201902130001" author="kmarczynski" context="usda">
+  <loadData file="config/liquibase/usda_sr_db/household_measure.csv"
+    quotchar='"' separator=";" tableName="household_measure">
+    <column header="product_id" name="product_id" type="numeric"/>
+    <column header="measure_description" name="description" type="string"/>
+    <column header="grams_weight" name="grams_weight" type="numeric"/>
+    <column header="is_visible" name="is_visible" type="boolean"/>
+  </loadData>
+</changeSet>
+    \end{minted}
+    \end{minipage}
+
+    \raggedright\source{\ownwork}
+    \vspace{0.75cm}
+\end{minipage}
+
+\lipsum[1]
+
+W tabelach \ref{tabela:rozwiazania-konkurencyjne-funkcjonalne}, \ref{tabela:sformulowanie-problemu}, \ref{tabela:uzytkownicy} przedstawiono przykładowe formatowanie tabel.
+
+\noindent\begin{minipage}{\textwidth}
+    \begin{table}[H]
+        \raggedright\caption{Rozwiązania konkurencyjne~- cechy funkcjonalne\label{tabela:rozwiazania-konkurencyjne-funkcjonalne}}
+        \begin{center}\begin{tabular}{|P{.22\textwidth}|P{.09\textwidth}|P{.09\textwidth}|P{.09\textwidth}|P{.09\textwidth}|P{.09\textwidth}|P{.09\textwidth}|}
+            \hline
+            & \cellgray{Rozw1}      & \cellgray{Rozw2}          & \cellgray{Rozw3}         & \cellgray{Rozw4}           & \cellgray{Rozw5}      & \cellgray{Rozw6}    \\ \hline
+            \cellgray{Funkcjonalność 1}        & \cellgreen{TAK}       & \cellgreen{TAK}           & \cellgreen{TAK}          & \cellgreen{TAK}            & \cellgreen{TAK}       & \cellgreen{TAK}     \\ \hline
+            \cellgray{Funkcjonalność 2}        & \cellgreen{TAK}       & \cellgreen{TAK}           & \cellgreen{TAK}          & \cellgreen{TAK}            & \cellred{NIE}         & \cellred{NIE}       \\ \hline
+            \cellgray{Funkcjonalność 3}        & \cellgreen{TAK}       & \cellgreen{TAK}           & \cellgreen{TAK}          & \cellgreen{TAK}            & \cellgreen{TAK}       & \cellgreen{TAK}     \\ \hline
+            \cellgray{Funkcjonalność 4}        & \cellgreen{TAK}       & \cellgreen{TAK}           & \cellgreen{TAK}          & \cellgreen{TAK}            & \cellred{NIE}         & \cellgreen{TAK}     \\ \hline
+            \cellgray{Funkcjonalność 5}        & \cellgreen{TAK}       & \cellgreen{TAK}           & \cellgreen{TAK}          & \cellred{NIE}              & \cellred{NIE}         & \cellgreen{TAK}     \\ \hline
+            \cellgray{Funkcjonalność 6}        & \cellgreen{TAK}       & \cellgreen{TAK}           & \cellgreen{TAK}          & \cellgreen{TAK}            & \cellgreen{TAK}       & \cellgreen{TAK}     \\ \hline
+            \cellgray{Funkcjonalność 7}        & \cellgreen{TAK}       & \cellgreen{TAK}           & \cellgreen{TAK}          & \cellred{NIE}              & \cellgreen{TAK}       & \cellgreen{TAK}     \\ \hline
+            \cellgray{Funkcjonalność 8}        & \cellgreen{TAK}       & \cellgreen{TAK}           & \cellgreen{TAK}          & \cellgreen{TAK}            & \cellgreen{TAK}       & \cellred{NIE}       \\ \hline
+            \cellgray{Funkcjonalność 9}        & \cellgreen{TAK}       & \cellgreen{TAK}           & \cellgreen{TAK}          & \cellgreen{TAK}            & \cellgreen{TAK}       & \cellgreen{TAK}     \\ \hline
+            \cellgray{Funkcjonalność 10}       & \cellgreen{TAK}       & \cellgreen{TAK}           & \cellgreen{TAK}          & \cellgreen{TAK}            & \cellgreen{TAK}       & \cellgreen{TAK}     \\ \hline
+        \end{tabular}\end{center}
+        \raggedright\source{\ownwork}
+        \vspace{0.75cm}
+    \end{table}
+\end{minipage}
+
+\noindent\begin{minipage}{\textwidth}
+    \begin{table}[H]
+        \raggedright\caption{Sformułowanie problemu\label{tabela:sformulowanie-problemu}}
+        \begin{center}\begin{tabular}{|P{.2\textwidth}|p{.7\textwidth}|}
+
+            \hline
+            \cellgray{Problem} &
+            \inlinetodo{todo} \\
+            \hline
+
+            \cellgray{Dotyczy} &
+            \inlinetodo{todo} \\
+            \hline
+
+            \cellgray{Wpływ problemu} &
+            \begin{itemize}
+                \item \inlinetodo{todo}
+                \item \inlinetodo{todo}
+                \item \inlinetodo{todo}
+            \end{itemize} \\
+            \hline
+
+            \cellgray{Pomyślne rozwiązanie} &
+            \begin{itemize}
+                \item \inlinetodo{todo}
+                \item \inlinetodo{todo}
+                \item \inlinetodo{todo}
+            \end{itemize} \\
+            \hline
+        \end{tabular}\end{center}
+        \raggedright\source{\ownwork}
+        \vspace{0.75cm}
+    \end{table}
+\end{minipage}
+
+\noindent\begin{minipage}{\textwidth}
+    \begin{table}[H]
+        \raggedright\caption{Użytkownicy\label{tabela:uzytkownicy}}
+        \begin{center}\begin{tabular}{|P{.15\textwidth}|P{.25\textwidth}|P{.5\textwidth}|}
+
+            \hline
+            \cellgray{Nazwa} & \cellgray{Opis} & \cellgray{Odpowiedzialności}\\
+
+            \hline
+            Gość &
+            Niezalogowany użytkownik &
+            \begin{itemize}
+                \item Zakłada konto użytkownika.
+                \item Wyświetla stronę główną.
+            \end{itemize} \\
+            \hline
+            Administrator &
+            Osoba zarządzająca działaniem aplikacji &
+            \begin{itemize}
+                \item Przydzielanie i~odbieranie użytkownikom uprawnień.
+                \item Zarządzanie definicjami wartości odżywczych, typami diet, typami posiłków, typami dań i~wyposażeniem kuchennym.
+            \end{itemize} \\
+            \hline
+        \end{tabular}\end{center}
+        \raggedright\source{\ownwork}
+        \vspace{0.75cm}
+    \end{table}
+\end{minipage}
+
+\thispagestyle{normal}

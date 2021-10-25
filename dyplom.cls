@@ -162,20 +162,32 @@ linenos
 \renewcommand\cftlottitlefont{\fontsize{14pt}{14pt}\bfseries}
 
 %\image[source]{scale}{file path}{caption}{label}
-\newcommand{\image}[5][\ownwork]{
+\newcommand{\imagescale}[5][\ownwork]{
 \noindent\begin{minipage}{\textwidth}
     \begin{figure}[H]
         \centering\includegraphics[scale=#2]{#3}
-        \caption{#4 \source{#1}}\label{fig:#5}
+        \caption{#4}\label{fig:#5}
+        \raggedright\source{#1}
     \end{figure}
 \end{minipage}
+}
+
+\newcommand{\imagewidth}[5][\ownwork]{
+    \noindent\begin{minipage}{\textwidth}
+                 \begin{figure}[H]
+                     \centering\includegraphics[width=#2\textwidth]{#3}
+                     \caption{#4}\label{fig:#5}
+                     \raggedright\source{#1}
+                 \end{figure}
+    \end{minipage}
 }
 
 \newcommand{\imagewide}[4][\ownwork]{
 \noindent\begin{minipage}{\textwidth}
     \begin{figure}[H]
         \centering\includegraphics[width=.85\textwidth]{#2}
-        \caption{#3 \source{#1}}\label{fig:#4}
+        \caption{#3}\label{fig:#4}
+        \raggedright\source{#1}
     \end{figure}
 \end{minipage}
 }
@@ -226,4 +238,7 @@ linenos
 \newcommand*{\nolink}[1]{%
         {\protect\NoHyper\cite{#1}\protect\endNoHyper}%
 }
+
+\usepackage[bottom]{footmisc}
+
 \endinput % dla porządku
