@@ -498,8 +498,23 @@ replacers = [
     (['Gender'], gender_strs)
 ]
 
+hdi = pd.read_csv(f'HDI.csv', index_col="Country")
 
-def process(data):
+failed_hdi = set()
+
+
+def hdi_mapper_wrapper(year):
+    def hdi_mapper(country):
+        try:
+            return hdi.at[country, f'{year}']
+        except:
+            failed_hdi.add(country)
+            return None
+
+    return hdi_mapper
+
+
+def process(data, year):
     to_drop_first_filtered = list(set(data.columns).intersection(to_drop_before_start))
     data.drop(to_drop_first_filtered, axis=1, inplace=True)
     # data['gender_M'] = (data['Gender'] == 'Male').astype('int8')
@@ -516,6 +531,8 @@ def process(data):
     number_cols = list(set(data.columns).intersection(number_parses))
     data[number_cols] = data[number_cols].applymap(get_first_number).astype('float')
 
+    data[['Country']] = data[['Country']].applymap(hdi_mapper_wrapper(year)).astype('str')
+
     to_drop_filtered = list(set(data.columns).intersection(to_drop))
     data.drop(to_drop_filtered, axis=1, inplace=True)
     # data = pd.get_dummies(data)
@@ -524,7 +541,7 @@ def process(data):
     return data
 
 
-if __name__ == '__main__':
+def main():
     years = [2017, 2018, 2019]
     for year in years:
         data = pd.read_csv(f'data/{year}.csv')
@@ -537,7 +554,7 @@ if __name__ == '__main__':
         for x in data.columns:
             uniqueValsOld[x] = data[x].unique()
 
-        data = process(data)
+        data = process(data, year)
         # for x in data.columns:
         #     col = data[x].unique()
 
@@ -557,3 +574,8 @@ if __name__ == '__main__':
 
         types = data.select_dtypes(exclude=["float64", "int8"]).dtypes
         data.to_csv(f"data/{year}_pandas.csv", index=False)
+    print()
+
+
+if __name__ == '__main__':
+    main()
