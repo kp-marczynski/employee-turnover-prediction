@@ -531,7 +531,7 @@ def process(data, year):
     number_cols = list(set(data.columns).intersection(number_parses))
     data[number_cols] = data[number_cols].applymap(get_first_number).astype('float')
 
-    data[['Country']] = data[['Country']].applymap(hdi_mapper_wrapper(year)).astype('str')
+    data[['Country']] = data[['Country']].applymap(hdi_mapper_wrapper(year)).astype('float')
 
     to_drop_filtered = list(set(data.columns).intersection(to_drop))
     data.drop(to_drop_filtered, axis=1, inplace=True)
