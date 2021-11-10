@@ -736,8 +736,8 @@ def process(data, year):
 
     to_drop_filtered = list(set(data.columns).intersection(to_drop))
     data.drop(to_drop_filtered, axis=1, inplace=True)
-    # data = pd.get_dummies(data)
-    # data.fillna(data.mean(), inplace=True)
+    data = pd.get_dummies(data)
+    data.fillna(data.mean(), inplace=True)
 
     return data
 
@@ -774,6 +774,7 @@ def main():
                 diff[col] = (oldLen, newLen)
 
         types = data.select_dtypes(exclude=["float64", "int8"]).dtypes
+        data.rename(columns={"JobSat": "JobSatisfaction", "CareerSat": "CareerSatisfaction"}, inplace=True)
         data.to_csv(f"data/{year}_pandas.csv", index=False)
     print()
 
