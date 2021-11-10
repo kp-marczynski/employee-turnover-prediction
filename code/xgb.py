@@ -4,13 +4,15 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import math
+from sklearn.ensemble import AdaBoostRegressor
+from sklearn.metrics import mean_squared_error, r2_score
 
 
 def main():
     years = [2017, 2018, 2019]
     for year in years:
         data = pd.read_csv(f'data/{year}_pandas.csv')
-        searcher = GridSearchCV(xgb.XGBRegressor(), {
+        searcher = GridSearchCV(xgb.XGBRegressor(tree_method="hist", single_precision_histogram=True), {
             'max_depth': [4],  # tested 2,3,4,5,7,9
             'min_child_weight': [7],  # tested 1,3,5,6,7,8
             'gamma': [0],  # tested 0,0.1,0.2,1,2
@@ -31,6 +33,16 @@ def main():
         plt.savefig(f'data/feat_importance_{year}.png')
         # print(searcher.best_params_)
         # print(searcher.best_score_)
+
+        # X = data.drop(['JobSatisfaction'], axis=1)
+        # y = data['JobSatisfaction']
+        # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, stratify=y)
+        # ens_model = AdaBoostRegressor(base_estimator=searcher)
+        # ens_model.fit(X_train, y_train)
+        # preds = ens_model.predict(X_test)
+        # mean_squared_error(preds, y_test)
+        # print(f'RMSE: {math.sqrt(abs(mean_squared_error(preds, y_test)))}')
+        # print(f'R2: {r2_score(preds, y_test)}')
 
 
 if __name__ == '__main__':
