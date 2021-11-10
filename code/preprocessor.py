@@ -4,6 +4,7 @@ from itertools import chain
 
 import numpy as np
 import pandas as pd
+from sklearn.preprocessing import MinMaxScaler
 
 
 # number = re.compile('[\d,]+')
@@ -775,6 +776,9 @@ def main():
 
         types = data.select_dtypes(exclude=["float64", "int8"]).dtypes
         data.rename(columns={"JobSat": "JobSatisfaction", "CareerSat": "CareerSatisfaction"}, inplace=True)
+        columns = data.columns
+        min_max_scaler = MinMaxScaler()
+        data = pd.DataFrame(min_max_scaler.fit_transform(data), columns=columns)
         data.to_csv(f"data/{year}_pandas.csv", index=False)
     print()
 
