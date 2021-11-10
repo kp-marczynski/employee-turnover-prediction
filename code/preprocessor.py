@@ -314,14 +314,14 @@ last_three_months_strs = {
 yes_no_strs = {
     'yes': 1,
     'no': 0,
-    # todo replace "2" with nan/None
-    "i'm not sure/i don't know": 666,
-    "i'm not sure/i can't remember": 666,
-    "i'm not sure": 666,
-    "i'm not sure / i can't remember": 666,
-    'not sure': 666,
-    'what?': 666,
-    "not sure / can't remember": 666
+    
+    "i'm not sure/i don't know": None,
+    "i'm not sure/i can't remember": None,
+    "i'm not sure": None,
+    "i'm not sure / i can't remember": None,
+    'not sure': None,
+    'what?': None,
+    "not sure / can't remember": None
 }
 
 influence_strs = {
@@ -379,36 +379,6 @@ important_strs = {
     'not very important': 2,
     'not at all important': 1,
 }
-
-overpaid_strs = {
-    'greatly overpaid': 5,
-    'somewhat overpaid': 4,
-    'neither underpaid nor overpaid': 3,
-    'somewhat underpaid': 2,
-    'greatly underpaid': 1,
-}
-
-checkin_strs = {
-    'never': 5,
-    'just a few times over the year': 4,
-    'less than once per month': 4,
-    'a few times a month': 3,
-    'weekly or a few times per month': 3,
-    'a few times a week': 2,
-    'a few times per week': 2,
-    'once a day': 1,
-    'multiple times a day': 0,
-    'multiple times per day': 0
-}
-
-gender_strs = {
-    'man': 1,
-    'woman': 0,
-    'male': 1,
-    'female': 0
-}
-
-# to_drop = listvals
 
 to_drop_before_start = [
     'AdBlocker',
@@ -512,12 +482,34 @@ replacers = [
     (influence_keys, influence_strs),
     (agree_keys, agree_strs),
     (satisfied_keys, satisfied_strs),
-    (['CheckInCode'], checkin_strs),
-    (['Overpaid'], overpaid_strs),
     (last_three_months_keys, last_three_months_strs),
     (important_keys, important_strs),
     (yes_no_keys, yes_no_strs),
-    (['Gender'], gender_strs),
+    (['CheckInCode'], {
+        'never': 5,
+        'just a few times over the year': 4,
+        'less than once per month': 4,
+        'a few times a month': 3,
+        'weekly or a few times per month': 3,
+        'a few times a week': 2,
+        'a few times per week': 2,
+        'once a day': 1,
+        'multiple times a day': 0,
+        'multiple times per day': 0
+    }),
+    (['Overpaid'], {
+        'greatly overpaid': 5,
+        'somewhat overpaid': 4,
+        'neither underpaid nor overpaid': 3,
+        'somewhat underpaid': 2,
+        'greatly underpaid': 1,
+    }),
+    (['Gender'], {
+        'man': 1,
+        'woman': 0,
+        'male': 1,
+        'female': 0
+    }),
     (['ProgramHobby'], {
         "yes, both": 3,
         "yes, i program as a hobby": 2,
