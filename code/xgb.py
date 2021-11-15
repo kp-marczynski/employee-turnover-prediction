@@ -1,49 +1,112 @@
-from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score
 import xgboost as xgb
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import math
+import seaborn as sns
 from sklearn.ensemble import AdaBoostRegressor
-from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.metrics import mean_squared_error, r2_score, accuracy_score, mean_squared_log_error, make_scorer
+from numpy import sort
+from sklearn.feature_selection import SelectFromModel
+from preprocessor import convert_to_classification
+
+estimator_params = {
+    'tree_method': "hist",
+    'single_precision_histogram': True,
+    'n_jobs': -1,
+    'n_estimators': 1500,
+    'importance_type': 'weight',
+    'use_label_encoder': False,
+    'booster': 'gbtree',
+    'scale_pos_weight': 1,
+    'reg_alpha': 5,
+    'colsample_bytree': .8,
+    'learning_rate': .1,
+    'min_child_weight': 7,
+    'subsample': .5,
+    'max_depth': 6,
+    'gamma': 0.1,
+    'reg_lambda': 1,  # 100
+}
+
+is_classifier = True
 
 
-def main():
+def get_estimator():
+    if is_classifier:
+        return xgb.XGBClassifier(**estimator_params, eval_metric='auc')
+    else:
+        return xgb.XGBRegressor(**estimator_params, eval_metric='rmsle')
+
+
+descriptive_param = 'JobSeekingStatus_class'
+
+def fit():
     years = [2017, 2018, 2019]
     for year in years:
         data = pd.read_csv(f'data/{year}_pandas.csv')
-        searcher = GridSearchCV(xgb.XGBRegressor(tree_method="hist", single_precision_histogram=True), {
-            'max_depth': [4],  # tested 2,3,4,5,7,9
-            'min_child_weight': [7],  # tested 1,3,5,6,7,8
-            'gamma': [0],  # tested 0,0.1,0.2,1,2
-            'n_estimators': [1000],  # todo 1500
-            'subsample': [0.8],  # tested 0.6,0.7,0.8,0.9
-            'colsample_bytree': [0.6],  # tested 0.5,0.6,0.7,0.8,0.9
-            'scale_pos_weight': [1],
-            'reg_alpha': [1],  # tested 1e-5, 1e-2, 0.1, 1, 10, 100
-            'reg_lambda': [100],  # tested 1e-5, 1e-2, 0.1, 1, 10, 100
-            'learning_rate': [0.01],
-        }, cv=3, scoring='neg_mean_squared_error', verbose=10, n_jobs=4)
 
-        searcher.fit(data.drop(['JobSatisfaction', 'CareerSatisfaction'], axis=1), data['JobSatisfaction'])
-        # print(searcher.best_params_)
-        print(math.sqrt(abs(searcher.best_score_)))
-        xgb.plot_importance(searcher.best_estimator_, max_num_features=10)
+        # if is_classifier:
+        #     data = convert_to_classification(data)
+
+        estimator = get_estimator()
+
+        X = data.drop([descriptive_param, 'JobSeekingStatus'], axis=1)
+        y = data[descriptive_param]
+        # search_params(estimator, X, y)
+
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, stratify=y)
+        # ens_model = AdaBoostRegressor(base_estimator=estimator)
+        estimator.fit(X_train, y_train)
+
+        selection = SelectFromModel(estimator, threshold=.015, prefit=True)
+        select_X_train = selection.transform(X_train)
+        print(f'Selected {select_X_train.shape[1]} features')
+        # train model
+        selection_model = get_estimator()
+        selection_model.fit(select_X_train, y_train)
+        # eval model
+        select_X_test = selection.transform(X_test)
+
+        preds = selection_model.predict(select_X_test)
+        if is_classifier:
+            print("Accuracy: %.2f" % accuracy_score(y_test, preds))
+        else:
+            print("RMSE: %.2f" % math.sqrt(abs(mean_squared_error(y_test, preds))))
+            # print("RMSLE: %.2f" % math.sqrt(abs(mean_squared_log_error(y_test, preds))))
+            print("R2: %.2f" % r2_score(y_test, preds))
+
+        xgb.plot_importance(estimator, max_num_features=10)
         plt.tight_layout()
         plt.savefig(f'data/feat_importance_{year}.png')
-        # print(searcher.best_params_)
-        # print(searcher.best_score_)
 
-        # X = data.drop(['JobSatisfaction'], axis=1)
-        # y = data['JobSatisfaction']
-        # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, stratify=y)
-        # ens_model = AdaBoostRegressor(base_estimator=searcher)
-        # ens_model.fit(X_train, y_train)
-        # preds = ens_model.predict(X_test)
-        # mean_squared_error(preds, y_test)
-        # print(f'RMSE: {math.sqrt(abs(mean_squared_error(preds, y_test)))}')
-        # print(f'R2: {r2_score(preds, y_test)}')
+
+def search_params(estimator, x_data, y_data):
+    searcher = GridSearchCV(
+        estimator,
+        {
+            # 'reg_alpha': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100],
+            # 'colsample_bytree': [0.5, 0.6, 0.7, 0.8, 0.9, 0.75, .85, 1],
+            # 'gamma': [0, .001, .6, 0.1, 0.2, 1, 2],
+            # 'learning_rate': [.01, 0.1, 0.005, .05, 0.3, 0.5, 0.7],
+            # 'min_child_weight': [1,2,3,4,5,7,8, 9],
+            # 'subsample': [0.6, 0.7, 0.8, 0.9, .55, 1],
+            # 'max_depth': [3, 4, 5,6, 7,8,9],
+            # 'reg_lambda': [ 1, 10, 100, 0],
+            'importance_type': ['weight', 'gain', 'cover', 'total_gain', 'total_cover'],
+            # 'eval_metric': ['rmsle', 'rmse']
+        },
+        cv=2,
+        scoring='r2',  # neg_mean_squared_error , roc_auc or r2
+        verbose=10,
+        n_jobs=-1
+    )
+
+    searcher.fit(x_data, y_data)
+    print(searcher.best_params_)
+    print(math.sqrt(abs(searcher.best_score_)))
 
 
 if __name__ == '__main__':
-    main()
+    fit()

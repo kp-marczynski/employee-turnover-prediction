@@ -8,7 +8,30 @@ from sklearn.preprocessing import MinMaxScaler
 
 
 # number = re.compile('[\d,]+')
+hdi = pd.read_csv(f'HDI.csv', index_col="Country")
 
+failed_hdi = set()
+
+usd_prices = pd.read_csv(f'USD_price_2017.csv', index_col="CURRENCY")
+
+
+def hdi_mapper_wrapper(year):
+    def hdi_mapper(country):
+        try:
+            return hdi.at[country, f'{year}']
+        except:
+            failed_hdi.add(country)
+            return None
+
+    return hdi_mapper
+
+
+def usd_price_mapper(currency):
+    try:
+        return usd_prices.at[currency, 'USD PER UNIT']
+    except:
+        # failed_hdi.add(country)
+        return None
 
 def get_first_number(val):
     val = str(val).lower()
@@ -246,15 +269,20 @@ important_keys = [
     'AssessJobIndustry',
 ]
 
-satisfied_keys = [
-    'CareerSat',
+satisfied_keys5 = [
+    'CareerSat5',
     'EquipmentSatisfiedCPU',
     'EquipmentSatisfiedMonitors',
     'EquipmentSatisfiedRAM',
     'EquipmentSatisfiedRW',
     'EquipmentSatisfiedStorage',
     'InfluenceInternet',
-    'JobSat',
+    'JobSat5',
+]
+
+satisfied_keys7 = [
+    'CareerSat7',
+    'JobSat7',
 ]
 
 influence_keys = [
@@ -315,7 +343,7 @@ last_three_months_strs = {
 yes_no_strs = {
     'yes': 1,
     'no': 0,
-    
+
     "i'm not sure/i don't know": None,
     "i'm not sure/i can't remember": None,
     "i'm not sure": None,
@@ -351,25 +379,29 @@ interested_strs = {
     'not at all interested': 0
 }
 
-satisfied_strs = {
-    'very satisfied': 10,
-    'extremely satisfied': 10,
+satisfied_strs5 = {
+    'very satisfied': 4,
 
-    'moderately satisfied': 8.33,
+    'satisfied': 3,
+    'slightly satisfied': 3,
 
-    'satisfied': 6.66,
-    'slightly satisfied': 6.66,
+    'somewhat satisfied': 2,
+    'neither satisfied nor dissatisfied': 2,
 
-    'somewhat satisfied': 5,
-    'neither satisfied nor dissatisfied': 5,
-
-    'not very satisfied': 3.33,
-    'slightly dissatisfied': 3.33,
-
-    'moderately dissatisfied': 1.66,
+    'not very satisfied': 1,
+    'slightly dissatisfied': 1,
 
     'not at all satisfied': 0,
     'very dissatisfied': 0,
+}
+
+satisfied_strs7 = {
+    'extremely satisfied': 6,
+    'moderately satisfied': 5,
+    'slightly satisfied': 4,
+    'neither satisfied nor dissatisfied': 3,
+    'slightly dissatisfied': 2,
+    'moderately dissatisfied': 1,
     'extremely dissatisfied': 0
 }
 
@@ -382,6 +414,7 @@ important_strs = {
 }
 
 to_drop_before_start = [
+    'ExpectedSalary',
     'AdBlocker',
     'AdBlockerDisable',
     'AdBlockerReasons',
@@ -406,7 +439,7 @@ to_drop_before_start = [
     'CompFreq',
     'CompTotal',
     'Containers',
-    'Currency',
+    # 'Currency',
     'CurrencyDesc',
     'CurrencySymbol',
     'EntTeams',
@@ -442,7 +475,7 @@ to_drop_before_start = [
     'Respondent',
     'ResumePrompted',
     'ResumeUpdate',
-    'Salary',
+    # 'Salary',
     'SalaryType',
     'ScreenName',
     'SelfTaughtTypes',
@@ -477,12 +510,15 @@ to_drop_before_start = [
 
 to_drop = listvals + [
     # 'Gender',
+    'Salary',
+    'Currency'
 ]
 
 replacers = [
     (influence_keys, influence_strs),
     (agree_keys, agree_strs),
-    (satisfied_keys, satisfied_strs),
+    (satisfied_keys5, satisfied_strs5),
+    (satisfied_keys7, satisfied_strs7),
     (last_three_months_keys, last_three_months_strs),
     (important_keys, important_strs),
     (yes_no_keys, yes_no_strs),
@@ -698,25 +734,43 @@ replacers = [
         "i have never visited stack overflow (before today)": 0,
         "i have never participated in q&a on stack overflow": 0,
     }),
+    (['Currency'], {
+        'British pounds sterling (£)': usd_price_mapper("GBP"),
+        'Canadian dollars (C$)': usd_price_mapper("CAD"),
+        'u.s. dollars ($)': usd_price_mapper("USD"),
+        'euros (€)': usd_price_mapper("EUR"),
+        'brazilian reais (r$)': usd_price_mapper("BRL"),
+        'indian rupees (?)': usd_price_mapper('INR'),
+        'polish zloty (zl)': usd_price_mapper("PLN"),
+        'swedish kroner (sek)': usd_price_mapper("SEK"),
+        'russian rubles (?)': usd_price_mapper('RUB'),
+        'swiss francs': usd_price_mapper("CHF"),
+        'australian dollars (a$)': usd_price_mapper("AUD"),
+        'mexican pesos (mxn$)': usd_price_mapper('MXN'),
+        'japanese yen (¥)': usd_price_mapper('JPY'),
+        'chinese yuan renminbi (¥)': usd_price_mapper('CNY'),
+        'singapore dollars (s$)': usd_price_mapper('SGD'),
+        'Bitcoin (btc)': usd_price_mapper("XBT")
+    })
 ]
 
-hdi = pd.read_csv(f'HDI.csv', index_col="Country")
 
-failed_hdi = set()
-
-
-def hdi_mapper_wrapper(year):
-    def hdi_mapper(country):
-        try:
-            return hdi.at[country, f'{year}']
-        except:
-            failed_hdi.add(country)
-            return None
-
-    return hdi_mapper
+def class_mapper(value):
+    if value >= 0.5:
+        return 1
+    else:
+        return 0
 
 
-def process(data, year):
+def preprocess(data, year):
+    if year == 2019:
+        data.rename(columns={"OpenSource": "OpenSourceQuality",
+                             "JobSat": "JobSat5",
+                             "CareerSat": "CareerSat5",
+                             "ConvertedComp": "ConvertedSalary"},
+                    inplace=True)
+    elif year == 2018:
+        data.rename(columns={"JobSatisfaction": "JobSat7", "CareerSatisfaction": "CareerSat7"}, inplace=True)
     to_drop_first_filtered = list(set(data.columns).intersection(to_drop_before_start))
     data.drop(to_drop_first_filtered, axis=1, inplace=True)
     # data['gender_M'] = (data['Gender'] == 'Male').astype('int8')
@@ -735,53 +789,76 @@ def process(data, year):
     for index in listvals_filtered:
         data = pd.concat([data, userlist_to_cols(data[index])], axis=1)
 
+    if 'ConvertedSalary' not in data.columns:
+        data[['ConvertedSalary']] = data['Salary'] * data['Currency']
+
     to_drop_filtered = list(set(data.columns).intersection(to_drop))
     data.drop(to_drop_filtered, axis=1, inplace=True)
+    data.rename(
+        columns={"JobSat": "JobSatisfaction", "CareerSat": "CareerSatisfaction",
+                 "JobSat5": "JobSatisfaction", "CareerSat5": "CareerSatisfaction",
+                 "JobSat7": "JobSatisfaction", "CareerSat7": "CareerSatisfaction",
+                 "JobSearchStatus": "JobSeekingStatus", "JobSeek": "JobSeekingStatus",
+                 "EmploymentStatus": "Employment",
+                 },
+        inplace=True)
+
+    data = data[data['JobSatisfaction'].notnull()]
+    data = data[data['CareerSatisfaction'].notnull()]
+    data = data[data['JobSeekingStatus'].notnull()]
+    data = data[data['Employment'].notnull()]
+    data = data[data['Employment'] > 2]
+
     data = pd.get_dummies(data)
     data.fillna(data.mean(), inplace=True)
+    data = pd.DataFrame(MinMaxScaler().fit_transform(data), columns=data.columns)
+    data = convert_to_classification(data)
 
     return data
 
 
-def main():
+def convert_to_classification(data):
+    class_cols = ['JobSeekingStatus', 'CareerSatisfaction', 'JobSatisfaction']
+    # mapped_class_cols = map(lambda x: f'{x}_class', class_cols)
+    # data[mapped_class_cols] = data[class_cols].applymap(class_mapper).astype('int8')
+    for column in class_cols:
+        data[f'{column}_class'] = data[column].map(class_mapper).astype('int8')
+    # pd.Series(list(categories))
+    return data
+
+
+def preprocess_all():
     years = [2017, 2018, 2019]
     for year in years:
         data = pd.read_csv(f'data/{year}.csv')
-        if year == 2019:
-            data.rename(columns={"OpenSource": "OpenSourceQuality"}, inplace=True)
-        elif year == 2018:
-            data.rename(columns={"JobSatisfaction": "JobSat", "CareerSatisfaction": "CareerSat"}, inplace=True)
+
         # asdf = data['Country'].unique()
         uniqueValsOld = {}
         for x in data.columns:
             uniqueValsOld[x] = data[x].unique()
 
-        data = process(data, year)
+        data = preprocess(data, year)
         # for x in data.columns:
         #     col = data[x].unique()
 
-        uniqueVals = {}
-        for x in data.columns:
-            uniqueVals[x] = data[x].unique()
-            # print(col)
-
-        diff = {}
-        for col in uniqueValsOld:
-            oldLen = len(uniqueValsOld.get(col))
-            newLen = 0
-            if uniqueVals.get(col) is not None:
-                newLen = len(uniqueVals.get(col))
-            if oldLen != newLen and newLen != 0:
-                diff[col] = (oldLen, newLen)
-
-        types = data.select_dtypes(exclude=["float64", "int8"]).dtypes
-        data.rename(columns={"JobSat": "JobSatisfaction", "CareerSat": "CareerSatisfaction"}, inplace=True)
-        columns = data.columns
-        min_max_scaler = MinMaxScaler()
-        data = pd.DataFrame(min_max_scaler.fit_transform(data), columns=columns)
+        # uniqueVals = {}
+        # for x in data.columns:
+        #     uniqueVals[x] = data[x].unique()
+        #     # print(col)
+        #
+        # diff = {}
+        # for col in uniqueValsOld:
+        #     oldLen = len(uniqueValsOld.get(col))
+        #     newLen = 0
+        #     if uniqueVals.get(col) is not None:
+        #         newLen = len(uniqueVals.get(col))
+        #     if oldLen != newLen and newLen != 0:
+        #         diff[col] = (oldLen, newLen)
+        #
+        # types = data.select_dtypes(exclude=["float64", "int8"]).dtypes
         data.to_csv(f"data/{year}_pandas.csv", index=False)
     print()
 
 
 if __name__ == '__main__':
-    main()
+    preprocess_all()
