@@ -42,6 +42,7 @@ def get_estimator():
 
 descriptive_param = 'JobSeekingStatus_class'
 
+
 def fit():
     years = [2017, 2018, 2019]
     for year in years:

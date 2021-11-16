@@ -505,7 +505,8 @@ to_drop_before_start = [
     'UpdateCV',
     'WelcomeChange',
     'YearsCodedJobPast',
-    'WorkStart'  # todo fix this attribute
+    'WorkStart'  # todo fix this attribute,
+    'HoursPerWeek'
 ]
 
 to_drop = listvals + [
