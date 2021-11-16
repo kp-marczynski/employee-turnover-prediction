@@ -30,10 +30,11 @@ estimator_params = {
     'reg_lambda': 1,  # 100
 }
 
-is_classifier = True
+
+# is_classifier = True
 
 
-def get_estimator():
+def get_estimator(is_classifier):
     if is_classifier:
         return xgb.XGBClassifier(**estimator_params, eval_metric='auc')
     else:
@@ -42,45 +43,61 @@ def get_estimator():
 
 descriptive_param = 'JobSeekingStatus_class'
 
+regression_dependent_variables = ['JobSeekingStatus', 'JobSatisfaction']
+class_dependent_variables = ['JobSeekingStatus_class', 'JobSatisfaction_class']
+
+environment_constants = []
+dev_profile_features = []
+company_features = []
+person_features = []
+
 
 def fit():
     years = [2017, 2018, 2019]
     for year in years:
-        data = pd.read_csv(f'data/{year}_pandas.csv')
+        for var in regression_dependent_variables:
+            fit_model(year, var, False)
+        for var in class_dependent_variables:
+            fit_model(year, var, True)
 
-        # if is_classifier:
-        #     data = convert_to_classification(data)
 
-        estimator = get_estimator()
+def fit_model(year, dependent_variable, is_classifier):
+    print(f'Fitting for {dependent_variable} over year {year}')
+    data = pd.read_csv(f'data/{year}_pandas.csv')
 
-        X = data.drop([descriptive_param, 'JobSeekingStatus'], axis=1)
-        y = data[descriptive_param]
-        # search_params(estimator, X, y)
+    # if is_classifier:
+    #     data = convert_to_classification(data)
 
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, stratify=y)
-        # ens_model = AdaBoostRegressor(base_estimator=estimator)
-        estimator.fit(X_train, y_train)
+    estimator = get_estimator(is_classifier)
 
-        selection = SelectFromModel(estimator, threshold=.015, prefit=True)
-        select_X_train = selection.transform(X_train)
-        print(f'Selected {select_X_train.shape[1]} features')
-        # train model
-        selection_model = get_estimator()
-        selection_model.fit(select_X_train, y_train)
-        # eval model
-        select_X_test = selection.transform(X_test)
+    X = data.drop(regression_dependent_variables + class_dependent_variables, axis=1)
+    y = data[descriptive_param]
+    # search_params(estimator, X, y)
 
-        preds = selection_model.predict(select_X_test)
-        if is_classifier:
-            print("Accuracy: %.2f" % accuracy_score(y_test, preds))
-        else:
-            print("RMSE: %.2f" % math.sqrt(abs(mean_squared_error(y_test, preds))))
-            # print("RMSLE: %.2f" % math.sqrt(abs(mean_squared_log_error(y_test, preds))))
-            print("R2: %.2f" % r2_score(y_test, preds))
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, stratify=y)
+    # ens_model = AdaBoostRegressor(base_estimator=estimator)
+    estimator.fit(X_train, y_train)
 
-        xgb.plot_importance(estimator, max_num_features=10)
-        plt.tight_layout()
-        plt.savefig(f'data/feat_importance_{year}.png')
+    selection = SelectFromModel(estimator, threshold=.015, prefit=True)
+    select_X_train = selection.transform(X_train)
+    print(f'Selected {select_X_train.shape[1]} features')
+    # train model
+    selection_model = get_estimator(is_classifier)
+    selection_model.fit(select_X_train, y_train)
+    # eval model
+    select_X_test = selection.transform(X_test)
+
+    preds = selection_model.predict(select_X_test)
+    if is_classifier:
+        print("Accuracy: %.2f" % accuracy_score(y_test, preds))
+    else:
+        print("RMSE: %.2f" % math.sqrt(abs(mean_squared_error(y_test, preds))))
+        # print("RMSLE: %.2f" % math.sqrt(abs(mean_squared_log_error(y_test, preds))))
+        print("R2: %.2f" % r2_score(y_test, preds))
+
+    xgb.plot_importance(estimator, max_num_features=10)
+    plt.tight_layout()
+    plt.savefig(f'data/feat_importance_{year}_{dependent_variable}.png')
 
 
 def search_params(estimator, x_data, y_data):
