@@ -4,17 +4,27 @@ CareerSatisfaction,Career satisfaction rating
 JobSatisfaction,Job satisfaction rating
 JobSeekingStatus,Which of the following best describes your current job-seeking status?
 
-Professional,Which of the following best describes you?
-ProgramHobby,Do you program as a hobby or contribute to open source projects?
-Country,In which country do you currently live?
-University,"Are you currently enrolled in a formal, degree-granting college or university program?"
-EmploymentStatus,Which of the following best describes your current employment status?
-FormalEducation,Which of the following best describes the highest level of formal education that you've completed?
-MajorUndergrad,Which of the following best describes your main field of study (aka 'major') in college or university/for your undergraduate studies?
-YearsProgram,How long has it been since you first learned how to program?
-YearsCodedJob,For how many years have you coded as part of your job?
-YearsCodedJobPast,For how many years did you code as part of your job?
+
 DeveloperType,Which of the following best describe you?
+YearsCodedJob,For how many years have you coded as part of your job?
+Country,In which country do you currently live?
+FormalEducation,Which of the following best describes the highest level of formal education that you've completed?
+EmploymentStatus,Which of the following best describes your current employment status?
+MajorUndergrad,Which of the following best describes your main field of study (aka 'major') in college or university/for your undergraduate studies?
+HaveWorkedLanguage,"Which of the following languages have you done extensive development work in over the past year, and which do you want to work in over the next year?"
+Gender,Which of the following do you currently identify as?
+CompanySize,"In terms of the number of employees, how large is the company or organization you work for?"
+
+HighestEducationParents,What is the highest level of education received by either of your parents?
+
+HaveWorkedFramework,"Which of the following libraries, frameworks, and tools have you done extensive development work in over the past year, and which do you want to work in over the next year?"
+HaveWorkedDatabase,"Which of the following database technologies have you done extensive development work in over the past year, and which do you want to work in over the next year?"
+HaveWorkedPlatform,"Which of the following platforms have you done extensive development work for over the past year, and which do you want to work on over the next year?"
+
+
+ProgramHobby,Do you program as a hobby or contribute to open source projects?
+University,"Are you currently enrolled in a formal, degree-granting college or university program?"
+YearsProgram,How long has it been since you first learned how to program?
 WebDeveloperType,Which of the following best describes you as a Web developer?
 MobileDeveloperType,For which of the following platforms do you develop mobile applications?
 NonDeveloperType,Which of the following describe you?
@@ -50,7 +60,7 @@ Overpaid,"Compared to your estimate of your own market value, do you think you a
 EducationImportant,"Overall, how important has your formal schooling and education been to your career success?"
 EducationTypes,"Outside of your formal schooling and education, which of the following have you done?"
 SelfTaughtTypes,"You indicated that you had taught yourself a programming technology without taking a course. What resources did you use to do that? If you've done it more than once, please think about the most recent time you've done so."
-CousinEducation,"Let's pretend you have a distant cousin. They are 24 years old, have a college degree in a field not related to computer programming, and have been working a non-coding job for the last two years. They want your advice on how to switch to a career as a software developer. Which of the following options would you most strongly recommend to your cousin?
+CousinEducation,"Let's pretend you have a distant cousin. They are 24 years old, have a college degree in a field not related to computer programming, and have been working a non-coding job for the last two years. They want your advice on how to switch to a career as a software developer. Which of the following options would you most strongly recommend to your cousin?"
 Methodology,Which of the following methodologies do you have experience working in?
 VersionControl,"What version control system do you use? If you use several, please choose the one you use most often."
 CheckInCode,"Over the last year, how often have you checked-in or committed code?"
@@ -61,14 +71,8 @@ EnjoyDebugging,I enjoy debugging code
 InTheZone,I often get “into the zone” when I'm coding
 DifficultCommunication,I have difficulty communicating my ideas to my peers
 CollaborateRemote,It's harder to collaborate with remote peers than those on site
-HaveWorkedLanguage,"Which of the following languages have you done extensive development work in over the past year, and which do you want to work in over the next year?"
-HaveWorkedFramework,"Which of the following libraries, frameworks, and tools have you done extensive development work in over the past year, and which do you want to work in over the next year?"
-HaveWorkedDatabase,"Which of the following database technologies have you done extensive development work in over the past year, and which do you want to work in over the next year?"
-HaveWorkedPlatform,"Which of the following platforms have you done extensive development work for over the past year, and which do you want to work on over the next year?"
 AuditoryEnvironment,"Suppose you're about to start a few hours of coding and have complete control over your auditory environment (music, background noise, etc.). What would you do?"
 MetricAssess,"Congratulations! The bosses at your new employer, E Corp, are allowing you to choose which metrics will be used to assess your individual performance in your role as a senior developer. Which metrics do you suggest to the E bosses?"
-Gender,Which of the following do you currently identify as?
-HighestEducationParents,What is the highest level of education received by either of your parents?
 StackOverflowFoundAnswer,"Over the last three months, approximately how often have you done each of the following on Stack Overflow? Found an answer that solved my coding problem"
 StackOverflowCopiedCode,"Over the last three months, approximately how often have you done each of the following on Stack Overflow? Copied a code example and pasted it into my codebase"
 StackOverflowAnswer,"Over the last three months, approximately how often have you done each of the following on Stack Overflow? Written a new answer to someone else's question"
@@ -80,7 +84,6 @@ StackOverflowWhatDo,I don't know what I'd do without Stack Overflow
 
 
 HomeRemote,How often do you work from home or remotely?
-CompanySize,"In terms of the number of employees, how large is the company or organization you work for?"
 CompanyType,Which of the following best describes the type of company or organization you work for?
 AssessJobIndustry,"When you're assessing potential jobs to apply to, how important are each of the following to you? The industry that I'd be working in"
 AssessJobRole,"When you're assessing potential jobs to apply to, how important are each of the following to you? The specific role or job title I'd be applying for"
@@ -159,3 +162,5 @@ QuestionsConfusing,The questions were confusing
 InterestedAnswers,I'm interested in learning how other developers answered
 Salary,"What is your current annual base salary, before taxes, and excluding bonuses, grants, or other compensation?"
 ExpectedSalary,"You said before that you are currently learning how to program. When you have completed your studies, what annual salary do you expect to earn in your first job after graduation?"
+YearsCodedJobPast,For how many years did you code as part of your job?
+Professional,Which of the following best describes you?

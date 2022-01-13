@@ -194,6 +194,9 @@ agree_keys = [
     'AgreeDisagree1',
     'AgreeDisagree2',
     'AgreeDisagree3',
+    "AgreeDisagree1_kinshipToDevs",
+    "AgreeDisagree2_competingPeers",
+    "AgreeDisagree3_worseThanPeers",
     'AnnoyingUI',
     'BoringDetails',
     'BuildingThings',
@@ -512,7 +515,9 @@ to_drop_before_start = [
 to_drop = listvals + [
     # 'Gender',
     'Salary',
-    'Currency'
+    'Currency',
+    'Country',
+    'CareerSatisfaction'
 ]
 
 replacers = [
@@ -764,14 +769,53 @@ def class_mapper(value):
 
 
 def preprocess(data, year):
+    data.rename(columns={
+        "MajorUndergrad": "UndergradMajor",
+        "ConvertedComp": "ConvertedSalary",
+        "JobSearchStatus": "JobSeekingStatus", "JobSeek": "JobSeekingStatus",
+        "EmploymentStatus": "Employment",
+        "OrgSize": "CompanySize",
+        "YearsCodePro": "YearsCodingProf", "YearsCodedJob": "YearsCodingProf",
+        "EdLevel": "FormalEducation",
+        "HaveWorkedLanguage": "LanguageWorkedWith",
+        "HaveWorkedFramework": "FrameworkWorkedWith",
+        "HaveWorkedDatabase": "DatabaseWorkedWith",
+        "HaveWorkedPlatform": "PlatformWorkedWith",
+        "DeveloperType": "DevType"
+    }, inplace=True)
     if year == 2019:
         data.rename(columns={"OpenSource": "OpenSourceQuality",
                              "JobSat": "JobSat5",
                              "CareerSat": "CareerSat5",
-                             "ConvertedComp": "ConvertedSalary"},
+                             },
                     inplace=True)
     elif year == 2018:
-        data.rename(columns={"JobSatisfaction": "JobSat7", "CareerSatisfaction": "CareerSat7"}, inplace=True)
+        data.rename(columns={"JobSatisfaction": "JobSat7", "CareerSatisfaction": "CareerSat7",
+                             "AgreeDisagree1": "AgreeDisagree1_kinshipToDevs",
+                             "AgreeDisagree2": "AgreeDisagree2_competingPeers",
+                             "AgreeDisagree3": "AgreeDisagree3_worseThanPeers",
+                             "AssessJob1": "AssesJob1_industry",
+                             "AssessJob2": "AssesJob2_companyFinancialStatus",
+                             "AssessJob3": "AssesJob3_department",
+                             "AssessJob4": "AssesJob4_languages",
+                             "AssessJob5": "AssesJob5_compensation",
+                             "AssessJob6": "AssesJob6_companyCulture",
+                             "AssessJob7": "AssesJob7_remoteJob",
+                             "AssessJob8": "AssesJob8_development",
+                             "AssessJob9": "AssesJob1_diversity",
+                             "AssessJob10": "AssesJob10_projectImpact",
+                             "AssessBenefits1": "AssessBenefits1_salary",
+                             "AssessBenefits2": "AssessBenefits2_stockOrShares",
+                             "AssessBenefits3": "AssessBenefits3_healthInsurance",
+                             "AssessBenefits4": "AssessBenefits4_parentalLeave",
+                             "AssessBenefits5": "AssessBenefits5_multisport",
+                             "AssessBenefits6": "AssessBenefits6_retirementPlan",
+                             "AssessBenefits7": "AssessBenefits7_mealsAndSnacks",
+                             "AssessBenefits8": "AssessBenefits8_computerAllowance",
+                             "AssessBenefits9": "AssessBenefits9_childcare",
+                             "AssessBenefits10": "AssessBenefits10_transport",
+                             "AssessBenefits11": "AssessBenefits11_eduBudget",
+                             }, inplace=True)
     to_drop_first_filtered = list(set(data.columns).intersection(to_drop_before_start))
     data.drop(to_drop_first_filtered, axis=1, inplace=True)
     # data['gender_M'] = (data['Gender'] == 'Male').astype('int8')
@@ -784,28 +828,27 @@ def preprocess(data, year):
     number_cols = list(set(data.columns).intersection(number_parses))
     data[number_cols] = data[number_cols].applymap(get_first_number).astype('float')
 
-    data[['Country']] = data[['Country']].applymap(hdi_mapper_wrapper(year)).astype('float')
+    data[['Country_HDI']] = data[['Country']].applymap(hdi_mapper_wrapper(year)).astype('float')
 
     listvals_filtered = list(set(data.columns).intersection(listvals))
     for index in listvals_filtered:
         data = pd.concat([data, userlist_to_cols(data[index])], axis=1)
 
     if 'ConvertedSalary' not in data.columns:
-        data[['ConvertedSalary']] = data['Salary'] * data['Currency']
+        data['ConvertedSalary'] = data['Salary'] * data['Currency']
 
-    to_drop_filtered = list(set(data.columns).intersection(to_drop))
-    data.drop(to_drop_filtered, axis=1, inplace=True)
     data.rename(
         columns={"JobSat": "JobSatisfaction", "CareerSat": "CareerSatisfaction",
                  "JobSat5": "JobSatisfaction", "CareerSat5": "CareerSatisfaction",
                  "JobSat7": "JobSatisfaction", "CareerSat7": "CareerSatisfaction",
-                 "JobSearchStatus": "JobSeekingStatus", "JobSeek": "JobSeekingStatus",
-                 "EmploymentStatus": "Employment",
                  },
         inplace=True)
 
+    to_drop_filtered = list(set(data.columns).intersection(to_drop))
+    data.drop(to_drop_filtered, axis=1, inplace=True)
+
     data = data[data['JobSatisfaction'].notnull()]
-    data = data[data['CareerSatisfaction'].notnull()]
+    # data = data[data['CareerSatisfaction'].notnull()]
     data = data[data['JobSeekingStatus'].notnull()]
     data = data[data['Employment'].notnull()]
     data = data[data['Employment'] > 2]
@@ -819,7 +862,7 @@ def preprocess(data, year):
 
 
 def convert_to_classification(data):
-    class_cols = ['JobSeekingStatus', 'CareerSatisfaction', 'JobSatisfaction']
+    class_cols = ['JobSeekingStatus', 'JobSatisfaction']
     # mapped_class_cols = map(lambda x: f'{x}_class', class_cols)
     # data[mapped_class_cols] = data[class_cols].applymap(class_mapper).astype('int8')
     for column in class_cols:
