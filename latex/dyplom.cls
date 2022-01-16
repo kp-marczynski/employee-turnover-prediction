@@ -194,6 +194,7 @@ linenos
 
 \newcommand{\source}[1]{{\footnotesize Źródło: #1}}
 \newcommand{\ownwork}{opracowanie własne}
+\newcommand{\workbasedon}[1]{\ownwork~na podstawie: #1}
 
 \newcommand{\inlinetodo}[1]{
 \textcolor{red}{todo: (#1)}
