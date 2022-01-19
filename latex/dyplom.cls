@@ -119,6 +119,7 @@ linenos
 \setlength{\skip\footins}{1cm}
 
 \setlist[itemize]{noitemsep, topsep=0pt, partopsep=0pt}
+\setlist[enumerate]{noitemsep, topsep=0pt, partopsep=0pt}
 \renewcommand{\labelitemi}{$\bullet$}
 \renewcommand{\labelitemii}{$\circ$}
 \renewcommand{\labelitemiii}{$\circ$}
