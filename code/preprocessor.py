@@ -6,7 +6,6 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 
-
 # number = re.compile('[\d,]+')
 hdi = pd.read_csv(f'HDI.csv', index_col="Country")
 
@@ -32,6 +31,7 @@ def usd_price_mapper(currency):
     except:
         # failed_hdi.add(country)
         return None
+
 
 def get_first_number(val):
     val = str(val).lower()
@@ -508,8 +508,22 @@ to_drop_before_start = [
     'UpdateCV',
     'WelcomeChange',
     'YearsCodedJobPast',
-    'WorkStart'  # todo fix this attribute,
-    'HoursPerWeek'
+    'WorkStart',  # todo fix this attribute,
+    'HoursPerWeek',
+    'RightWrongWay',
+    'UnderstandComputers',
+    'JobContactPriorities1',
+    'JobContactPriorities2',
+    'JobContactPriorities3',
+    'JobContactPriorities4',
+    'JobContactPriorities5',
+    'JobEmailPriorities1',
+    'JobEmailPriorities2',
+    'JobEmailPriorities3',
+    'JobEmailPriorities4',
+    'JobEmailPriorities5',
+    'JobEmailPriorities6',
+    'JobEmailPriorities7',
 ]
 
 to_drop = listvals + [
