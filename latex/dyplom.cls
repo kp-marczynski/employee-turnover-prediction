@@ -250,12 +250,13 @@ linenos
 \newcommand{\bargraph}[6][\ownwork]{
 \begin{minipage}{\textwidth}
     \begin{figure}[H]
-        \raggedleft\begin{tikzpicture}
+        \centering\begin{tikzpicture}
 \begin{axis}[
 height=#6,
-width=10cm,
+%width=10cm,
 xbar, xmin=0,
 axis y line=left,
+%yticklabel style={text width=5cm},
 axis line style={-},
 axis x line=bottom,
 % xlabel={#2},
