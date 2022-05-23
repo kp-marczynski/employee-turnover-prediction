@@ -244,5 +244,42 @@ linenos
 }
 
 \usepackage[bottom]{footmisc}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.8}
+\newcommand{\bargraph}[6][\ownwork]{
+\begin{minipage}{\textwidth}
+    \begin{figure}[H]
+        \raggedleft\begin{tikzpicture}
+\begin{axis}[
+height=#6,
+width=10cm,
+xbar, xmin=0,
+axis y line=left,
+axis line style={-},
+axis x line=bottom,
+% xlabel={#2},
+symbolic y coords={#2},
+% ytick=data,
+% nodes near coords,
+nodes near coords={
+    \pgfmathtruncatemacro\iszero{\originalvalue==0}
+    \ifnum\iszero=0
+        \pgfmathprintnumber{\originalvalue}$\,\%$
+    \fi},
+    visualization depends on={x \as \originalvalue},
+    nodes near coords align=horizontal,
+    xticklabel=\pgfmathprintnumber{\tick}\,$\%$,
+ytick=data,
+  enlarge y limits=0.1,
+]
+\addplot coordinates {#3};
+\end{axis}
+\end{tikzpicture}
+        \caption{#4}\label{fig:#5}
+        \raggedright\source{#1}
+    \end{figure}
+\end{minipage}
+}
 
 \endinput % dla porządku
