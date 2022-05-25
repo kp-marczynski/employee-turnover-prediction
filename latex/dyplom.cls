@@ -272,6 +272,7 @@ nodes near coords={
     nodes near coords align=horizontal,
     xticklabel=\pgfmathprintnumber{\tick}\,$\%$,
 ytick=data,
+%xtick={10,20,30,40,50,60,70},
   enlarge y limits=0.1,
 ]
 \addplot coordinates {#3};
