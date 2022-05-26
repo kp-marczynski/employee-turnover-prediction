@@ -48,6 +48,8 @@
 \RequirePackage{scrextend}
 \RequirePackage{amsmath,amsfonts,amssymb,amsthm}
 \RequirePackage{enumerate}
+\RequirePackage{xurl}
+%\PassOptionsToPackage{hyphens}{url}
 \RequirePackage[hidelinks]{hyperref}
 \RequirePackage{afterpage}
 \RequirePackage{multirow}
@@ -101,7 +103,6 @@ linenos
 \endgroup}}
 \makeatother
 
-\RequirePackage{url}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \pagestyle{outer} % numery stron po lewej i prawej stronie
 \RequirePackage[font=normalsize,justification=raggedright,singlelinecheck=false]{caption}
