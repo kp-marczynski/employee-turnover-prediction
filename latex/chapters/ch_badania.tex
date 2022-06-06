@@ -35,13 +35,29 @@ Tak wysoka liczba odpowiedzi i różnorodność respondentów może pozwolić na
 
 Do analizy danych zostaną wykorzystane metody uczenia maszynowego, a w szczególności regresja z wykorzystaniem klasyfikatora XGBoost opartego na algorytmie wzmocnienia gradientowego.
 Punnoose i Ajit \cite{punnoose-2016} przeprowadzili badania związane ze skutecznością przewidywania retencji pracowników w firmie z wykorzystaniem uczenia maszynowego.
-Klasyfikator XGBoost osiągnął aż 86\% skuteczności klasyfikacji co stanowiło ponad 50\% lepszy wynik niż pozostałe badane metody klasyfikacji tradycyjnie używane podczas badania problemu fluktuacji i retencji pracowników.
+Klasyfikator XGBoost osiągnął aż 86\% skuteczności klasyfikacji co stanowiło ponad 50\% lepszy wynik niż pozostałe testowane metody klasyfikacji tradycyjnie używane podczas badania problemu fluktuacji i retencji pracowników.
 
-\section{Wybór źródła danych: Prezentacja ankiety StackOverflow}\label{sec:analysis:data-source-selection}
-\todo{przedstawienie źródła danych, charakterystyka respondentów}
-\section{Wstępna selekcja cech}\label{sec:analysis:feature-pre-selection}
-\todo{z wyszczególnieniem cech stałych/środowiskowych (kraj, typ dewelopera, typ firmy, rozmiar firmy) i~zmiennych (wynagrodzenie, benefity, metodologie, cechy profilu kandydata)}
+%\section{Wybór źródła danych: Prezentacja ankiety StackOverflow}\label{sec:analysis:data-source-selection}
+%\todo{przedstawienie źródła danych, charakterystyka respondentów}
+%\section{Wstępna selekcja cech}\label{sec:analysis:feature-pre-selection}
+%\todo{z wyszczególnieniem cech stałych/środowiskowych (kraj, typ dewelopera, typ firmy, rozmiar firmy) i~zmiennych (wynagrodzenie, benefity, metodologie, cechy profilu kandydata)}
 \section{Wstępne przetworzenie danych}\label{sec:analysis:preprocessing}
+Do przeprowadzenia badania wybrano ankiety deweloperskie StackOverflow z lat 2017, 2018, 2019 ze względu na to, że są to 3 najnowsze edycje ankiety w których zadano pytania o następujące 2 aspekty:
+\begin{enumerate}
+    \item ocena zadowolenia z obecnie wykonywanej pracy w 10 stopniowej skali
+    \item status poszukiwania pracy w 3 stopniowej skali
+    \end{enumerate}
+
+W celu przygotowania danych do badania konieczne było oczyszczenie i znormalizowanie danych. Proces ten został przeprowadzony w następujący sposób:
+\begin{enumerate}
+    \item Usunięto pytania, które nie mają istotnego wpływu na badany problem (na przykład pytanie dotyczące preferencji związanej z wymawianiem słowa "GIF").
+    \item Uwspólniono nazwy etykiet dotyczących tych samych pytań w kolejnych edycjach ankiety.
+    \item Usunięto odpowiedzi respondentów, którzy nie mają doświadczenia zawodowego lub nie udzielili odpowiedzi na pytania dotyczące zadowolenia z pracy i statusu poszukiwania pracy.
+    \item Dla pytań z odpowiedzami w skali Likerta (typu od "bardzo się nie zgadzam" do "bardzo się zgadzam") zastosowano przekształcenie na skalę liczbową.
+    \item Dla pytań z odpowiedziami reprezentowanymi przez kategorie, które można przedstawić w skali (na przykład edukacja) zastosowano przekształcenie na skalę liczbową.
+    \item Dla pytań z odpowiedziami reprezentowanymi przez kategorię, których nie można przedstawić w skali (na przykład technologie) potraktowano każdą kategorię jak osobne pytanie i zastosowano kodowanie binarne (0 - niewystępuje i 1 - występuje).
+    \item
+    \end{enumerate}
 \todo{kodowanie liczbowe, oczyszczanie}
 \todo{opcjonalnie wzbogacenie o~wybrane indeksy rozwoju społecznego}
 \section{Selekcja cech z~wykorzystaniem algorytmu XGB}\label{sec:analysis:feature-selection-xgb}
