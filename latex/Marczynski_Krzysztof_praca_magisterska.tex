@@ -16,7 +16,8 @@
         ,robak-2013,sowinska-2014,buzowska-2017,juchnowicz-2010,shultz-2002,koziol-2011,
         ,mockus-2009,hannon-2008,sharp-2014,donadelli-2015,rigby-2016,storey-2021,
         ,johnson-2021,bass-2018,graziotin-2018,graziotin-2017,aasheim-2009,rosinski-2012,
-        ,brylka-2019,james-2012,von-neumann-2020,web-2.0-2007,rangarajan-2014}
+        ,brylka-2019,james-2012,von-neumann-2020,web-2.0-2007,rangarajan-2014,
+        ,martin-2014,punnoose-2016}
 \end{category}
 \usepackage{bibentry}
 \usepackage{hyperref}
@@ -28,7 +29,7 @@
 %\usepackage[polish]{babel}
 %\usepackage[fixlanguage]{babelbib}
 
-% Dane o pracy
+% Dane o~pracy
 \author{Krzysztof Marczyński}
 \title{Analiza~czynników~wpływających na~fluktuację~pracowników~IT z~wykorzystaniem~uczenia~maszynowego}
 \titlen{Analysis of factors related to employee rotation in IT enterprises}
@@ -38,21 +39,22 @@
 \wydzial{Wydział Zarządzania}
 \kierunek{Zarządzanie}
 \album{181154}
-\krotkiestreszczenie{W pracy przedstawiono analizę czynników związanych z fluktuacją pracowników w przedsiębiorstwach IT}
+\krotkiestreszczenie{W pracy przedstawiono analizę czynników związanych z~fluktuacją pracowników w~przedsiębiorstwach IT}
 \slowakluczowe{fluktuacja pracowników, selekcja pracowników}
 
 \linespread{1.5}
 \nobibliography*
 
 %todo na koniec sprawdzić czy nie zostały sieroty/wdowy na końcach stron/wierszy
-%todo na koniec zastąpić regexem: " ([a-z]) " na " $1~" i~" - " na "~- "
+%todo na koniec zastąpić regexem: " ([a-z]) " na " $1~" i~"~- " na "~- "
 \begin{document}
 %    \floatsetup[listing]{capposition=top}
     \sloppy %for words not to leak from right side of container
 %    \input{chapters/ch_changelog} %todo usunąć przed oddaniem
 
     \maketitle
-    \pagenumbering{gobble}
+    \pagenumbering{arabic}
+%    \pagenumbering{gobble}
     \input{chapters/ch_streszczenie}
     \cleardoublepage
 
@@ -60,7 +62,7 @@
     \tableofcontents
     \cleardoublepage
 
-    \pagenumbering{arabic}
+%    \pagenumbering{arabic}
     \setlength{\parskip}{10pt}%
     \input{chapters/ch_wstep}
 
