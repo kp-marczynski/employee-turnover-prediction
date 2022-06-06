@@ -5,16 +5,16 @@ Biorąc pod uwagę rosnące zapotrzebowanie na usługi informatyczne, deficyt wy
 Badania będące przedmiotem niniejszej pracy mają na celu analizę cech skorelowanych z zadowoleniem pracowników branży IT i z ich chęcią do zmiany pracy.
 Badane cechy zostaną podzielone na 4 kategorie:
 \begin{enumerate}
-    \item profil firmy (rozmiar firmy)
-    \item organizacja firmy (rozmiar zespołów, metodyka zarządzania projektem)
-    \item profil pracownika (wiek, płeć, staż pracy, wykształcenie)
-    \item preferencje pracownika (technologia, benefity pracownicze)
+    \item profil firmy (rozmiar firmy),
+    \item organizacja firmy (rozmiar zespołów, metodyka zarządzania projektem),
+    \item profil pracownika (wiek, płeć, staż pracy, wykształcenie),
+    \item preferencje pracownika (technologia, benefity pracownicze).
     \end{enumerate}
 
 Powyższe kategorie dzielą cechy firmy i pracownika na 2 zasadnicze typy:
 \begin{enumerate}
-    \item cechy profilowe - profil firmy i profil pracownika
-    \item cechy zmienne - organizacja firmy i preferencje pracownika
+    \item cechy profilowe - profil firmy i profil pracownika,
+    \item cechy zmienne - organizacja firmy i preferencje pracownika.
     \end{enumerate}
 
 Cechy profilowe mogą być uznawane za niezmienne w kontekście prowadzonego badania, gdyż ich zmiana może całkowicie zmienić istotne cechy podmiotu
@@ -33,19 +33,16 @@ Odpowiedzi w ankiecie udzielali specjaliści z całego świata reprezentując r�
 Tak wysoka liczba odpowiedzi i różnorodność respondentów może pozwolić na przeprowadzenie badań ilościowych i umożliwić próbę generalizacji wniosków na całą branżę IT.
 
 
-Do analizy danych zostaną wykorzystane metody uczenia maszynowego, a w szczególności regresja z wykorzystaniem klasyfikatora XGBoost opartego na algorytmie wzmocnienia gradientowego.
+Do analizy danych zostaną wykorzystane metody uczenia maszynowego, a w szczególności regresja z wykorzystaniem regresora XGBoost opartego na algorytmie wzmocnienia gradientowego.
+Zdecydowano się na modelowanie problemu jako regresji, a nie klasyfikacji, gdyż zadowolenie pracowników oraz chęć zmiany pracy można przedstawić na skali liczbowej
 Punnoose i Ajit \cite{punnoose-2016} przeprowadzili badania związane ze skutecznością przewidywania retencji pracowników w firmie z wykorzystaniem uczenia maszynowego.
 Klasyfikator XGBoost osiągnął aż 86\% skuteczności klasyfikacji co stanowiło ponad 50\% lepszy wynik niż pozostałe testowane metody klasyfikacji tradycyjnie używane podczas badania problemu fluktuacji i retencji pracowników.
 
-%\section{Wybór źródła danych: Prezentacja ankiety StackOverflow}\label{sec:analysis:data-source-selection}
-%\todo{przedstawienie źródła danych, charakterystyka respondentów}
-%\section{Wstępna selekcja cech}\label{sec:analysis:feature-pre-selection}
-%\todo{z wyszczególnieniem cech stałych/środowiskowych (kraj, typ dewelopera, typ firmy, rozmiar firmy) i~zmiennych (wynagrodzenie, benefity, metodologie, cechy profilu kandydata)}
 \section{Wstępne przetworzenie danych}\label{sec:analysis:preprocessing}
 Do przeprowadzenia badania wybrano ankiety deweloperskie StackOverflow z lat 2017, 2018, 2019 ze względu na to, że są to 3 najnowsze edycje ankiety w których zadano pytania o następujące 2 aspekty:
 \begin{enumerate}
-    \item ocena zadowolenia z obecnie wykonywanej pracy w 10 stopniowej skali
-    \item status poszukiwania pracy w 3 stopniowej skali
+    \item ocena zadowolenia z obecnie wykonywanej pracy w 10 stopniowej skali,
+    \item status poszukiwania pracy w 3 stopniowej skali.
     \end{enumerate}
 
 W celu przygotowania danych do badania konieczne było oczyszczenie i znormalizowanie danych. Proces ten został przeprowadzony w następujący sposób:
@@ -55,14 +52,109 @@ W celu przygotowania danych do badania konieczne było oczyszczenie i znormalizo
     \item Usunięto odpowiedzi respondentów, którzy nie mają doświadczenia zawodowego lub nie udzielili odpowiedzi na pytania dotyczące zadowolenia z pracy i statusu poszukiwania pracy.
     \item Dla pytań z odpowiedzami w skali Likerta (typu od "bardzo się nie zgadzam" do "bardzo się zgadzam") zastosowano przekształcenie na skalę liczbową.
     \item Dla pytań z odpowiedziami reprezentowanymi przez kategorie, które można przedstawić w skali (na przykład edukacja) zastosowano przekształcenie na skalę liczbową.
-    \item Dla pytań z odpowiedziami reprezentowanymi przez kategorię, których nie można przedstawić w skali (na przykład technologie) potraktowano każdą kategorię jak osobne pytanie i zastosowano kodowanie binarne (0 - niewystępuje i 1 - występuje).
-    \item
+    \item Dla pytań wielokrotnego wyboru oraz dla pytań z odpowiedziami reprezentowanymi przez kategorie, których nie można przedstawić w skali (na przykład technologie) potraktowano każdą kategorię jak osobne pytanie i zastosowano kodowanie binarne (0 - niewystępuje i 1 - występuje).
+    \item Kraj pochodzenia respondenta po zastąpieniu kodowaniem binarnym daje w rezultacie macierz rzadką z zaledwie 1 elementem niezerowym. Z tego powodu kraj pochodzenia respondenta zastąpiono wartością wskaźnika rozwoju społecznego HDI (ang. Human Development Index) \cite{hdi} odpowiednią dla danego kraju i roku badania.
+    \item Wynagrodzenie respondentów przeliczono na wartość w dolarach amerykańskich (USD) według kursu z 1 dnia roku w którym przeprowadzono badanie.
+    \item W pytaniach na które respondent nie udzielił odpowiedzi, wartości uzupełniono średnią wartością z pozostałych odpowiedzi, żeby wartości te nie wpływały negatywnie na działanie algorytmu regresji.
+    \item Na koniec wszystkie wartości przeskalowano aby otrzymać wartości z przedziału 0 - 1.
     \end{enumerate}
-\todo{kodowanie liczbowe, oczyszczanie}
-\todo{opcjonalnie wzbogacenie o~wybrane indeksy rozwoju społecznego}
-\section{Selekcja cech z~wykorzystaniem algorytmu XGB}\label{sec:analysis:feature-selection-xgb}
-\todo{budowa modelu uczenia maszynowego w~oparciu o~cechy istotnie wpływające na predykcję}
-\todo{\url{https://medium.com/@s.pranav.harathi/stack-overflow-survey-analysis-ed45127691b}}
+
+\section{Selekcja cech z~wykorzystaniem uczenia maszynowego}\label{sec:analysis:feature-selection-xgb}
+
+Do trenowania modelu uczenia maszynowego wykorzystano algorytm przedstawiony na listingu \ref{listing:xgb}.
+
+\begin{listing}[h!]
+    \caption{Algorytm uczenia modelu regresji} \label{listing:xgb}
+    \begin{minted}{python}
+from sklearn.model_selection import train_test_split
+import xgboost as xgb
+import pandas as pd
+import matplotlib.pyplot as plt
+import math
+from sklearn.metrics import mean_squared_error, r2_score, accuracy_score
+from sklearn.feature_selection import SelectFromModel
+
+def get_estimator(is_classifier):
+    if is_classifier:
+        return xgb.XGBClassifier(**estimator_params, eval_metric='auc')
+    else:
+        return xgb.XGBRegressor(**estimator_params, eval_metric='rmsle')
+
+regression_dependent_variables = ['JobSeekingStatus', 'JobSatisfaction']
+class_dependent_variables = ['JobSeekingStatus_class', 'JobSatisfaction_class']
+
+def fit_model(data, dependent_variable, is_classifier, name):
+    print(f'Fitting for {name}')
+    estimator = get_estimator(is_classifier)
+
+    X = data.drop(regression_dependent_variables + class_dependent_variables, axis=1)
+    y = data[dependent_variable]
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, stratify=y)
+    estimator.fit(X_train, y_train)
+
+    selection = SelectFromModel(estimator, threshold=.015, prefit=True)
+    select_X_train = selection.transform(X_train)
+    print(f'Selected {select_X_train.shape[1]} features')
+    # train model
+    selection_model = get_estimator(is_classifier)
+    selection_model.fit(select_X_train, y_train)
+    # eval model
+    select_X_test = selection.transform(X_test)
+
+    preds = selection_model.predict(select_X_test)
+    if is_classifier:
+        print("Accuracy: %.2f" % accuracy_score(y_test, preds))
+    else:
+        print("RMSE: %.2f" % math.sqrt(abs(mean_squared_error(y_test, preds))))
+        print("R2: %.2f" % r2_score(y_test, preds))
+
+    xgb.plot_importance(estimator, max_num_features=10)
+    plt.tight_layout()
+    plt.savefig(f'data/feat_importance_{name}.png')
+    \end{minted}
+    \raggedright\source{\ownwork}
+\end{listing}
+
+Hiperparametry estymatora wyznaczono w oparciu o projekt Harathi \cite{harathi-2018} oraz z wykorzystaniem narzędzia GridSearchCV.
+Dodatkowo skorzystano z metody histogramowej do budowania drzewa decyzyjnego w celu skrócenia czasu uczenia modelu \cite{golarnyk-2021}.
+Wyznaczone parametry przedstawiono na listingu \ref{listing:estimator_params}.
+
+\begin{listing}[h!]
+    \caption{Parametry estymatora} \label{listing:estimator_params}
+    \begin{minted}{python}
+estimator_params = {
+    'tree_method': "hist",
+    'single_precision_histogram': True,
+    'n_jobs': -1,
+    'n_estimators': 1500,
+    'importance_type': 'weight',
+    'use_label_encoder': False,
+    'booster': 'gbtree',
+    'scale_pos_weight': 1,
+    'reg_alpha': 5,
+    'colsample_bytree': .8,
+    'learning_rate': .1,
+    'min_child_weight': 7,
+    'subsample': .5,
+    'max_depth': 6,
+    'gamma': 0.1,
+    'reg_lambda': 1
+}
+    \end{minted}
+    \raggedright\source{\ownwork}
+\end{listing}
+
+Do sprawdzenia skuteczności predykcji modelu regresji wykorzystano następujące miary:
+\begin{itemize}
+    \item Pierwiastek logarytmu błędu średniokwadratowego RMSLE (ang. Root Mean Squared Logarytmic Error) - pokazuje jak bardzo predykcja jest oddalona od oczekiwanej wartości. Im niższa wartość tym lepiej.
+    \item Współczynnik determinacji R2  - pokazuje w jakim stopniu predykcja jest dopasowana do oczekiwanej wartości. Im wyższa wartość tym lepiej.
+    \end{itemize}
+
+Celem modelu jest maksymalizacja R2 i minimalizacja RMSLE. Dobrze dopasowany model powinien mieć wartość R2 na poziomie powyżej 70\% \cite{r2-good-value}, jednak nawet przy niskiej wartości R2 model może być użyteczny jeżeli RMSLE ma wartość poniżej 10\% \cite{r2-vs-rmse}.
+Natomiast przy akceptowalnym poziomie współczynnika R2, model może być użyteczny jeśli RMSLE nie przekracza 50\% \cite{rmse-good-value}.
+Ma to szczególne znaczenie w przypadku badań prowadzonych w obszarze nauk o społeczeństwie, gdyż nawet model nie oferujący bardo wysokiej skuteczności predykcji może pozwolić na pogłębienie wglądu w kwestię zachowań społecznych.
+
 \section{Prezentacja wyników}\label{sec:analysis:important-features}
 \todo{}
 \section{Wnioski i~analiza możliwości praktycznego zastosowania zbudowanego modelu predykcji}\label{sec:analysis:model-fitness}
