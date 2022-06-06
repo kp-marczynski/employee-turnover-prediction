@@ -1,8 +1,41 @@
 % !TeX spellcheck = pl_PL
 \chapter{Optymalizacja procesu rekrutacji w~branży IT z~wykorzystaniem uczenia maszynowego}\label{ch:analysis}
 \section{Metody badawcze}\label{sec:analysis-method}
-\todo{co, kogo i~dlaczego}
-\todo{uzasadnienie wykorzystania uczenia maszynowego do analizy danych}
+Biorąc pod uwagę rosnące zapotrzebowanie na usługi informatyczne, deficyt wykwalifikowanych pracowników \cite{daxx-2021} oraz wysoki koszt rekrutacji nowych pracowników \cite{hairing-dev-2021} istotne jest poszukiwanie sposobów na zwiększenie retencji pracowników IT.
+Badania będące przedmiotem niniejszej pracy mają na celu analizę cech skorelowanych z zadowoleniem pracowników branży IT i z ich chęcią do zmiany pracy.
+Badane cechy zostaną podzielone na 4 kategorie:
+\begin{enumerate}
+    \item profil firmy (rozmiar firmy)
+    \item organizacja firmy (rozmiar zespołów, metodyka zarządzania projektem)
+    \item profil pracownika (wiek, płeć, staż pracy, wykształcenie)
+    \item preferencje pracownika (technologia, benefity pracownicze)
+    \end{enumerate}
+
+Powyższe kategorie dzielą cechy firmy i pracownika na 2 zasadnicze typy:
+\begin{enumerate}
+    \item cechy profilowe - profil firmy i profil pracownika
+    \item cechy zmienne - organizacja firmy i preferencje pracownika
+    \end{enumerate}
+
+Cechy profilowe mogą być uznawane za niezmienne w kontekście prowadzonego badania, gdyż ich zmiana może całkowicie zmienić istotne cechy podmiotu
+(na przykład w przypadku liczby pracowników zmiana może dotyczyć przekształcenia małej firmy w międzynarodową korporację, a w przypadku wieku pracownika zmiany z młodej osoby w osobę w wieku przedemerytalnym - w obu przypadkach oczekiwania firmy wobec pracowników i vice versa będą inne).
+Natomiast cechy zmienne mogą być zmieniane tak aby dostosować je do bieżących potrzeb.
+
+Celem badania jest określenie czy i jeśli tak to jakie cechy profilu firmy i pracownika mogą mieć istotny wpływ na zadowolenie pracownika
+oraz czy można wyszczególnić cechy organizacyjne firmy, których modyfikacja mogłaby pozwolić na zwiększenie zadowolenia pracowników.
+
+
+Badania zostaną przeprowadzone w oparciu o ankietę developerską StackOverflow \cite{so-survey-info}.
+Ankieta ta jest przeprowadzana corocznie od 2011 roku, jednak popularność zyskała dopiero w 2016 roku, kiedy to liczba respondentów biorących udział w badaniu przekroczyła 50 tysięcy.
+W latach 2016-2022 liczba respondentów utrzymywała się na poziomie od 50 do 100 tysięcy.
+Odpowiedzi w ankiecie udzielali specjaliści z całego świata reprezentując różne grupy wiekowe i kulturowe.
+Tak wysoka liczba odpowiedzi i różnorodność respondentów może pozwolić na przeprowadzenie badań ilościowych i umożliwić próbę generalizacji wniosków na całą branżę IT.
+
+
+Do analizy danych zostaną wykorzystane metody uczenia maszynowego, a w szczególności regresja z wykorzystaniem klasyfikatora XGBoost opartego na algorytmie wzmocnienia gradientowego.
+Punnoose i Ajit \cite{punnoose-2016} przeprowadzili badania związane ze skutecznością przewidywania retencji pracowników w firmie z wykorzystaniem uczenia maszynowego.
+Klasyfikator XGBoost osiągnął aż 86\% skuteczności klasyfikacji co stanowiło ponad 50\% lepszy wynik niż pozostałe badane metody klasyfikacji tradycyjnie używane podczas badania problemu fluktuacji i retencji pracowników.
+
 \section{Wybór źródła danych: Prezentacja ankiety StackOverflow}\label{sec:analysis:data-source-selection}
 \todo{przedstawienie źródła danych, charakterystyka respondentów}
 \section{Wstępna selekcja cech}\label{sec:analysis:feature-pre-selection}
