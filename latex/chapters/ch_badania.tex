@@ -69,50 +69,33 @@ Do trenowania modelu uczenia maszynowego wykorzystano algorytm przedstawiony na 
     \end{lstlisting}
     \hspace{.075\textwidth}\begin{minipage}{.85\textwidth}
         \begin{minted}{python}
-from sklearn.model_selection import train_test_split
 import xgboost as xgb
 import pandas as pd
 import matplotlib.pyplot as plt
 import math
-from sklearn.metrics import mean_squared_error, r2_score, accuracy_score
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.feature_selection import SelectFromModel
 
-def get_estimator(is_classifier):
-    if is_classifier:
-        return xgb.XGBClassifier(**estimator_params, eval_metric='auc')
-    else:
-        return xgb.XGBRegressor(**estimator_params, eval_metric='rmsle')
+def fit_model(data, dependent_variable, name):
+    def fit_estimator(x_set, y_set):
+        estimator = xgb.XGBRegressor(**estimator_params, eval_metric='rmsle')
+        estimator.fit(x_set, y_set)
+        return estimator
 
-regression_dependent_variables = ['JobSeekingStatus', 'JobSatisfaction']
-class_dependent_variables = ['JobSeekingStatus_class', 'JobSatisfaction_class']
+    x = data.drop(regression_dependent_variables + class_dependent_variables, axis=1)
+    y = data[dependent_variable]
 
-def fit_model(data, dependent_variable, is_classifier, name):
-    print(f'Fitting for {name}')
-    estimator = get_estimator(is_classifier)
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, stratify=y)
 
-    X~= data.drop(regression_dependent_variables + class_dependent_variables, axis=1)
-    y~= data[dependent_variable]
+    selection = SelectFromModel(fit_estimator(x_train, y_train), threshold=.015, prefit=True)
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, stratify=y)
-    estimator.fit(X_train, y_train)
+    selection_estimator = fit_estimator(selection.transform(x_train), y_train)
+    preds = selection_estimator.predict(selection.transform(x_test))
+    print("RMSE: %.2f" % math.sqrt(abs(mean_squared_error(y_test, preds))))
+    print("R2: %.2f" % r2_score(y_test, preds))
 
-    selection = SelectFromModel(estimator, threshold=.015, prefit=True)
-    select_X_train = selection.transform(X_train)
-    print(f'Selected {select_X_train.shape[1]} features')
-    # train model
-    selection_model = get_estimator(is_classifier)
-    selection_model.fit(select_X_train, y_train)
-    # eval model
-    select_X_test = selection.transform(X_test)
-
-    preds = selection_model.predict(select_X_test)
-    if is_classifier:
-        print("Accuracy: %.2f" % accuracy_score(y_test, preds))
-    else:
-        print("RMSE: %.2f" % math.sqrt(abs(mean_squared_error(y_test, preds))))
-        print("R2: %.2f" % r2_score(y_test, preds))
-
-    xgb.plot_importance(estimator, max_num_features=10)
+    xgb.plot_importance(selection_estimator, max_num_features=10)
     plt.tight_layout()
     plt.savefig(f'data/feat_importance_{name}.png')
         \end{minted}
