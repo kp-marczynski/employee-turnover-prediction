@@ -44,15 +44,16 @@
 
 \linespread{1.5}
 \nobibliography*
-
+\usepackage{setspace}
 %todo na koniec sprawdzić czy nie zostały sieroty/wdowy na końcach stron/wierszy
 %todo na koniec zastąpić regexem: " ([a-z]) " na " $1~" i~"~- " na "~- "
 \begin{document}
 %    \floatsetup[listing]{capposition=top}
     \sloppy %for words not to leak from right side of container
 %    \input{chapters/ch_changelog} %todo usunąć przed oddaniem
-
+    \singlespacing
     \maketitle
+    \onehalfspacing
     \pagenumbering{arabic}
 %    \pagenumbering{gobble}
     \input{chapters/ch_streszczenie}
