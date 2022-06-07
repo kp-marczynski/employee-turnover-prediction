@@ -34,9 +34,11 @@ Tak wysoka liczba odpowiedzi i~różnorodność respondentów może pozwolić na
 
 
 Do analizy danych zostaną wykorzystane metody uczenia maszynowego, a~w szczególności regresja z~wykorzystaniem regresora XGBoost opartego na algorytmie wzmocnienia gradientowego.
-Zdecydowano się na modelowanie problemu jako regresji, a~nie klasyfikacji, gdyż zadowolenie pracowników oraz chęć zmiany pracy można przedstawić na skali liczbowej
+Zdecydowano się na modelowanie problemu jako regresji, a~nie klasyfikacji, gdyż zadowolenie pracowników oraz chęć zmiany pracy można przedstawić na skali liczbowej.
 Punnoose i~Ajit \cite{punnoose-2016} przeprowadzili badania związane ze skutecznością przewidywania retencji pracowników w~firmie z~wykorzystaniem uczenia maszynowego.
 Klasyfikator XGBoost osiągnął aż 86\% skuteczności klasyfikacji co stanowiło ponad 50\% lepszy wynik niż pozostałe testowane metody klasyfikacji tradycyjnie używane podczas badania problemu fluktuacji i~retencji pracowników.
+Do celów badań będących przedmiotem niniejszej pracy implementacja algorytmu regresji zostanie przygotowana w języku Python.
+
 
 \section{Wstępne przetworzenie danych}\label{sec:analysis:preprocessing}
 Do przeprowadzenia badania wybrano ankiety deweloperskie StackOverflow z~lat 2017, 2018, 2019 (dostępne do pobrania pod adresem \url{https://insights.stackoverflow.com/survey}) ze względu na to, że są to 3 najnowsze edycje ankiety w~których zadano pytania o~następujące 2 aspekty:
