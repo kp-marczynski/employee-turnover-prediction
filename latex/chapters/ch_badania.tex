@@ -63,9 +63,12 @@ W celu przygotowania danych do badania konieczne było oczyszczenie i~znormalizo
 
 Do trenowania modelu uczenia maszynowego wykorzystano algorytm przedstawiony na listingu \ref{listing:xgb}.
 
-\begin{listing}[h!]
-    \caption{Algorytm uczenia modelu regresji} \label{listing:xgb}
-    \begin{minted}{python}
+
+\noindent\begin{minipage}{\textwidth}
+    \begin{lstlisting}[caption={Algorytm uczenia modelu regresji}, label={listing:xgb}]
+    \end{lstlisting}
+    \hspace{.075\textwidth}\begin{minipage}{.85\textwidth}
+        \begin{minted}{python}
 from sklearn.model_selection import train_test_split
 import xgboost as xgb
 import pandas as pd
@@ -112,17 +115,23 @@ def fit_model(data, dependent_variable, is_classifier, name):
     xgb.plot_importance(estimator, max_num_features=10)
     plt.tight_layout()
     plt.savefig(f'data/feat_importance_{name}.png')
-    \end{minted}
+        \end{minted}
+    \end{minipage}
+
     \raggedright\source{\ownwork}
-\end{listing}
+    \vspace{0.75cm}
+\end{minipage}
 
 Hiperparametry estymatora wyznaczono w~oparciu o~projekt Harathi \cite{harathi-2018} oraz z~wykorzystaniem narzędzia GridSearchCV.
 Dodatkowo skorzystano z~metody histogramowej do budowania drzewa decyzyjnego w~celu skrócenia czasu uczenia modelu \cite{golarnyk-2021}.
 Wyznaczone parametry przedstawiono na listingu \ref{listing:estimator_params}.
 
-\begin{listing}[h!]
-    \caption{Parametry estymatora} \label{listing:estimator_params}
-    \begin{minted}{python}
+
+\noindent\begin{minipage}{\textwidth}
+             \begin{lstlisting}[caption={Parametry estmatora}, label={listing:estimator_params}]
+             \end{lstlisting}
+             \hspace{.075\textwidth}\begin{minipage}{.85\textwidth}
+                                        \begin{minted}{python}
 estimator_params = {
     'tree_method': "hist",
     'single_precision_histogram': True,
@@ -141,9 +150,12 @@ estimator_params = {
     'gamma': 0.1,
     'reg_lambda': 1
 }
-    \end{minted}
-    \raggedright\source{\ownwork}
-\end{listing}
+        \end{minted}
+     \end{minipage}
+
+     \raggedright\source{\ownwork}
+     \vspace{0.75cm}
+\end{minipage}
 
 Do sprawdzenia skuteczności predykcji modelu regresji wykorzystano następujące miary:
 \begin{itemize}
