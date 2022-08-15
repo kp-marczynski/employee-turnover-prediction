@@ -888,7 +888,7 @@ def convert_to_classification(data):
 def preprocess_all():
     years = [2017, 2018, 2019]
     for year in years:
-        data = pd.read_csv(f'data/{year}.csv')
+        data = pd.read_csv(f'data/{year}.csv', low_memory=False)
 
         # asdf = data['Country'].unique()
         uniqueValsOld = {}
