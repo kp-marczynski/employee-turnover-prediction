@@ -16,18 +16,18 @@ estimator_params = {
     'single_precision_histogram': True,
     'n_jobs': -1,
     'n_estimators': 1500,
-    'importance_type': 'weight',
+    'importance_type': 'gain',
     'use_label_encoder': False,
     'booster': 'gbtree',
-    'scale_pos_weight': 1,
+    # 'scale_pos_weight': 9,
     'reg_alpha': 5,
     'colsample_bytree': .8,
-    'learning_rate': .1,
-    'min_child_weight': 7,
-    'subsample': .5,
-    'max_depth': 6,
-    'gamma': 0.1,
-    'reg_lambda': 1,  # 100
+    'learning_rate': .05,
+    'min_child_weight': 100,
+    'subsample': 0.7,
+    'max_depth': 20,
+    'gamma': 0.01,
+    # 'reg_lambda': 1,  # 100
 }
 
 
@@ -56,8 +56,8 @@ def fit():
     for year in years:
         for var in regression_dependent_variables:
             fit_model(get_data(year), var, False, f'{year}_{var}')
-        for var in class_dependent_variables:
-            fit_model(get_data(year), var, True, f'{year}_{var}')
+        # for var in class_dependent_variables:
+        #     fit_model(get_data(year), var, True, f'{year}_{var}')
 
 
 def fit_model(data, dependent_variable, is_classifier, name):
@@ -70,7 +70,10 @@ def fit_model(data, dependent_variable, is_classifier, name):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, stratify=y)
     estimator.fit(X_train, y_train)
 
-    selection = SelectFromModel(estimator, threshold=.015, prefit=True)
+    selection = SelectFromModel(estimator, threshold=.01, prefit=True, max_features=10)
+    feature_idx = selection.get_support()
+    feature_names = X.columns[feature_idx]
+    # print(feature_names)
     select_X_train = selection.transform(X_train)
     print(f'Selected {select_X_train.shape[1]} features')
     # train model
@@ -87,9 +90,19 @@ def fit_model(data, dependent_variable, is_classifier, name):
         # print("RMSLE: %.2f" % math.sqrt(abs(mean_squared_log_error(y_test, preds))))
         print("R2: %.2f" % r2_score(y_test, preds))
 
-    xgb.plot_importance(estimator, max_num_features=10)
-    plt.tight_layout()
-    plt.savefig(f'data/feat_importance_{name}.png')
+
+    # xgb.plot_importance(estimator, max_num_features=10, importance_type='gain')
+    values = list(selection_model.get_booster().get_score(importance_type='gain').values())
+    keys= list(feature_names)
+    result = pd.DataFrame(data=values, index=keys, columns=["score"])
+    lst = list()
+    for x in range(len(values)):
+        lst.append("("+f"{values[x]:.2f}"+",{"+keys[x]+"})")
+    print("\\bargraph{"+(", ".join(list(map(lambda x: "{"+x+"}", keys)))) + "}{"+(" ".join(lst))+"}{feat_importance_"+name+"}{feat_importance_"+name+"}{10cm}")
+    # print(result)
+    # result.plot(kind='barh')
+    # plt.tight_layout()
+    # plt.savefig(f'data/feat_importance_{name}.png')
 
 
 # def search_params(estimator, x_data, y_data):

@@ -3,25 +3,25 @@
 \section{Metody badawcze}\label{sec:analysis-method}
 Biorąc pod uwagę rosnące zapotrzebowanie na usługi informatyczne, deficyt wykwalifikowanych pracowników \cite{daxx-2021} oraz wysoki koszt rekrutacji nowych pracowników \cite{hairing-dev-2021} istotne jest poszukiwanie sposobów na zwiększenie retencji pracowników IT.
 Badania będące przedmiotem niniejszej pracy mają na celu analizę cech skorelowanych z~zadowoleniem pracowników branży IT i~z ich chęcią do zmiany pracy.
-Badane cechy zostaną podzielone na 4 kategorie:
-\begin{enumerate}
-    \item profil firmy (rozmiar firmy),
-    \item organizacja firmy (rozmiar zespołów, metodyka zarządzania projektem),
-    \item profil pracownika (wiek, płeć, staż pracy, wykształcenie),
-    \item preferencje pracownika (technologia, benefity pracownicze).
-    \end{enumerate}
+% Badane cechy zostaną podzielone na 4 kategorie:
+% \begin{enumerate}
+%     \item profil firmy (rozmiar firmy),
+%     \item organizacja firmy (rozmiar zespołów, metodyka zarządzania projektem),
+%     \item profil pracownika (wiek, płeć, staż pracy, wykształcenie),
+%     \item preferencje pracownika (technologia, benefity pracownicze).
+%     \end{enumerate}
+%
+% Powyższe kategorie dzielą cechy firmy i~pracownika na 2 zasadnicze typy:
+% \begin{enumerate}
+%     \item cechy profilowe~- profil firmy i~profil pracownika,
+%     \item cechy zmienne~- organizacja firmy i~preferencje pracownika.
+%     \end{enumerate}
+%
+% Cechy profilowe mogą być uznawane za niezmienne w~kontekście prowadzonego badania, gdyż ich zmiana może całkowicie zmienić istotne cechy podmiotu
+% (na przykład w~przypadku liczby pracowników zmiana może dotyczyć przekształcenia małej firmy w~międzynarodową korporację, a~w przypadku wieku pracownika zmiany z~młodej osoby w~osobę w~wieku przedemerytalnym~- w~obu przypadkach oczekiwania firmy wobec pracowników i~vice versa będą inne).
+% Natomiast cechy zmienne mogą być zmieniane tak aby dostosować je do bieżących potrzeb.
 
-Powyższe kategorie dzielą cechy firmy i~pracownika na 2 zasadnicze typy:
-\begin{enumerate}
-    \item cechy profilowe~- profil firmy i~profil pracownika,
-    \item cechy zmienne~- organizacja firmy i~preferencje pracownika.
-    \end{enumerate}
-
-Cechy profilowe mogą być uznawane za niezmienne w~kontekście prowadzonego badania, gdyż ich zmiana może całkowicie zmienić istotne cechy podmiotu
-(na przykład w~przypadku liczby pracowników zmiana może dotyczyć przekształcenia małej firmy w~międzynarodową korporację, a~w przypadku wieku pracownika zmiany z~młodej osoby w~osobę w~wieku przedemerytalnym~- w~obu przypadkach oczekiwania firmy wobec pracowników i~vice versa będą inne).
-Natomiast cechy zmienne mogą być zmieniane tak aby dostosować je do bieżących potrzeb.
-
-Celem badania jest określenie czy i~jeśli tak to jakie cechy profilu firmy i~pracownika mogą mieć istotny wpływ na zadowolenie pracownika
+Celem badania jest określenie czy i~jeśli tak to jakie cechy firmy i~pracownika mogą mieć istotny wpływ na zadowolenie pracownika
 oraz czy można wyszczególnić cechy organizacyjne firmy, których modyfikacja mogłaby pozwolić na zwiększenie zadowolenia pracowników.
 Określenie takich cech miałoby szczególne znaczenie już na etapie rekrutacji, gdyż mogłoby umożliwić selekcjonowanie kandydatów o~profilu "kompatybilnym" z~profilem firmy.
 
@@ -37,7 +37,7 @@ Do analizy danych zostaną wykorzystane metody uczenia maszynowego, a~w szczegó
 Zdecydowano się na modelowanie problemu jako regresji, a~nie klasyfikacji, gdyż zadowolenie pracowników oraz chęć zmiany pracy można przedstawić na skali liczbowej.
 Punnoose i~Ajit \cite{punnoose-2016} przeprowadzili badania związane ze skutecznością przewidywania retencji pracowników w~firmie z~wykorzystaniem uczenia maszynowego.
 Klasyfikator XGBoost osiągnął aż 86\% skuteczności klasyfikacji co stanowiło ponad 50\% lepszy wynik niż pozostałe testowane metody klasyfikacji tradycyjnie używane podczas badania problemu fluktuacji i~retencji pracowników.
-Do celów badań będących przedmiotem niniejszej pracy implementacja algorytmu regresji zostanie przygotowana w języku Python.
+Do celów badań będących przedmiotem niniejszej pracy implementacja algorytmu regresji i klasyfikacji zostanie przygotowana w języku Python.
 
 
 \section{Wstępne przetworzenie danych}\label{sec:analysis:preprocessing}
@@ -45,6 +45,14 @@ Do przeprowadzenia badania wybrano ankiety deweloperskie StackOverflow z~lat 201
 \begin{enumerate}
     \item ocena zadowolenia z~obecnie wykonywanej pracy w~10 stopniowej skali,
     \item status poszukiwania pracy w~3 stopniowej skali.
+    \end{enumerate}
+
+Powyższe aspekty zostaną wykorzystane w badaniu jako zmienne zależne, czyli zmienne których wartość chcemy wyznaczać wykorzystując model predykcji.
+Dla badań z wykorzystaniem algorytmu regresji zmienne zależne pozostawiono w oryginalnej skali,
+natomiast dla algorytmu klasyfikacji odpowiedzi sprowadzono do klasyfikacji binarnej przy następujących założeniach:
+\begin{enumerate}
+    \item pracownik jest zadowolony z pracy jeśli ocenił poziom zadowolenia na 5 lub więcej,
+    \item pracownik ma status osoby poszukującej jeśli szuka pracy aktywnie lub jest otwarty na atrakcyjne oferty pracy.
     \end{enumerate}
 
 W celu przygotowania danych do badania konieczne było oczyszczenie i~znormalizowanie danych. Proces ten został przeprowadzony w~następujący sposób:
@@ -152,7 +160,12 @@ Celem modelu jest maksymalizacja R2 i~minimalizacja RMSLE. Dobrze dopasowany mod
 Natomiast przy akceptowalnym poziomie współczynnika R2, model może być użyteczny jeśli RMSLE nie przekracza 50\% \cite{rmse-good-value}.
 Ma to szczególne znaczenie w~przypadku badań prowadzonych w~obszarze nauk o~społeczeństwie, gdyż nawet model nie oferujący bardo wysokiej skuteczności predykcji może pozwolić na pogłębienie wglądu w~kwestię zachowań społecznych.
 
+Sprawdzenie skuteczności modelu klasyfikacji oparte jest na znacznie prostszym mechanizmie wyznaczania procentowej dokładności predykcji (ang. accuracy).
+
 \section{Prezentacja wyników}\label{sec:analysis:important-features}
+\bargraph{{Employment}, {MgrIdiot}, {Country_HDI}, {WorkChallenge_Lack of support from management}, {WorkChallenge_Toxic work environment}, {DatabaseDesireNextYear_Couchbase}, {MiscTechWorkedWith_Torch/PyTorch}, {PurchaseHow_The CTO, CIO, or other management purchase new technology typically without the involvement of developers}, {SOVisitTo_Meet other people with similar skills or interests}, {SOVisitTo_Find answers to specific questions}}{(0.26,{Employment}) (0.79,{MgrIdiot}) (0.41,{Country_HDI}) (0.45,{WorkChallenge_Lack of support from management}) (0.33,{WorkChallenge_Toxic work environment}) (0.16,{DatabaseDesireNextYear_Couchbase}) (0.12,{MiscTechWorkedWith_Torch/PyTorch}) (0.29,{PurchaseHow_The CTO, CIO, or other management purchase new technology typically without the involvement of developers}) (0.43,{SOVisitTo_Meet other people with similar skills or interests}) (0.16,{SOVisitTo_Find answers to specific questions})}{feat_importance_2019_JobSeekingStatus}{feat_importance_2019_JobSeekingStatus}{10cm}
+
+
 \todo{}
 \section{Wnioski i~analiza możliwości praktycznego zastosowania zbudowanego modelu predykcji}\label{sec:analysis:model-fitness}
 \todo{Analiza skuteczności (dopasowania) modelu}
