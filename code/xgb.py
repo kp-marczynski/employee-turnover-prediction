@@ -96,9 +96,10 @@ def fit_model(data, dependent_variable, is_classifier, name):
     keys= list(feature_names)
     result = pd.DataFrame(data=values, index=keys, columns=["score"])
     lst = list()
+    short_keys = list(map(lambda x: x[:30], keys))
     for x in range(len(values)):
-        lst.append("("+f"{values[x]:.2f}"+",{"+keys[x]+"})")
-    print("\\bargraph{"+(", ".join(list(map(lambda x: "{"+x+"}", keys)))) + "}{"+(" ".join(lst))+"}{feat_importance_"+name+"}{feat_importance_"+name+"}{10cm}")
+        lst.append("("+f"{values[x]:.2f}"+",{"+short_keys[x]+"})")
+    print("\\bargraph{"+(", ".join(list(map(lambda x: "{"+x+"}", short_keys)))) + "}{"+(" ".join(lst))+"}{feat_importance_"+name+"}{feat_importance_"+name+"}{10cm}")
     # print(result)
     # result.plot(kind='barh')
     # plt.tight_layout()
