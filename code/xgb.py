@@ -56,12 +56,12 @@ def fit():
     years = [2017, 2018, 2019]
     for year in years:
         for var in regression_dependent_variables:
-            fit_model(get_data(year), var, False, f'{year}_{var}')
+            fit_model(get_data(year), var, False, f'{year}_{var}', year)
         for var in class_dependent_variables:
-            fit_model(get_data(year), var, True, f'{year}_{var}')
+            fit_model(get_data(year), var, True, f'{year}_{var}', year)
 
 
-def fit_model(data, dependent_variable, is_classifier, name):
+def fit_model(data, dependent_variable, is_classifier, name, year):
     print(f'Fitting for {name}')
     estimator = get_estimator(is_classifier)
 
@@ -88,8 +88,8 @@ def fit_model(data, dependent_variable, is_classifier, name):
     if is_classifier:
         title = "Accuracy: %.2f" % accuracy_score(y_test, preds)
     else:
-        title = "RMSLE: %.2f" % math.sqrt(abs(mean_squared_error(y_test, preds))) + ", R2: %.2f" % r2_score(y_test, preds)
-
+        title = "RMSLE: %.2f" % math.sqrt(abs(mean_squared_error(y_test, preds))) + ", R2: %.2f" % r2_score(y_test,
+                                                                                                            preds)
 
     # xgb.plot_importance(estimator, max_num_features=10, importance_type='gain')
     # values = list(selection_model.get_booster().get_score(importance_type='gain').values())
@@ -108,7 +108,8 @@ def fit_model(data, dependent_variable, is_classifier, name):
     # result.plot(kind='barh')
     plt.tight_layout()
     plt.xlabel('mean(|SHAP values|)')
-    plt.title(title)
+    plt.title('Year: ' + str(year) + ', Depended variable: ' + dependent_variable)
+    plt.suptitle(title)
     plt.savefig(f'feat_importance/feat_importance_{name}.png', bbox_inches='tight')
 
 
