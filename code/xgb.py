@@ -10,6 +10,7 @@ import numpy as np
 from sklearn.ensemble import AdaBoostRegressor
 from numpy import sort
 from preprocessor import convert_to_classification
+import shap
 
 estimator_params = {
     'tree_method': "hist",
@@ -56,8 +57,8 @@ def fit():
     for year in years:
         for var in regression_dependent_variables:
             fit_model(get_data(year), var, False, f'{year}_{var}')
-        # for var in class_dependent_variables:
-        #     fit_model(get_data(year), var, True, f'{year}_{var}')
+        for var in class_dependent_variables:
+            fit_model(get_data(year), var, True, f'{year}_{var}')
 
 
 def fit_model(data, dependent_variable, is_classifier, name):
@@ -83,27 +84,32 @@ def fit_model(data, dependent_variable, is_classifier, name):
     select_X_test = selection.transform(X_test)
 
     preds = selection_model.predict(select_X_test)
+    title = ''
     if is_classifier:
-        print("Accuracy: %.2f" % accuracy_score(y_test, preds))
+        title = "Accuracy: %.2f" % accuracy_score(y_test, preds)
     else:
-        print("RMSE: %.2f" % math.sqrt(abs(mean_squared_error(y_test, preds))))
-        # print("RMSLE: %.2f" % math.sqrt(abs(mean_squared_log_error(y_test, preds))))
-        print("R2: %.2f" % r2_score(y_test, preds))
+        title = "RMSLE: %.2f" % math.sqrt(abs(mean_squared_error(y_test, preds))) + ", R2: %.2f" % r2_score(y_test, preds)
 
 
     # xgb.plot_importance(estimator, max_num_features=10, importance_type='gain')
-    values = list(selection_model.get_booster().get_score(importance_type='gain').values())
-    keys= list(feature_names)
-    result = pd.DataFrame(data=values, index=keys, columns=["score"])
-    lst = list()
-    short_keys = list(map(lambda x: x[:30], keys))
-    for x in range(len(values)):
-        lst.append("("+f"{values[x]:.2f}"+",{"+short_keys[x]+"})")
-    print("\\bargraph{"+(", ".join(list(map(lambda x: "{"+x+"}", short_keys)))) + "}{"+(" ".join(lst))+"}{feat_importance_"+name+"}{feat_importance_"+name+"}{10cm}")
+    # values = list(selection_model.get_booster().get_score(importance_type='gain').values())
+    # keys= list(feature_names)
+    # result = pd.DataFrame(data=values, index=keys, columns=["score"])
+    # lst = list()
+    # short_keys = list(map(lambda x: x[:30], keys))
+    # for x in range(len(values)):
+    #     lst.append("("+f"{values[x]:.2f}"+",{"+short_keys[x]+"})")
+    # print("\\bargraph{"+(", ".join(list(map(lambda x: "{"+x+"}", short_keys)))) + "}{"+(" ".join(lst))+"}{feat_importance_"+name+"}{feat_importance_"+name+"}{10cm}")
+    explainer = shap.TreeExplainer(estimator)
+    shap_values = explainer.shap_values(X_test)
+    shap.summary_plot(shap_values, X_test, plot_type="bar", max_display=10, show=False)
+    # print("")
     # print(result)
     # result.plot(kind='barh')
-    # plt.tight_layout()
-    # plt.savefig(f'data/feat_importance_{name}.png')
+    plt.tight_layout()
+    plt.xlabel('mean(|SHAP values|)')
+    plt.title(title)
+    plt.savefig(f'feat_importance/feat_importance_{name}.png', bbox_inches='tight')
 
 
 # def search_params(estimator, x_data, y_data):

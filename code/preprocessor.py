@@ -84,10 +84,21 @@ def userlist_to_cols(col):
     categories = pd.Series(list(categories))
 
     def category_to_cols(category):
-        return list_elems.map(lambda user_resp: category in user_resp).rename('%s_%s' % (col.name, category)).astype(
+        return list_elems.map(lambda user_resp: category in user_resp).rename(
+            '%s_%s' % (col.name, map_category(category))).astype(
             'int8')
 
+    def map_category(category):
+        if category == "Toxic work environment":
+            is_edu = True
+        try:
+            return listvals_replacers[category]
+        except:
+            return category
+
     new_cols = categories.map(category_to_cols)
+    # if 'Participated in online coding competitions (e.g. HackerRank, CodeChef, TopCoder)' in new_cols:
+    #     print(new_cols)
     return pd.concat(new_cols.values, axis=1)
 
 
@@ -107,7 +118,7 @@ listvals = [
     'AdBlockerReasons',
     'AdsActions',
     'AuditoryEnvironment',
-    'CommunicationTools',
+    # 'CommunicationTools',
     'CompanyType',
     'Containers',
     'CousinEducation',
@@ -147,7 +158,7 @@ listvals = [
     'PlatformDesireNextYear',
     'PlatformWorkedWith',
     'Professional',
-    'PurchaseHow',
+    # 'PurchaseHow',
     'Race',
     'SelfTaughtTypes',
     'SOVisitTo',
@@ -417,6 +428,7 @@ important_strs = {
 }
 
 to_drop_before_start = [
+    'CommunicationTools',
     'ExpectedSalary',
     'AdBlocker',
     'AdBlockerDisable',
@@ -534,6 +546,32 @@ to_drop = listvals + [
     'CareerSatisfaction'
 ]
 
+listvals_replacers = {
+    'Retirement': 'Retirement',
+    'Working in a career completely unrelated to software development': 'DifferentCareer',
+    'Working as a founder or co-founder of my own company': 'CoFounder',
+    'Doing the same work': 'SameWork',
+    "Working in a different or more specialized technical role than the one I'm in now": 'MoreSpecialized',
+    'Working as an engineering manager or other functional manager': 'TechnicalManager',
+    'Working as a product manager or project manager': 'ProjectManager',
+    'Completed an industry certification program (e.g. MCPD)': 'IndustryCertification',
+    'Taught yourself a new language, framework, or tool without taking a formal course': 'NoFormalCourse',
+    'Contributed to open source software': 'OpenSourceContribution',
+    'Participated in online coding competitions (e.g. HackerRank, CodeChef, TopCoder)': 'CodingCompetitions',
+    'Taken a part-time in-person course in programming or software development':'PartTimeCourse',
+                     'Received on-the-job training in software development':'OnTheJob',
+    'Taken an online course in programming or software development (e.g. a MOOC)':'OnlineCourse',
+    'Participated in a full-time developer training program or bootcamp':'FulltimeCourse',
+    'Participated in a hackathon': 'Hackathon',
+    'Distracting work environment': 'Distracting',
+    'Time spent commuting': 'Commute',
+    'Toxic work environment': 'ToxicEnvironment',
+    'Non-work commitments (parenting, school work, hobbies, etc.)': 'Non-work',
+    'Being tasked with non-development work': 'Non-development',
+    'Not enough people for the workload': 'NotEnoughPeople',
+    'Lack of support from management': 'NoManagementSupport',
+    'Inadequate access to necessary tools': 'NoTools'
+}
 replacers = [
     (influence_keys, influence_strs),
     (agree_keys, agree_strs),
@@ -771,7 +809,14 @@ replacers = [
         'chinese yuan renminbi (¥)': usd_price_mapper('CNY'),
         'singapore dollars (s$)': usd_price_mapper('SGD'),
         'Bitcoin (btc)': usd_price_mapper("XBT")
-    })
+    }),
+    (['PurchaseHow'], {
+        'Not sure': 0,
+        'Developers typically have the most influence on purchasing new technology': 1,
+        'Developers and management have nearly equal input into purchasing new technology': 2,
+        'The CTO, CIO, or other management purchase new technology typically without the involvement of developers': 3
+    }),
+
 ]
 
 
@@ -890,7 +935,7 @@ def preprocess_all():
     for year in years:
         data = pd.read_csv(f'data/{year}.csv', low_memory=False)
 
-        # asdf = data['Country'].unique()
+        # print(data['WorkChallenge'].unique())
         uniqueValsOld = {}
         for x in data.columns:
             uniqueValsOld[x] = data[x].unique()
