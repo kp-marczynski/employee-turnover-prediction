@@ -55,8 +55,8 @@ def get_data(year):
 def fit():
     years = [2017, 2018, 2019]
     for year in years:
-        # for var in regression_dependent_variables:
-        #     fit_model(get_data(year), var, False, f'{year}_{var}', year)
+        for var in regression_dependent_variables:
+            fit_model(get_data(year), var, False, f'{year}_{var}', year)
         for var in class_dependent_variables:
             fit_model(get_data(year), var, True, f'{year}_{var}', year)
 
@@ -71,7 +71,7 @@ def fit_model(data, dependent_variable, is_classifier, name, year):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, stratify=y)
     estimator.fit(X_train, y_train)
 
-    selection = SelectFromModel(estimator, threshold=.01, prefit=True, max_features=10)
+    selection = SelectFromModel(estimator, prefit=True, max_features=10)
     feature_idx = selection.get_support()
     feature_names = X.columns[feature_idx]
     # print(feature_names)

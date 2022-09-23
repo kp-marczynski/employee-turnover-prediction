@@ -205,9 +205,9 @@ agree_keys = [
     'AgreeDisagree1',
     'AgreeDisagree2',
     'AgreeDisagree3',
-    "AgreeDisagree1_kinshipToDevs",
-    "AgreeDisagree2_competingPeers",
-    "AgreeDisagree3_worseThanPeers",
+    "AgreeDisagree1_KinshipToDevs",
+    "AgreeDisagree2_CompetingPeers",
+    "AgreeDisagree3_WorseThanPeers",
     'AnnoyingUI',
     'BoringDetails',
     'BuildingThings',
@@ -428,6 +428,11 @@ important_strs = {
 }
 
 to_drop_before_start = [
+    'StackOverflowCompanyPage',
+    'StackOverflowJobSearch',
+    'StackOverflowJobListing',
+    'StackOverflowMetaChat',
+    'AssessJobDiversity',
     'CommunicationTools',
     'ExpectedSalary',
     'AdBlocker',
@@ -728,7 +733,7 @@ replacers = [
         "the quality of oss and closed source software is about the same": 1,
         "oss is, on average, of lower quality than proprietary / closed source software": 0,
     }),
-    (['MgrIdiot'], {
+    (['MgrIncompetent', 'MgrIdiot'], {
         "not at all confident": 0,
         "somewhat confident": 1,
         "very confident": 2,
@@ -841,7 +846,9 @@ def preprocess(data, year):
         "HaveWorkedFramework": "FrameworkWorkedWith",
         "HaveWorkedDatabase": "DatabaseWorkedWith",
         "HaveWorkedPlatform": "PlatformWorkedWith",
-        "DeveloperType": "DevType"
+        "DeveloperType": "DevType",
+        "MgrIdiot": "MgrIncompetent",
+        "LastHireDate": "LastNewJob"
     }, inplace=True)
     if year == 2019:
         data.rename(columns={"OpenSource": "OpenSourceQuality",
@@ -851,30 +858,30 @@ def preprocess(data, year):
                     inplace=True)
     elif year == 2018:
         data.rename(columns={"JobSatisfaction": "JobSat7", "CareerSatisfaction": "CareerSat7",
-                             "AgreeDisagree1": "AgreeDisagree1_kinshipToDevs",
-                             "AgreeDisagree2": "AgreeDisagree2_competingPeers",
-                             "AgreeDisagree3": "AgreeDisagree3_worseThanPeers",
-                             "AssessJob1": "AssessJob1_industry",
-                             "AssessJob2": "AssessJob2_companyFinancialStatus",
-                             "AssessJob3": "AssessJob3_department",
-                             "AssessJob4": "AssessJob4_languages",
-                             "AssessJob5": "AssessJob5_compensation",
-                             "AssessJob6": "AssessJob6_companyCulture",
-                             "AssessJob7": "AssessJob7_remoteJob",
-                             "AssessJob8": "AssessJob8_development",
-                             "AssessJob9": "AssessJob9_diversity",
-                             "AssessJob10": "AssessJob10_projectImpact",
-                             "AssessBenefits1": "AssessBenefits1_salary",
-                             "AssessBenefits2": "AssessBenefits2_stockOrShares",
-                             "AssessBenefits3": "AssessBenefits3_healthInsurance",
-                             "AssessBenefits4": "AssessBenefits4_parentalLeave",
-                             "AssessBenefits5": "AssessBenefits5_multisport",
-                             "AssessBenefits6": "AssessBenefits6_retirementPlan",
-                             "AssessBenefits7": "AssessBenefits7_mealsAndSnacks",
-                             "AssessBenefits8": "AssessBenefits8_computerAllowance",
-                             "AssessBenefits9": "AssessBenefits9_childcare",
-                             "AssessBenefits10": "AssessBenefits10_transport",
-                             "AssessBenefits11": "AssessBenefits11_eduBudget",
+                             "AgreeDisagree1": "AgreeDisagree1_KinshipToDevs",
+                             "AgreeDisagree2": "AgreeDisagree2_CompetingPeers",
+                             "AgreeDisagree3": "AgreeDisagree3_WorseThanPeers",
+                             "AssessJob1": "AssessJob1_Industry",
+                             "AssessJob2": "AssessJob2_CompanyFinancialStatus",
+                             "AssessJob3": "AssessJob3_Department",
+                             "AssessJob4": "AssessJob4_Languages",
+                             "AssessJob5": "AssessJob5_Compensation",
+                             "AssessJob6": "AssessJob6_CompanyCulture",
+                             "AssessJob7": "AssessJob7_RemoteJob",
+                             "AssessJob8": "AssessJob8_Development",
+                             "AssessJob9": "AssessJob9_Diversity",
+                             "AssessJob10": "AssessJob10_ProjectImpact",
+                             "AssessBenefits1": "AssessBenefits1_Salary",
+                             "AssessBenefits2": "AssessBenefits2_StockOrShares",
+                             "AssessBenefits3": "AssessBenefits3_HealthInsurance",
+                             "AssessBenefits4": "AssessBenefits4_ParentalLeave",
+                             "AssessBenefits5": "AssessBenefits5_Multisport",
+                             "AssessBenefits6": "AssessBenefits6_RetirementPlan",
+                             "AssessBenefits7": "AssessBenefits7_MealsAndSnacks",
+                             "AssessBenefits8": "AssessBenefits8_ComputerAllowance",
+                             "AssessBenefits9": "AssessBenefits9_Childcare",
+                             "AssessBenefits10": "AssessBenefits10_Transport",
+                             "AssessBenefits11": "AssessBenefits11_EduBudget"
                              }, inplace=True)
     to_drop_first_filtered = list(set(data.columns).intersection(to_drop_before_start))
     data.drop(to_drop_first_filtered, axis=1, inplace=True)
