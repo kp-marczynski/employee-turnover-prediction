@@ -3,7 +3,7 @@ import xgboost as xgb
 import pandas as pd
 import matplotlib.pyplot as plt
 import math
-from sklearn.metrics import mean_squared_error, r2_score, accuracy_score, mean_squared_log_error, make_scorer
+from sklearn.metrics import mean_squared_error, r2_score, accuracy_score, classification_report, confusion_matrix, recall_score, precision_score, mean_squared_log_error, make_scorer
 from sklearn.feature_selection import SelectFromModel
 import numpy as np
 # import seaborn as sns
@@ -55,8 +55,8 @@ def get_data(year):
 def fit():
     years = [2017, 2018, 2019]
     for year in years:
-        for var in regression_dependent_variables:
-            fit_model(get_data(year), var, False, f'{year}_{var}', year)
+        # for var in regression_dependent_variables:
+        #     fit_model(get_data(year), var, False, f'{year}_{var}', year)
         for var in class_dependent_variables:
             fit_model(get_data(year), var, True, f'{year}_{var}', year)
 
@@ -86,7 +86,9 @@ def fit_model(data, dependent_variable, is_classifier, name, year):
     preds = selection_model.predict(select_X_test)
     title = ''
     if is_classifier:
-        title = "Accuracy: %.2f" % accuracy_score(y_test, preds)
+        title = "Accuracy: %.2f" % accuracy_score(y_test, preds) + ", Precision: %.2f" % precision_score(y_test, preds)+ ", Recall: %.2f" % recall_score(y_test, preds)
+        # print(confusion_matrix(y_test, preds))
+        # print(classification_report(y_test, preds))
     else:
         title = "RMSLE: %.2f" % math.sqrt(abs(mean_squared_error(y_test, preds))) + ", R2: %.2f" % r2_score(y_test,
                                                                                                             preds)
