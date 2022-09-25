@@ -159,7 +159,6 @@ listvals = [
     'PlatformWorkedWith',
     'Professional',
     # 'PurchaseHow',
-    'Race',
     'SelfTaughtTypes',
     'SOVisitTo',
     'StackOverflowDevices',
@@ -428,6 +427,8 @@ important_strs = {
 }
 
 to_drop_before_start = [
+    'Race',
+    'StartOverflowSatisfaction',
     'StackOverflowCompanyPage',
     'StackOverflowJobSearch',
     'StackOverflowJobListing',

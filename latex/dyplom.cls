@@ -285,4 +285,5 @@ ytick=data,
 \end{minipage}
 }
 
+\RequirePackage{multicol}
 \endinput % dla porządku

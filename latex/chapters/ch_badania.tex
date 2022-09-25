@@ -168,29 +168,55 @@ Selekcję pytań najsilniej wpływających na predykcję wykonano z wykorzystani
 \todo{https://medium.com/dataman-in-ai/explain-your-model-with-the-shap-values-bc36aac4de3d}
 
 \section{Prezentacja wyników}\label{sec:analysis:important-features}
-%\bargraph{{AssessJobIndustry}, {AssessJobExp}, {AssessJobLeaders}, {AssessJobProfDevel}, {AssessJobDiversity}, {AssessJobFinances}, {StackOverflowCompanyPage}, {StackOverflowMetaChat}, {ImportantBenefits\_Vacation/day}, {ImportantBenefits\_Remote optio}}{(0.27,{AssessJobIndustry}) (2.60,{AssessJobExp}) (0.15,{AssessJobLeaders}) (1.34,{AssessJobProfDevel}) (3.01,{AssessJobDiversity}) (0.72,{AssessJobFinances}) (0.67,{StackOverflowCompanyPage}) (0.51,{StackOverflowMetaChat}) (0.47,{ImportantBenefits\_Vacation/day}) (0.33,{ImportantBenefits\_Remote optio})}{feat\_importance\_2017\_JobSeekingStatus}{feat\_importance\_2017\_JobSeekingStatus}{10cm}
 
-\imagescale{0.75}{../code/feat_importance/feat_importance_2017_JobSatisfaction.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu regresji dla zmiennej zależnej JobSatisfaction dla ankiety StackOverflow z roku 2017}{result1}
+Algorytm przedstawiony na listingu \ref{listing:xgb} został uruchomiony dla znormalizowanych danych z lat 2017-2019. Wyniki zostały podzielone ze względu na modelowanie problemu jako regresję i jako klasyfikację.
 
-\imagescale{0.75}{../code/feat_importance/feat_importance_2017_JobSatisfaction_class.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu klasyfikacji dla zmiennej zależnej JobSatisfaction dla ankiety StackOverflow z roku 2017}{result2}
 
-\imagescale{0.75}{../code/feat_importance/feat_importance_2017_JobSeekingStatus.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu regresji dla zmiennej zależnej JobSeekingStatus dla ankiety StackOverflow z roku 2017}{result3}
+\subsection{Wyniki regresji}\label{sec:analysis:important-features:regression}
 
-\imagescale{0.75}{../code/feat_importance/feat_importance_2017_JobSeekingStatus_class.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu klasyfikacji dla zmiennej zależnej JobSeekingStatus dla ankiety StackOverflow z roku 2017}{result4}
+Na rysunkach \ref{fig:result1}, \ref{fig:result11} i \ref{fig:result21} przedstawiono wyniki regresji dla zmiennej zależnej "JobSatisfaction", natomiast na rysunkach \ref{fig:result3}, \ref{fig:result13} i \ref{fig:result23} przedstawiono wyniki regresji dla zmiennej zależnej "JobSeekingStatus".
 
-\imagescale{0.75}{../code/feat_importance/feat_importance_2018_JobSatisfaction.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu regresji dla zmiennej zależnej JobSatisfaction dla ankiety StackOverflow z roku 2018}{result11}
+\imagescale{0.6}{../code/feat_importance/feat_importance_2017_JobSatisfaction.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu regresji dla zmiennej zależnej JobSatisfaction dla ankiety StackOverflow z roku 2017}{result1}
 
-\imagescale{0.75}{../code/feat_importance/feat_importance_2018_JobSatisfaction_class.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu klasyfikacji dla zmiennej zależnej JobSatisfaction dla ankiety StackOverflow z roku 2018}{result12}
+\imagescale{0.6}{../code/feat_importance/feat_importance_2018_JobSatisfaction.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu regresji dla zmiennej zależnej JobSatisfaction dla ankiety StackOverflow z roku 2018}{result11}
 
-\imagescale{0.75}{../code/feat_importance/feat_importance_2018_JobSeekingStatus.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu regresji dla zmiennej zależnej JobSeekingStatus dla ankiety StackOverflow z roku 2018}{result13}
+\imagescale{0.6}{../code/feat_importance/feat_importance_2019_JobSatisfaction.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu regresji dla zmiennej zależnej JobSatisfaction dla ankiety StackOverflow z roku 2019}{result21}
 
-\imagescale{0.75}{../code/feat_importance/feat_importance_2018_JobSeekingStatus_class.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu klasyfikacji dla zmiennej zależnej JobSeekingStatus dla ankiety StackOverflow z roku 2018}{result14}
+\imagescale{0.6}{../code/feat_importance/feat_importance_2017_JobSeekingStatus.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu regresji dla zmiennej zależnej JobSeekingStatus dla ankiety StackOverflow z roku 2017}{result3}
 
-\imagescale{0.75}{../code/feat_importance/feat_importance_2019_JobSatisfaction.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu regresji dla zmiennej zależnej JobSatisfaction dla ankiety StackOverflow z roku 2019}{result21}
+\imagescale{0.6}{../code/feat_importance/feat_importance_2018_JobSeekingStatus.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu regresji dla zmiennej zależnej JobSeekingStatus dla ankiety StackOverflow z roku 2018}{result13}
+
+\imagescale{0.6}{../code/feat_importance/feat_importance_2019_JobSeekingStatus.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu regresji dla zmiennej zależnej JobSeekingStatus dla ankiety StackOverflow z roku 2019}{result23}
+
+\noindent\begin{minipage}{\textwidth}
+\begin{table}[H]
+\raggedright\caption{Regresja1\label{tabela:JobSatisfactionRegression}}
+\begin{center}
+\begin{tabular}{|P{.1\textwidth}|P{.3\textwidth}|P{.3\textwidth}|P{.3\textwidth}|}
+& 2017                                                                                      & 2018                                                                                                                                          & 2019                                                                                                                                                      &  \\
+RMSLE                                     & 0.20                                                                                      & 0.31                                                                                                                                          & 0.30                                                                                                                                                      &  \\
+R2                                        & 0.16                                                                                      & 0.04                                                                                                                                          & 0.23                                                                                                                                                      &  \\
+Pytania z siłą wpływu \textgreater{}= 0.2 & \begin{tabular}[c]{@{}l@{}}AssessJobProfDevel\\ HomeRemote\\ AssessJobRemote\end{tabular} & \begin{tabular}[c]{@{}l@{}}LastNewJob\\ HopeFiveYears\_SameWork\\ Country\_HDI\\ AgreeDisagree1\_KinshipToDevs\\ ConvertedSalary\end{tabular} & \begin{tabular}[c]{@{}l@{}}MgrIncompetent\\ PurchaseWant\\ WorkChallenge\_ToxicEnvironment\\ WorkChallenge\_NoManagementSupport\\ LastNewJob\end{tabular} &
+\end{tabular}
+\end{center}
+\raggedright\source{\workbasedon{\cite{spychala-2019}}}
+                 \vspace{0.75cm}
+\end{table}
+\end{minipage}
+\subsection{Wyniki klasyfikacji}\label{sec:analysis:important-features:classification}
+%\bargraph{{AssessJobIndustry}, {AssessJobExp}, {AssessJobLeaders}, {AssessJobProfDevel}, {AssessJobDiversity}, {AssessJobFinances}, {StackOverflowCompanyPage}, {StackOverflowMetaChat}, {ImportantBenefits\_Vacation/day}, {ImportantBenefits\_Remote optio}}{(0.27,{AssessJobIndustry}) (2.60,{AssessJobExp}) (0.15,{AssessJobLeaders}) (1.34,{AssessJobProfDevel}) (3.01,{AssessJobDiversity}) (0.72,{AssessJobFinances}) (0.67,{StackOverflowCompanyPage}) (0.61,{StackOverflowMetaChat}) (0.47,{ImportantBenefits\_Vacation/day}) (0.33,{ImportantBenefits\_Remote optio})}{feat\_importance\_2017\_JobSeekingStatus}{feat\_importance\_2017\_JobSeekingStatus}{10cm}
+
+Na rysunkach \ref{fig:result2}, \ref{fig:result12} i \ref{fig:result22} przedstawiono wyniki klasyfikacji dla zmiennej zależnej "JobSatisfaction", natomiast na rysunkach \ref{fig:result4}, \ref{fig:result14} i \ref{fig:result24} przedstawiono wyniki klasyfikacji dla zmiennej zależnej "JobSeekingStatus".
+
+\imagescale{0.6}{../code/feat_importance/feat_importance_2017_JobSatisfaction_class.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu klasyfikacji dla zmiennej zależnej JobSatisfaction dla ankiety StackOverflow z roku 2017}{result2}
+
+\imagescale{0.6}{../code/feat_importance/feat_importance_2018_JobSatisfaction_class.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu klasyfikacji dla zmiennej zależnej JobSatisfaction dla ankiety StackOverflow z roku 2018}{result12}
 
 \imagescale{0.75}{../code/feat_importance/feat_importance_2019_JobSatisfaction_class.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu klasyfikacji dla zmiennej zależnej JobSatisfaction dla ankiety StackOverflow z roku 2019}{result22}
 
-\imagescale{0.75}{../code/feat_importance/feat_importance_2019_JobSeekingStatus.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu regresji dla zmiennej zależnej JobSeekingStatus dla ankiety StackOverflow z roku 2019}{result23}
+\imagescale{0.6}{../code/feat_importance/feat_importance_2017_JobSeekingStatus_class.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu klasyfikacji dla zmiennej zależnej JobSeekingStatus dla ankiety StackOverflow z roku 2017}{result4}
+
+\imagescale{0.6}{../code/feat_importance/feat_importance_2018_JobSeekingStatus_class.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu klasyfikacji dla zmiennej zależnej JobSeekingStatus dla ankiety StackOverflow z roku 2018}{result14}
 
 \imagescale{0.75}{../code/feat_importance/feat_importance_2019_JobSeekingStatus_class.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu klasyfikacji dla zmiennej zależnej JobSeekingStatus dla ankiety StackOverflow z roku 2019}{result24}
 
