@@ -1,5 +1,9 @@
 % !TeX spellcheck = pl_PL
+
+
 \chapter{Optymalizacja procesu rekrutacji w~branży IT z~wykorzystaniem uczenia maszynowego}\label{ch:analysis}
+
+
 \section{Metody badawcze}\label{sec:analysis-method}
 Biorąc pod uwagę rosnące zapotrzebowanie na usługi informatyczne, deficyt wykwalifikowanych pracowników \cite{daxx-2021} oraz wysoki koszt rekrutacji nowych pracowników \cite{hairing-dev-2021} istotne jest poszukiwanie sposobów na zwiększenie retencji pracowników IT.
 Badania będące przedmiotem niniejszej pracy mają na celu analizę cech skorelowanych z~zadowoleniem pracowników branży IT i~z ich chęcią do zmiany pracy.
@@ -45,7 +49,7 @@ Do przeprowadzenia badania wybrano ankiety deweloperskie StackOverflow z~lat 201
 \begin{enumerate}
     \item ocena zadowolenia z~obecnie wykonywanej pracy w~10 stopniowej skali,
     \item status poszukiwania pracy w~3 stopniowej skali.
-    \end{enumerate}
+\end{enumerate}
 
 Powyższe aspekty zostaną wykorzystane w badaniu jako zmienne zależne, czyli zmienne których wartość chcemy wyznaczać wykorzystując model predykcji.
 Dla badań z wykorzystaniem algorytmu regresji zmienne zależne pozostawiono w oryginalnej skali,
@@ -53,7 +57,7 @@ natomiast dla algorytmu klasyfikacji odpowiedzi sprowadzono do klasyfikacji bina
 \begin{enumerate}
     \item pracownik jest zadowolony z pracy jeśli ocenił poziom zadowolenia na 5 lub więcej,
     \item pracownik ma status osoby poszukującej jeśli szuka pracy aktywnie lub jest otwarty na atrakcyjne oferty pracy.
-    \end{enumerate}
+\end{enumerate}
 
 W celu przygotowania danych do badania konieczne było oczyszczenie i~znormalizowanie danych. Proces ten został przeprowadzony w~następujący sposób:
 \begin{enumerate}
@@ -67,7 +71,8 @@ W celu przygotowania danych do badania konieczne było oczyszczenie i~znormalizo
     \item Wynagrodzenie respondentów przeliczono na wartość w~dolarach amerykańskich (USD) według kursu z~1 dnia roku w~którym przeprowadzono badanie.
     \item W~pytaniach na które respondent nie udzielił odpowiedzi, wartości uzupełniono średnią wartością z~pozostałych odpowiedzi, żeby wartości te nie wpływały negatywnie na działanie algorytmu regresji.
     \item Na koniec wszystkie wartości przeskalowano aby otrzymać wartości z~przedziału 0~- 1.
-    \end{enumerate}
+\end{enumerate}
+
 
 \section{Selekcja cech z~wykorzystaniem uczenia maszynowego}\label{sec:analysis:feature-selection-xgb}
 
@@ -75,10 +80,10 @@ Do trenowania modelu uczenia maszynowego wykorzystano algorytm przedstawiony na 
 
 
 \noindent\begin{minipage}{\textwidth}
-    \begin{lstlisting}[caption={Algorytm uczenia modelu regresji}, label={listing:xgb}]
-    \end{lstlisting}
-    \hspace{.075\textwidth}\begin{minipage}{.85\textwidth}
-        \begin{minted}{python}
+             \begin{lstlisting}[caption={Algorytm uczenia modelu regresji}, label={listing:xgb}]
+             \end{lstlisting}
+             \hspace{.075\textwidth}\begin{minipage}{.85\textwidth}
+                                        \begin{minted}{python}
 import xgboost as xgb
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -108,11 +113,11 @@ def fit_model(data, dependent_variable, name):
     xgb.plot_importance(selection_estimator, max_num_features=10)
     plt.tight_layout()
     plt.savefig(f'data/feat_importance_{name}.png')
-        \end{minted}
-    \end{minipage}
+                                        \end{minted}
+             \end{minipage}
 
-    \raggedright\source{\ownwork}
-    \vspace{0.75cm}
+             \raggedright\source{\ownwork}
+             \vspace{0.75cm}
 \end{minipage}
 
 Hiperparametry estymatora wyznaczono w~oparciu o~projekt Harathi \cite{harathi-2018} oraz z~wykorzystaniem narzędzia GridSearchCV.
@@ -143,18 +148,18 @@ estimator_params = {
     'gamma': 0.1,
     'reg_lambda': 1
 }
-        \end{minted}
-     \end{minipage}
+                                        \end{minted}
+             \end{minipage}
 
-     \raggedright\source{\ownwork}
-     \vspace{0.75cm}
+             \raggedright\source{\ownwork}
+             \vspace{0.75cm}
 \end{minipage}
 
 Do sprawdzenia skuteczności predykcji modelu regresji wykorzystano następujące miary:
 \begin{itemize}
     \item Pierwiastek logarytmu błędu średniokwadratowego RMSLE (ang. Root Mean Squared Logarytmic Error)~- pokazuje jak bardzo predykcja jest oddalona od oczekiwanej wartości. Im niższa wartość tym lepiej.
     \item Współczynnik determinacji R2~- pokazuje w~jakim stopniu predykcja jest dopasowana do oczekiwanej wartości. Im wyższa wartość tym lepiej.
-    \end{itemize}
+\end{itemize}
 
 Celem modelu jest maksymalizacja R2 i~minimalizacja RMSLE. Dobrze dopasowany model powinien mieć wartość R2 na poziomie powyżej 70\% \cite{r2-good-value}, jednak nawet przy niskiej wartości R2 model może być użyteczny jeżeli RMSLE ma wartość poniżej 10\% \cite{r2-vs-rmse}.
 Natomiast przy akceptowalnym poziomie współczynnika R2, model może być użyteczny jeśli RMSLE nie przekracza 50\% \cite{rmse-good-value}.
@@ -167,10 +172,10 @@ Selekcję pytań najsilniej wpływających na predykcję wykonano z wykorzystani
 \todo{https://towardsdatascience.com/using-shap-values-to-explain-how-your-machine-learning-model-works-732b3f40e137}
 \todo{https://medium.com/dataman-in-ai/explain-your-model-with-the-shap-values-bc36aac4de3d}
 
+
 \section{Prezentacja wyników}\label{sec:analysis:important-features}
 
 Algorytm przedstawiony na listingu \ref{listing:xgb} został uruchomiony dla znormalizowanych danych z lat 2017-2019. Wyniki zostały podzielone ze względu na modelowanie problemu jako regresję i jako klasyfikację.
-
 
 \subsection{Wyniki regresji}\label{sec:analysis:important-features:regression}
 
@@ -188,21 +193,100 @@ Na rysunkach \ref{fig:result1}, \ref{fig:result11} i \ref{fig:result21} przedsta
 
 \imagescale{0.6}{../code/feat_importance/feat_importance_2019_JobSeekingStatus.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu regresji dla zmiennej zależnej JobSeekingStatus dla ankiety StackOverflow z roku 2019}{result23}
 
+W tabelach \ref{tabela:JobSatisfactionRegression} i \ref{tabela:JobSeekingStatusRegression} przedstawiono podsumowanie skuteczności modeli regresji, odpowiednio dla zmiennych zależnych JobSatisfaction i JobSeekingStatus.
+
 \noindent\begin{minipage}{\textwidth}
-\begin{table}[H]
-\raggedright\caption{Regresja1\label{tabela:JobSatisfactionRegression}}
-\begin{center}
-\begin{tabular}{|P{.1\textwidth}|P{.3\textwidth}|P{.3\textwidth}|P{.3\textwidth}|}
-& 2017                                                                                      & 2018                                                                                                                                          & 2019                                                                                                                                                      &  \\
-RMSLE                                     & 0.20                                                                                      & 0.31                                                                                                                                          & 0.30                                                                                                                                                      &  \\
-R2                                        & 0.16                                                                                      & 0.04                                                                                                                                          & 0.23                                                                                                                                                      &  \\
-Pytania z siłą wpływu \textgreater{}= 0.2 & \begin{tabular}[c]{@{}l@{}}AssessJobProfDevel\\ HomeRemote\\ AssessJobRemote\end{tabular} & \begin{tabular}[c]{@{}l@{}}LastNewJob\\ HopeFiveYears\_SameWork\\ Country\_HDI\\ AgreeDisagree1\_KinshipToDevs\\ ConvertedSalary\end{tabular} & \begin{tabular}[c]{@{}l@{}}MgrIncompetent\\ PurchaseWant\\ WorkChallenge\_ToxicEnvironment\\ WorkChallenge\_NoManagementSupport\\ LastNewJob\end{tabular} &
-\end{tabular}
-\end{center}
-\raggedright\source{\workbasedon{\cite{spychala-2019}}}
+             \begin{table}[H]
+                 \raggedright\caption{Regresja1\label{tabela:JobSatisfactionRegression}}
+                 \begin{center}
+                     \begin{tabular}{|P{.1\textwidth}|P{.26\textwidth}|P{.26\textwidth}|P{.26\textwidth}|}
+
+                         \hline
+                         Rok   & 2017             & 2018             & 2019             \\
+                         \hline
+                         RMSLE & \cellgreen{0.20} & \cellgreen{0.31} & \cellgreen{0.30} \\
+                         \hline
+                         R2    & \cellred{0.16}   & \cellred{0.04}   & \cellred{0.23}   \\
+                         \hline
+                         Pytania z siłą wpływu większą od 0.2 &
+                         \begin{itemize}
+                             \item AssessJobProfDevel
+                             \item HomeRemote
+                             \item AssessJobRemote
+                         \end{itemize} &
+                         \begin{itemize}
+                             \item LastNewJob
+                             \item HopeFiveYears \_SameWork
+                             \item Country\_HDI
+                             \item AgreeDisagree1 \_KinshipToDevs
+                             \item ConvertedSalary
+                         \end{itemize} &
+                         \begin{itemize}
+                             \item MgrIncompetent
+                             \item PurchaseWant
+                             \item WorkChallenge \_ToxicEnvironment
+                             \item WorkChallenge \_NoManagementSupport
+                             \item LastNewJob
+                         \end{itemize} \\
+                         \hline
+                     \end{tabular}
+                 \end{center}
+                 \raggedright\source{\ownwork}
                  \vspace{0.75cm}
-\end{table}
+             \end{table}
 \end{minipage}
+
+\noindent\begin{minipage}{\textwidth}
+             \begin{table}[H]
+                 \raggedright\caption{Regresja1\label{tabela:JobSeekingStatusRegression}}
+                 \begin{center}
+                     \begin{tabular}{|P{.1\textwidth}|P{.26\textwidth}|P{.26\textwidth}|P{.26\textwidth}|}
+
+                         \hline
+                         Rok   & 2017             & 2018             & 2019             \\
+                         \hline
+                         RMSLE & \cellgreen{0.18} & \cellgreen{0.43} & \cellgreen{0.38} \\
+                         \hline
+                         R2    & \cellgreen{0.63} & \cellred{0.18}   & \cellred{0.30}   \\
+                         \hline
+                         Pytania z siłą wpływu większą od 0.2 &
+                         \begin{itemize}
+                             \item AssessJobProfDevel
+                             \item AssessJobExp
+                             \item AssessJobTech
+                         \end{itemize} &
+                         \begin{itemize}
+                             \item Country\_HDI
+                             \item LastNewJob
+                             \item YearsCoding
+                             \item HopeFiveYears \_SameWork
+                             \item HopeFiveYears \_MoreSpecialized
+                         \end{itemize} &
+                         \begin{itemize}
+                             \item MgrIncompetent
+                             \item Country\_HDI
+                             \item LastNewJob
+                             \item WorkChallenge \_NoManagementSupport
+                             \item ConvertedSalary
+                         \end{itemize} \\
+                         \hline
+                     \end{tabular}
+                 \end{center}
+                 \raggedright\source{\ownwork}
+                 \vspace{0.75cm}
+             \end{table}
+\end{minipage}
+
+Mimo stosunkowo dobrych wartości RMSLE, w większości badanych przypadków osiągnięto niską wartość R2, co oznacza, że wyselekcjonowane atrybuty są zasadniczo słabo skorelowane ze zmienną zależną.
+Satysfakcjonujący rezultat osiągnięto dla danych z 2017 roku i zmiennej zależnej JobSeekingStatus.
+Na tej podstawie można wnioskować, że na chęć poszukiwania pracy mogą mieć wpływ następujące cechy:
+
+\begin{itemize}
+    \item Możliwość rozwoju osobistego,
+    \item Wymagane na stanowisku doświadczenie,
+    \item Technologie wykorzystywane w pracy.
+\end{itemize}
+
 \subsection{Wyniki klasyfikacji}\label{sec:analysis:important-features:classification}
 %\bargraph{{AssessJobIndustry}, {AssessJobExp}, {AssessJobLeaders}, {AssessJobProfDevel}, {AssessJobDiversity}, {AssessJobFinances}, {StackOverflowCompanyPage}, {StackOverflowMetaChat}, {ImportantBenefits\_Vacation/day}, {ImportantBenefits\_Remote optio}}{(0.27,{AssessJobIndustry}) (2.60,{AssessJobExp}) (0.15,{AssessJobLeaders}) (1.34,{AssessJobProfDevel}) (3.01,{AssessJobDiversity}) (0.72,{AssessJobFinances}) (0.67,{StackOverflowCompanyPage}) (0.61,{StackOverflowMetaChat}) (0.47,{ImportantBenefits\_Vacation/day}) (0.33,{ImportantBenefits\_Remote optio})}{feat\_importance\_2017\_JobSeekingStatus}{feat\_importance\_2017\_JobSeekingStatus}{10cm}
 
@@ -212,15 +296,120 @@ Na rysunkach \ref{fig:result2}, \ref{fig:result12} i \ref{fig:result22} przedsta
 
 \imagescale{0.6}{../code/feat_importance/feat_importance_2018_JobSatisfaction_class.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu klasyfikacji dla zmiennej zależnej JobSatisfaction dla ankiety StackOverflow z roku 2018}{result12}
 
-\imagescale{0.75}{../code/feat_importance/feat_importance_2019_JobSatisfaction_class.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu klasyfikacji dla zmiennej zależnej JobSatisfaction dla ankiety StackOverflow z roku 2019}{result22}
+\imagescale{0.6}{../code/feat_importance/feat_importance_2019_JobSatisfaction_class.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu klasyfikacji dla zmiennej zależnej JobSatisfaction dla ankiety StackOverflow z roku 2019}{result22}
 
 \imagescale{0.6}{../code/feat_importance/feat_importance_2017_JobSeekingStatus_class.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu klasyfikacji dla zmiennej zależnej JobSeekingStatus dla ankiety StackOverflow z roku 2017}{result4}
 
 \imagescale{0.6}{../code/feat_importance/feat_importance_2018_JobSeekingStatus_class.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu klasyfikacji dla zmiennej zależnej JobSeekingStatus dla ankiety StackOverflow z roku 2018}{result14}
 
-\imagescale{0.75}{../code/feat_importance/feat_importance_2019_JobSeekingStatus_class.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu klasyfikacji dla zmiennej zależnej JobSeekingStatus dla ankiety StackOverflow z roku 2019}{result24}
+\imagescale{0.6}{../code/feat_importance/feat_importance_2019_JobSeekingStatus_class.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu klasyfikacji dla zmiennej zależnej JobSeekingStatus dla ankiety StackOverflow z roku 2019}{result24}
 
-\todo{}
+
+W tabelach \ref{tabela:JobSatisfactionClassification} i \ref{tabela:JobSeekingStatusClassification} przedstawiono podsumowanie skuteczności modeli klasyfikacji, odpowiednio dla zmiennych zależnych JobSatisfaction i JobSeekingStatus.
+
+\noindent\begin{minipage}{\textwidth}
+             \begin{table}[H]
+                 \raggedright\caption{Regresja1\label{tabela:JobSatisfactionClassification}}
+                 \begin{center}
+                     \begin{tabular}{|P{.1\textwidth}|P{.26\textwidth}|P{.26\textwidth}|P{.26\textwidth}|}
+
+                         \hline
+                         Rok   & 2017             & 2018             & 2019             \\
+                         \hline
+                         Accuracy & \cellgreen{0.87} & \cellgray{0.76} & \cellgray{0.81} \\
+                         \hline
+                         Precision    & \cellgreen{0.87} & \cellgray{0.77}   & \cellgray{0.83}   \\
+                         \hline
+                         Recall    & \cellgreen{1.00} & \cellgreen{1.00}   & \cellgreen{0.96}   \\
+                         \hline
+                         Pytania z siłą wpływu większą od 0.2 &
+                         \begin{itemize}
+                             \item HomeRemote
+                             \item AssessJobProfDevel
+                             \item Country\_HDI
+                             \item KinshipDevelopers
+                             \item AssessJobRemote
+                         \end{itemize} &
+                         \begin{itemize}
+                             \item HopeFiveYears \_SameWork
+                             \item LastNewJob
+                             \item Country\_HDI
+                             \item ConvertedSalary
+                             \item YearsCoding
+                         \end{itemize} &
+                         \begin{itemize}
+                             \item MgrIncompetent
+                             \item WorkChallenge \_ToxicEnvironment
+                             \item WorkChallenge \_NoManagementSupport
+                             \item LastNewJob
+                             \item PurchaseWhat
+                         \end{itemize} \\
+                         \hline
+                     \end{tabular}
+                 \end{center}
+                 \raggedright\source{\ownwork}
+                 \vspace{0.75cm}
+             \end{table}
+\end{minipage}
+
+\noindent\begin{minipage}{\textwidth}
+             \begin{table}[H]
+                 \raggedright\caption{Regresja1\label{tabela:JobSeekingStatusClassification}}
+                 \begin{center}
+                     \begin{tabular}{|P{.1\textwidth}|P{.26\textwidth}|P{.26\textwidth}|P{.26\textwidth}|}
+
+                         \hline
+                         Rok   & 2017             & 2018             & 2019             \\
+                         \hline
+                         Accuracy & \cellgreen{0.95} & \cellred{0.74} & \cellgray{0.79} \\
+                         \hline
+                         Precision    & \cellgreen{0.95} & \cellred{0.68}   & \cellred{0.69}   \\
+                         \hline
+                         Recall    & \cellgreen{0.99} & \cellred{0.47}   & \cellred{0.53}   \\
+                         \hline
+                         Pytania z siłą wpływu większą od 0.2 &
+                         \begin{itemize}
+                             \item AssessJobExp
+                             \item AssessJobCommute
+                             \item AssessJobProfDevel
+                             \item AssessJobRole
+                             \item AssessJobLeaders
+                         \end{itemize} &
+                         \begin{itemize}
+                             \item LastNewJob
+                             \item Country\_HDI
+                             \item HopeFiveYears \_SameWork
+                             \item YearsCoding
+                             \item ConvertedSalary
+                         \end{itemize} &
+                         \begin{itemize}
+                             \item MgrIncompetent
+                             \item LastNewJob
+                             \item Country\_HDI
+                             \item WorkChallenge \_NoManagementSupport
+                             \item WorkChallenge \_ToxicEnvironment
+                         \end{itemize} \\
+                         \hline
+                     \end{tabular}
+                 \end{center}
+                 \raggedright\source{\ownwork}
+                 \vspace{0.75cm}
+             \end{table}
+\end{minipage}
+
+Satysfakcjonujący rezultat osiągnięto dla danych z 2017 roku i obu badanych zmiennych zależnych.
+Na tej podstawie można wnioskować, że na zadowolenie z pracy mogą mieć wpływ następujące cechy:
+
+\begin{itemize}
+    \item
+\end{itemize}
+
+Natomiast na chęć poszukiwania pracy mogą mieć wpływ następujące cechy:
+
+\begin{itemize}
+    \item
+\end{itemize}
+
 \section{Wnioski i~analiza możliwości praktycznego zastosowania zbudowanego modelu predykcji}\label{sec:analysis:model-fitness}
 \todo{Analiza skuteczności (dopasowania) modelu}
 
