@@ -194,6 +194,16 @@ linenos
 \end{minipage}
 }
 
+\newcommand{\imagewidest}[4][\ownwork]{
+    \noindent\begin{minipage}{\textwidth}
+                 \begin{figure}[H]
+                     \centering\includegraphics[width=\textwidth]{#2}
+                     \caption{#3}\label{fig:#4}
+                     \raggedright\source{#1}
+                 \end{figure}
+    \end{minipage}
+}
+
 \newcommand{\source}[1]{{\footnotesize Źródło: #1}}
 \newcommand{\ownwork}{opracowanie własne}
 \newcommand{\workbasedon}[1]{\ownwork~na podstawie: #1}
