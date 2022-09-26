@@ -155,6 +155,14 @@ estimator_params = {
              \vspace{0.75cm}
 \end{minipage}
 
+Zbiór danych podzielono losowo w stosunku 7:3 w nastęujący sposób:
+\begin{itemize}
+    \item z 70\% danych utworzono zbiór uczący (ang. training set)
+    \item z 30\% danych utworzono zbiór testowy (ang. test set)
+\end{itemize}
+
+Zbiór uczący został wykorzystany do trenowania modelu predykcji, natomiast zbiór testowy do sprawdzenia skuteczności predykcji przy pomocy odpowiednich miar.
+
 Do sprawdzenia skuteczności predykcji modelu regresji wykorzystano następujące miary:
 \begin{itemize}
     \item Pierwiastek logarytmu błędu średniokwadratowego RMSLE (ang. Root Mean Squared Logarytmic Error)~- pokazuje jak bardzo predykcja jest oddalona od oczekiwanej wartości. Im niższa wartość tym lepiej.
@@ -165,12 +173,18 @@ Celem modelu jest maksymalizacja R2 i~minimalizacja RMSLE. Dobrze dopasowany mod
 Natomiast przy akceptowalnym poziomie współczynnika R2, model może być użyteczny jeśli RMSLE nie przekracza 50\% \cite{rmse-good-value}.
 Ma to szczególne znaczenie w~przypadku badań prowadzonych w~obszarze nauk o~społeczeństwie, gdyż nawet model nie oferujący bardo wysokiej skuteczności predykcji może pozwolić na pogłębienie wglądu w~kwestię zachowań społecznych.
 
-Sprawdzenie skuteczności modelu klasyfikacji oparte jest na znacznie prostszym mechanizmie wyznaczania procentowej dokładności predykcji (ang. accuracy).
-\todo{precission, recall}
+Do sprawdzenia skuteczności predykcji modelu klasyfikacji wykorzystano następujące miary:
+\begin{itemize}
+    \item Dokładność (ang. accuracy) - pokazuje w ilu przypadkach klasyfikacja oszacowała poprawną wartość,
+    \item Precyzja (ang. precision) - "proporcja prawidłowych pozytywnych klasyfikacji względem wszystkich pozytywnych klasyfikacji" \cite{recall-precision},
+    \item Czułość (ang. recall) - "proporcja poprawnych klasyfikacji przykładów pozytywnych względem wszystkich przykładów należących do klasy pozytywnej" \cite{recall-precision}.
+\end{itemize}
 
-Selekcję pytań najsilniej wpływających na predykcję wykonano z wykorzystaniem metody SHAP (ang. SHapley Additive exPlanations)
-\todo{https://towardsdatascience.com/using-shap-values-to-explain-how-your-machine-learning-model-works-732b3f40e137}
-\todo{https://medium.com/dataman-in-ai/explain-your-model-with-the-shap-values-bc36aac4de3d}
+Na podstawie opracowania Brownlee \cite{accuracy-level}, w badaniach przyjęto wartości miar klasyfikacji za dobre, jeśli wynoszą powyżej 85\% i za złe jeśli wynoszą poniżej 75\%.
+
+Selekcję pytań najsilniej wpływających na predykcję wykonano z wykorzystaniem metody SHAP (ang. SHapley Additive exPlanations).
+Jest to metoda oparta o kooperacyjną teorię gier i jest wykorzystywana do zwiększenia możliwości interpretacyjnych modeli uczenia maszynowego.
+Pozwala na selekcję cech silnie skorelowanych z przewidzianym wynikiem, jednak nie pozwala na ocenę skuteczności samej predykcji \cite{shap}.
 
 
 \section{Prezentacja wyników}\label{sec:analysis:important-features}
@@ -284,7 +298,7 @@ Satysfakcjonujący rezultat osiągnięto dla danych z 2017 roku i zmiennej zale�
 Na tej podstawie można wnioskować, że na chęć poszukiwania pracy mogą mieć wpływ następujące cechy:
 
 \begin{itemize}
-    \item Czy respondent uważa, że możliwość rozwoju osobistego jest ważna,
+    \item Czy respondent uważa, że możliwość rozwoju osobistego w firmie jest ważna,
     \item Czy respondent uważa, że wymagane na stanowisku doświadczenie jest ważne,
     \item Czy respondent uważa, że technologie wykorzystywane w pracy są ważne.
 \end{itemize}
@@ -404,18 +418,18 @@ Na tej podstawie można wnioskować, że na zadowolenie z pracy mogą mieć wpł
 
 \begin{itemize}
     \item Jak często respondent obecnie pracuje zdalnie,
-    \item Czy respondent uważa, że możliwość rozwoju osobistego jest ważna,
+    \item Czy respondent uważa, że możliwość rozwoju osobistego w firmie jest ważna,
     \item Indeks rozwoju społecznego kraju, w którym mieszka respondent,
     \item W jakim stopniu respondent czuje solidarność ze swoimi współpracownikami,
-    \item Czy respondent uważa, że Możliwość pracy zdalnej jest ważna.
+    \item Czy respondent uważa, że możliwość pracy zdalnej jest ważna.
 \end{itemize}
 
 Natomiast na chęć poszukiwania pracy mogą mieć wpływ następujące cechy:
 
 \begin{itemize}
-    \item Czy respondent uważa, że doświadczenie wymagane na stanowsiku pracy jest ważne,
+    \item Czy respondent uważa, że doświadczenie wymagane na stanowisku pracy jest ważne,
     \item Czy respondent uważa, że czas dojazdu do pracy jest ważny,
-    \item Czy respondent uważa, że możliwość rozwoju osobistego jest ważna,
+    \item Czy respondent uważa, że możliwość rozwoju osobistego w firmie jest ważna,
     \item Czy respondent uważa, że nazwa roli lub stanowiska pracy jest ważna,
     \item Czy respondent uważa, że reputacja seniorów pracujących w firmie jest ważna.
 \end{itemize}
