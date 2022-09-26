@@ -84,17 +84,18 @@ Do trenowania modelu uczenia maszynowego wykorzystano algorytm przedstawiony na 
              \end{lstlisting}
              \hspace{.075\textwidth}\begin{minipage}{.85\textwidth}
                                         \begin{minted}{python}
+from sklearn.model_selection import train_test_split
 import xgboost as xgb
 import pandas as pd
 import matplotlib.pyplot as plt
 import math
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.metrics import mean_squared_error, r2_score, accuracy_score, recall_score, precision_score
 from sklearn.feature_selection import SelectFromModel
+import shap
 
-def fit_model(data, dependent_variable, name):
+def fit_model(data, dependent_variable, is_classifier, name):
     def fit_estimator(x_set, y_set):
-        estimator = xgb.XGBRegressor(**estimator_params, eval_metric='rmsle')
+        estimator = xgb.XGBClassifier(**estimator_params, eval_metric='auc') if is_classifier else xgb.XGBRegressor(**estimator_params, eval_metric='rmsle')
         estimator.fit(x_set, y_set)
         return estimator
 
@@ -103,15 +104,15 @@ def fit_model(data, dependent_variable, name):
 
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, stratify=y)
 
-    selection = SelectFromModel(fit_estimator(x_train, y_train), threshold=.015, prefit=True)
+    selection = SelectFromModel(fit_estimator(x_train, y_train), max_features=10, prefit=True)
 
     selection_estimator = fit_estimator(selection.transform(x_train), y_train)
     preds = selection_estimator.predict(selection.transform(x_test))
-    print("RMSE: %.2f" % math.sqrt(abs(mean_squared_error(y_test, preds))))
-    print("R2: %.2f" % r2_score(y_test, preds))
-
-    xgb.plot_importance(selection_estimator, max_num_features=10)
-    plt.tight_layout()
+    if is_classifier:
+        print("Accuracy: %.2f" % accuracy_score(y_test, preds) + ", Precision: %.2f" % precision_score(y_test, preds) + ", Recall: %.2f" % recall_score(y_test, preds))
+    else:
+        print("RMSLE: %.2f" % math.sqrt(abs(mean_squared_error(y_test, preds))) + ", R2: %.2f" % r2_score(y_test, preds))
+    shap.summary_plot(shap.TreeExplainer(selection_estimator).shap_values(x_test), x_test, plot_type="bar", max_display=10, show=False)
     plt.savefig(f'data/feat_importance_{name}.png')
                                         \end{minted}
              \end{minipage}
@@ -135,18 +136,16 @@ estimator_params = {
     'single_precision_histogram': True,
     'n_jobs': -1,
     'n_estimators': 1500,
-    'importance_type': 'weight',
+    'importance_type': 'gain',
     'use_label_encoder': False,
     'booster': 'gbtree',
-    'scale_pos_weight': 1,
     'reg_alpha': 5,
     'colsample_bytree': .8,
-    'learning_rate': .1,
-    'min_child_weight': 7,
-    'subsample': .5,
-    'max_depth': 6,
-    'gamma': 0.1,
-    'reg_lambda': 1
+    'learning_rate': .05,
+    'min_child_weight': 100,
+    'subsample': 0.7,
+    'max_depth': 20,
+    'gamma': 0.01
 }
                                         \end{minted}
              \end{minipage}

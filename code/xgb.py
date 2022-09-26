@@ -20,7 +20,6 @@ estimator_params = {
     'importance_type': 'gain',
     'use_label_encoder': False,
     'booster': 'gbtree',
-    # 'scale_pos_weight': 9,
     'reg_alpha': 5,
     'colsample_bytree': .8,
     'learning_rate': .05,
@@ -28,7 +27,6 @@ estimator_params = {
     'subsample': 0.7,
     'max_depth': 20,
     'gamma': 0.01,
-    # 'reg_lambda': 1,  # 100
 }
 
 

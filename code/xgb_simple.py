@@ -3,13 +3,9 @@ import xgboost as xgb
 import pandas as pd
 import matplotlib.pyplot as plt
 import math
-from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.metrics import mean_squared_error, r2_score, accuracy_score, recall_score, precision_score
 from sklearn.feature_selection import SelectFromModel
-import numpy as np
-# import seaborn as sns
-from sklearn.ensemble import AdaBoostRegressor
-from numpy import sort
-from preprocessor import convert_to_classification
+import shap
 
 estimator_params = {
     'tree_method': "hist",
@@ -52,9 +48,9 @@ def fit():
             fit_model(get_data(year), var, True, f'{year}_{var}')
 
 
-def fit_model(data, dependent_variable, name):
+def fit_model(data, dependent_variable, is_classifier, name):
     def fit_estimator(x_set, y_set):
-        estimator = xgb.XGBRegressor(**estimator_params, eval_metric='rmsle')
+        estimator = xgb.XGBClassifier(**estimator_params, eval_metric='auc') if is_classifier else xgb.XGBRegressor(**estimator_params, eval_metric='rmsle')
         estimator.fit(x_set, y_set)
         return estimator
 
@@ -63,15 +59,15 @@ def fit_model(data, dependent_variable, name):
 
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, stratify=y)
 
-    selection = SelectFromModel(fit_estimator(x_train, y_train), threshold=.015, prefit=True)
+    selection = SelectFromModel(fit_estimator(x_train, y_train), max_features=10, prefit=True)
 
     selection_estimator = fit_estimator(selection.transform(x_train), y_train)
     preds = selection_estimator.predict(selection.transform(x_test))
-    print("RMSE: %.2f" % math.sqrt(abs(mean_squared_error(y_test, preds))))
-    print("R2: %.2f" % r2_score(y_test, preds))
-
-    xgb.plot_importance(selection_estimator, max_num_features=10)
-    plt.tight_layout()
+    if is_classifier:
+        print("Accuracy: %.2f" % accuracy_score(y_test, preds) + ", Precision: %.2f" % precision_score(y_test, preds) + ", Recall: %.2f" % recall_score(y_test, preds))
+    else:
+        print("RMSLE: %.2f" % math.sqrt(abs(mean_squared_error(y_test, preds))) + ", R2: %.2f" % r2_score(y_test, preds))
+    shap.summary_plot(shap.TreeExplainer(selection_estimator).shap_values(x_test), x_test, plot_type="bar", max_display=10, show=False)
     plt.savefig(f'data/feat_importance_{name}.png')
 
 
