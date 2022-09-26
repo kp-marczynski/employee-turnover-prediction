@@ -119,7 +119,8 @@ def fit_model(data, dependent_variable, is_classifier, name):
         print("Accuracy: %.2f" % accuracy_score(y_test, preds) + ", Precision: %.2f" % precision_score(y_test, preds) + ", Recall: %.2f" % recall_score(y_test, preds))
     else:
         print("RMSLE: %.2f" % math.sqrt(abs(mean_squared_error(y_test, preds))) + ", R2: %.2f" % r2_score(y_test, preds))
-    shap.summary_plot(shap.TreeExplainer(selection_estimator).shap_values(x_test), x_test, plot_type="bar", max_display=10, show=False)
+    shap.summary_plot(shap.TreeExplainer(selection_estimator)
+        .shap_values(x_test), x_test, plot_type="bar", max_display=10, show=False)
     plt.savefig(f'data/feat_importance_{name}.png')
                                         \end{minted}
              \end{minipage}
