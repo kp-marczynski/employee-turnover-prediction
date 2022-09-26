@@ -45,11 +45,18 @@ Do celów badań będących przedmiotem niniejszej pracy implementacja algorytmu
 
 
 \section{Wstępne przetworzenie danych}\label{sec:analysis:preprocessing}
-Do przeprowadzenia badania wybrano ankiety deweloperskie StackOverflow z~lat 2017, 2018, 2019 (dostępne do pobrania pod adresem \url{https://insights.stackoverflow.com/survey}) ze względu na to, że są to 3 najnowsze edycje ankiety w~których zadano pytania o~następujące 2 aspekty:
+W celu przeprowadzenia badań konieczne jest wyznaczenie zmiennej zależnej, której wartość będzie próbował oszacować model predykcji.
+Ze względu na omawiany w~pracy problem retencji pracowników, jako zmienną zależną w~badaniach można przyjąć następujące aspekty z~ankiet StackOverflow:
 \begin{enumerate}
     \item ocena zadowolenia z~obecnie wykonywanej pracy w~10 stopniowej skali,
     \item status poszukiwania pracy w~3 stopniowej skali.
 \end{enumerate}
+
+Badania zdecydowano przeprowadzić dla 3 edycji ankiety, aby zwiększyć szansę na zbudowanie modelu o~satysfakcjonującym poziomie predykcji.
+Ankiety z~lat 2021 i~2022 zostały odrzucone ze względu na brak pytań dotyczących zadowolenia z~pracy i~statusu poszukiwania pracy.
+Natomiast ankieta z~roku 2020 została odrzucona, ponieważ była przeprowadzana w~ciągu pierwszych 2 miesięcy trwania pandemii koronawirusa
+i istnieje obawa, że mogło to negatywnie wpłynąć na spójność zbioru danych w~kontekście modelowania predykcji.
+Biorąc powyższe pod uwagę, do przeprowadzenia badania wybrano ankiety deweloperskie StackOverflow z~lat 2017, 2018, 2019 (dostępne do pobrania pod adresem \url{https://insights.stackoverflow.com/survey}) ze względu na to, że są to 3 najnowsze edycje ankiety w~których zadano pytania o~wymienione powyżej aspekty.
 
 Powyższe aspekty zostaną wykorzystane w~badaniu jako zmienne zależne, czyli zmienne których wartość chcemy wyznaczać wykorzystując model predykcji.
 Dla badań z~wykorzystaniem algorytmu regresji zmienne zależne pozostawiono w~oryginalnej skali,
