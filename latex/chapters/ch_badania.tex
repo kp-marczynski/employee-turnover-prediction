@@ -41,21 +41,28 @@ Do analizy danych zostaną wykorzystane metody uczenia maszynowego, a~w szczegó
 Zdecydowano się na modelowanie problemu jako regresji, a~nie klasyfikacji, gdyż zadowolenie pracowników oraz chęć zmiany pracy można przedstawić na skali liczbowej.
 Punnoose i~Ajit \cite{punnoose-2016} przeprowadzili badania związane ze skutecznością przewidywania retencji pracowników w~firmie z~wykorzystaniem uczenia maszynowego.
 Klasyfikator XGBoost osiągnął aż 86\% skuteczności klasyfikacji co stanowiło ponad 50\% lepszy wynik niż pozostałe testowane metody klasyfikacji tradycyjnie używane podczas badania problemu fluktuacji i~retencji pracowników.
-Do celów badań będących przedmiotem niniejszej pracy implementacja algorytmu regresji i klasyfikacji zostanie przygotowana w języku Python.
+Do celów badań będących przedmiotem niniejszej pracy implementacja algorytmu regresji i~klasyfikacji zostanie przygotowana w~języku Python.
 
 
 \section{Wstępne przetworzenie danych}\label{sec:analysis:preprocessing}
-Do przeprowadzenia badania wybrano ankiety deweloperskie StackOverflow z~lat 2017, 2018, 2019 (dostępne do pobrania pod adresem \url{https://insights.stackoverflow.com/survey}) ze względu na to, że są to 3 najnowsze edycje ankiety w~których zadano pytania o~następujące 2 aspekty:
+W celu przeprowadzenia badań konieczne jest wyznaczenie zmiennej zależnej, której wartość będzie próbował oszacować model predykcji.
+Ze względu na omawiany w~pracy problem retencji pracowników, jako zmienną zależną w~badaniach można przyjąć następujące aspekty z~ankiet StackOverflow:
 \begin{enumerate}
     \item ocena zadowolenia z~obecnie wykonywanej pracy w~10 stopniowej skali,
     \item status poszukiwania pracy w~3 stopniowej skali.
 \end{enumerate}
 
-Powyższe aspekty zostaną wykorzystane w badaniu jako zmienne zależne, czyli zmienne których wartość chcemy wyznaczać wykorzystując model predykcji.
-Dla badań z wykorzystaniem algorytmu regresji zmienne zależne pozostawiono w oryginalnej skali,
+Badania zdecydowano przeprowadzić dla 3 edycji ankiety, aby zwiększyć szansę na zbudowanie modelu o~satysfakcjonującym poziomie predykcji.
+Ankiety z~lat 2021 i~2022 zostały odrzucone ze względu na brak pytań dotyczących zadowolenia z~pracy i~statusu poszukiwania pracy.
+Natomiast ankieta z~roku 2020 została odrzucona, ponieważ była przeprowadzana w~ciągu pierwszych 2 miesięcy trwania pandemii koronawirusa
+i istnieje obawa, że mogło to negatywnie wpłynąć na spójność zbioru danych w~kontekście modelowania predykcji.
+Biorąc powyższe pod uwagę, do przeprowadzenia badania wybrano ankiety deweloperskie StackOverflow z~lat 2017, 2018, 2019 (dostępne do pobrania pod adresem \url{https://insights.stackoverflow.com/survey}) ze względu na to, że są to 3 najnowsze edycje ankiety w~których zadano pytania o~wymienione powyżej aspekty.
+
+Powyższe aspekty zostaną wykorzystane w~badaniu jako zmienne zależne, czyli zmienne których wartość chcemy wyznaczać wykorzystując model predykcji.
+Dla badań z~wykorzystaniem algorytmu regresji zmienne zależne pozostawiono w~oryginalnej skali,
 natomiast dla algorytmu klasyfikacji odpowiedzi sprowadzono do klasyfikacji binarnej przy następujących założeniach:
 \begin{enumerate}
-    \item pracownik jest zadowolony z pracy jeśli ocenił poziom zadowolenia na 5 lub więcej,
+    \item pracownik jest zadowolony z~pracy jeśli ocenił poziom zadowolenia na 5 lub więcej,
     \item pracownik ma status osoby poszukującej jeśli szuka pracy aktywnie lub jest otwarty na atrakcyjne oferty pracy.
 \end{enumerate}
 
@@ -99,8 +106,8 @@ def fit_model(data, dependent_variable, is_classifier, name):
         estimator.fit(x_set, y_set)
         return estimator
 
-    x = data.drop(regression_dependent_variables + class_dependent_variables, axis=1)
-    y = data[dependent_variable]
+    x~= data.drop(regression_dependent_variables + class_dependent_variables, axis=1)
+    y~= data[dependent_variable]
 
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, stratify=y)
 
@@ -154,10 +161,10 @@ estimator_params = {
              \vspace{0.75cm}
 \end{minipage}
 
-Zbiór danych podzielono losowo w stosunku 7:3 w nastęujący sposób:
+Zbiór danych podzielono losowo w~stosunku 7:3 w~nastęujący sposób:
 \begin{itemize}
-    \item z 70\% danych utworzono zbiór uczący (ang. training set)
-    \item z 30\% danych utworzono zbiór testowy (ang. test set)
+    \item z~70\% danych utworzono zbiór uczący (ang. training set)
+    \item z~30\% danych utworzono zbiór testowy (ang. test set)
 \end{itemize}
 
 Zbiór uczący został wykorzystany do trenowania modelu predykcji, natomiast zbiór testowy do sprawdzenia skuteczności predykcji przy pomocy odpowiednich miar.
@@ -170,45 +177,45 @@ Do sprawdzenia skuteczności predykcji modelu regresji wykorzystano następując
 
 Celem modelu jest maksymalizacja R2 i~minimalizacja RMSLE. Dobrze dopasowany model powinien mieć wartość R2 na poziomie powyżej 70\% \cite{r2-good-value}, jednak nawet przy niskiej wartości R2 model może być użyteczny jeżeli RMSLE ma wartość poniżej 10\% \cite{r2-vs-rmse}.
 Natomiast przy akceptowalnym poziomie współczynnika R2, model może być użyteczny jeśli RMSLE nie przekracza 50\% \cite{rmse-good-value}.
-Ma to szczególne znaczenie w~przypadku badań prowadzonych w~obszarze nauk o~społeczeństwie, gdyż nawet model nie oferujący bardo wysokiej skuteczności predykcji może pozwolić na pogłębienie wglądu w~kwestię zachowań społecznych.
+Ma to szczególne znaczenie w~przypadku badań prowadzonych w~obszarze nauk o~społeczeństwie, gdyż nawet model nie oferujący bardzo wysokiej skuteczności predykcji może pozwolić na pogłębienie wglądu w~kwestię zachowań społecznych.
 
 Do sprawdzenia skuteczności predykcji modelu klasyfikacji wykorzystano następujące miary:
 \begin{itemize}
-    \item Dokładność (ang. accuracy) - pokazuje w ilu przypadkach klasyfikacja oszacowała poprawną wartość,
-    \item Precyzja (ang. precision) - "proporcja prawidłowych pozytywnych klasyfikacji względem wszystkich pozytywnych klasyfikacji" \cite{recall-precision},
-    \item Czułość (ang. recall) - "proporcja poprawnych klasyfikacji przykładów pozytywnych względem wszystkich przykładów należących do klasy pozytywnej" \cite{recall-precision}.
+    \item Dokładność (ang. accuracy)~- pokazuje w~ilu przypadkach klasyfikacja oszacowała poprawną wartość,
+    \item Precyzja (ang. precision)~- "proporcja prawidłowych pozytywnych klasyfikacji względem wszystkich pozytywnych klasyfikacji" \cite{recall-precision},
+    \item Czułość (ang. recall)~- "proporcja poprawnych klasyfikacji przykładów pozytywnych względem wszystkich przykładów należących do klasy pozytywnej" \cite{recall-precision}.
 \end{itemize}
 
-Na podstawie opracowania Brownlee \cite{accuracy-level}, w badaniach przyjęto wartości miar klasyfikacji za dobre, jeśli wynoszą powyżej 85\% i za złe jeśli wynoszą poniżej 75\%.
+Na podstawie opracowania Brownlee \cite{accuracy-level}, w~badaniach przyjęto wartości miar klasyfikacji za dobre, jeśli wynoszą powyżej 85\% i~za złe jeśli wynoszą poniżej 75\%.
 
-Selekcję pytań najsilniej wpływających na predykcję wykonano z wykorzystaniem metody SHAP (ang. SHapley Additive exPlanations).
-Jest to metoda oparta o kooperacyjną teorię gier i jest wykorzystywana do zwiększenia możliwości interpretacyjnych modeli uczenia maszynowego.
-Pozwala na selekcję cech silnie skorelowanych z przewidzianym wynikiem, jednak nie pozwala na ocenę skuteczności samej predykcji \cite{shap}.
+Selekcję pytań najsilniej wpływających na predykcję wykonano z~wykorzystaniem metody SHAP (ang. SHapley Additive exPlanations).
+Jest to metoda oparta o~kooperacyjną teorię gier i~jest wykorzystywana do zwiększenia możliwości interpretacyjnych modeli uczenia maszynowego.
+Pozwala na selekcję cech silnie skorelowanych z~przewidzianym wynikiem, jednak nie pozwala na ocenę skuteczności samej predykcji \cite{shap}.
 
 
 \section{Prezentacja wyników}\label{sec:analysis:important-features}
 
-Algorytm przedstawiony na listingu \ref{listing:xgb} został uruchomiony dla znormalizowanych danych z lat 2017-2019.
-Lista atrybutów biorących udział w badaniu i odpowiadających im pytań została przedstawiona w dodatku \ref{app:dod1}.
-Wyniki zostały podzielone ze względu na modelowanie problemu jako regresję i jako klasyfikację.
+Algorytm przedstawiony na listingu \ref{listing:xgb} został uruchomiony dla znormalizowanych danych z~lat 2017-2019.
+Lista atrybutów biorących udział w~badaniu i~odpowiadających im pytań została przedstawiona w~dodatku \ref{app:dod1}.
+Wyniki zostały podzielone ze względu na modelowanie problemu jako regresję i~jako klasyfikację.
 
 \subsection{Wyniki regresji}\label{sec:analysis:important-features:regression}
 
-Na rysunkach \ref{fig:result1}, \ref{fig:result11} i \ref{fig:result21} przedstawiono wyniki regresji dla zmiennej zależnej "JobSatisfaction", natomiast na rysunkach \ref{fig:result3}, \ref{fig:result13} i \ref{fig:result23} przedstawiono wyniki regresji dla zmiennej zależnej "JobSeekingStatus".
+Na rysunkach \ref{fig:result1}, \ref{fig:result11} i~\ref{fig:result21} przedstawiono wyniki regresji dla zmiennej zależnej "JobSatisfaction", natomiast na rysunkach \ref{fig:result3}, \ref{fig:result13} i~\ref{fig:result23} przedstawiono wyniki regresji dla zmiennej zależnej "JobSeekingStatus".
 
-\imagescale{0.6}{../code/feat_importance/feat_importance_2017_JobSatisfaction.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu regresji dla zmiennej zależnej JobSatisfaction dla ankiety StackOverflow z roku 2017}{result1}
+\imagescale{0.6}{../code/feat_importance/feat_importance_2017_JobSatisfaction.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w~modelu regresji dla zmiennej zależnej JobSatisfaction dla ankiety StackOverflow z~roku 2017}{result1}
 
-\imagescale{0.6}{../code/feat_importance/feat_importance_2018_JobSatisfaction.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu regresji dla zmiennej zależnej JobSatisfaction dla ankiety StackOverflow z roku 2018}{result11}
+\imagescale{0.6}{../code/feat_importance/feat_importance_2018_JobSatisfaction.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w~modelu regresji dla zmiennej zależnej JobSatisfaction dla ankiety StackOverflow z~roku 2018}{result11}
 
-\imagescale{0.6}{../code/feat_importance/feat_importance_2019_JobSatisfaction.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu regresji dla zmiennej zależnej JobSatisfaction dla ankiety StackOverflow z roku 2019}{result21}
+\imagescale{0.6}{../code/feat_importance/feat_importance_2019_JobSatisfaction.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w~modelu regresji dla zmiennej zależnej JobSatisfaction dla ankiety StackOverflow z~roku 2019}{result21}
 
-\imagescale{0.6}{../code/feat_importance/feat_importance_2017_JobSeekingStatus.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu regresji dla zmiennej zależnej JobSeekingStatus dla ankiety StackOverflow z roku 2017}{result3}
+\imagescale{0.6}{../code/feat_importance/feat_importance_2017_JobSeekingStatus.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w~modelu regresji dla zmiennej zależnej JobSeekingStatus dla ankiety StackOverflow z~roku 2017}{result3}
 
-\imagescale{0.6}{../code/feat_importance/feat_importance_2018_JobSeekingStatus.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu regresji dla zmiennej zależnej JobSeekingStatus dla ankiety StackOverflow z roku 2018}{result13}
+\imagescale{0.6}{../code/feat_importance/feat_importance_2018_JobSeekingStatus.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w~modelu regresji dla zmiennej zależnej JobSeekingStatus dla ankiety StackOverflow z~roku 2018}{result13}
 
-\imagescale{0.6}{../code/feat_importance/feat_importance_2019_JobSeekingStatus.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu regresji dla zmiennej zależnej JobSeekingStatus dla ankiety StackOverflow z roku 2019}{result23}
+\imagescale{0.6}{../code/feat_importance/feat_importance_2019_JobSeekingStatus.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w~modelu regresji dla zmiennej zależnej JobSeekingStatus dla ankiety StackOverflow z~roku 2019}{result23}
 
-W tabelach \ref{tabela:JobSatisfactionRegression} i \ref{tabela:JobSeekingStatusRegression} przedstawiono podsumowanie skuteczności modeli regresji, odpowiednio dla zmiennych zależnych JobSatisfaction i JobSeekingStatus.
+W tabelach \ref{tabela:JobSatisfactionRegression} i~\ref{tabela:JobSeekingStatusRegression} przedstawiono podsumowanie skuteczności modeli regresji, odpowiednio dla zmiennych zależnych JobSatisfaction i~JobSeekingStatus.
 
 \noindent\begin{minipage}{\textwidth}
              \begin{table}[H]
@@ -223,7 +230,7 @@ W tabelach \ref{tabela:JobSatisfactionRegression} i \ref{tabela:JobSeekingStatus
                          \hline
                          R2    & \cellred{0.16}   & \cellred{0.04}   & \cellred{0.23}   \\
                          \hline
-                         Pytania z siłą wpływu większą od 0.2 &
+                         Pytania z~siłą wpływu większą od 0.2 &
                          \begin{itemize}
                              \item AssessJobProfDevel
                              \item HomeRemote
@@ -264,7 +271,7 @@ W tabelach \ref{tabela:JobSatisfactionRegression} i \ref{tabela:JobSeekingStatus
                          \hline
                          R2    & \cellgreen{0.63} & \cellred{0.18}   & \cellred{0.30}   \\
                          \hline
-                         Pytania z siłą wpływu większą od 0.2 &
+                         Pytania z~siłą wpływu większą od 0.2 &
                          \begin{itemize}
                              \item AssessJobProfDevel
                              \item AssessJobExp
@@ -292,35 +299,35 @@ W tabelach \ref{tabela:JobSatisfactionRegression} i \ref{tabela:JobSeekingStatus
              \end{table}
 \end{minipage}
 
-Mimo stosunkowo dobrych wartości RMSLE, w większości badanych przypadków osiągnięto niską wartość R2, co oznacza, że wyselekcjonowane atrybuty są zasadniczo słabo skorelowane ze zmienną zależną.
-Satysfakcjonujący rezultat osiągnięto dla danych z 2017 roku i zmiennej zależnej JobSeekingStatus.
+Mimo stosunkowo dobrych wartości RMSLE, w~większości badanych przypadków osiągnięto niską wartość R2, co oznacza, że wyselekcjonowane atrybuty są zasadniczo słabo skorelowane ze zmienną zależną.
+Satysfakcjonujący rezultat osiągnięto dla danych z~2017 roku i~zmiennej zależnej JobSeekingStatus.
 Na tej podstawie można wnioskować, że na chęć poszukiwania pracy mogą mieć wpływ następujące cechy:
 
 \begin{itemize}
-    \item Czy respondent uważa, że możliwość rozwoju osobistego w firmie jest ważna,
+    \item Czy respondent uważa, że możliwość rozwoju osobistego w~firmie jest ważna,
     \item Czy respondent uważa, że wymagane na stanowisku doświadczenie jest ważne,
-    \item Czy respondent uważa, że technologie wykorzystywane w pracy są ważne.
+    \item Czy respondent uważa, że technologie wykorzystywane w~pracy są ważne.
 \end{itemize}
 
 \subsection{Wyniki klasyfikacji}\label{sec:analysis:important-features:classification}
 %\bargraph{{AssessJobIndustry}, {AssessJobExp}, {AssessJobLeaders}, {AssessJobProfDevel}, {AssessJobDiversity}, {AssessJobFinances}, {StackOverflowCompanyPage}, {StackOverflowMetaChat}, {ImportantBenefits\_Vacation/day}, {ImportantBenefits\_Remote optio}}{(0.27,{AssessJobIndustry}) (2.60,{AssessJobExp}) (0.15,{AssessJobLeaders}) (1.34,{AssessJobProfDevel}) (3.01,{AssessJobDiversity}) (0.72,{AssessJobFinances}) (0.67,{StackOverflowCompanyPage}) (0.61,{StackOverflowMetaChat}) (0.47,{ImportantBenefits\_Vacation/day}) (0.33,{ImportantBenefits\_Remote optio})}{feat\_importance\_2017\_JobSeekingStatus}{feat\_importance\_2017\_JobSeekingStatus}{10cm}
 
-Na rysunkach \ref{fig:result2}, \ref{fig:result12} i \ref{fig:result22} przedstawiono wyniki klasyfikacji dla zmiennej zależnej "JobSatisfaction", natomiast na rysunkach \ref{fig:result4}, \ref{fig:result14} i \ref{fig:result24} przedstawiono wyniki klasyfikacji dla zmiennej zależnej "JobSeekingStatus".
+Na rysunkach \ref{fig:result2}, \ref{fig:result12} i~\ref{fig:result22} przedstawiono wyniki klasyfikacji dla zmiennej zależnej "JobSatisfaction", natomiast na rysunkach \ref{fig:result4}, \ref{fig:result14} i~\ref{fig:result24} przedstawiono wyniki klasyfikacji dla zmiennej zależnej "JobSeekingStatus".
 
-\imagescale{0.6}{../code/feat_importance/feat_importance_2017_JobSatisfaction_class.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu klasyfikacji dla zmiennej zależnej JobSatisfaction dla ankiety StackOverflow z roku 2017}{result2}
+\imagescale{0.6}{../code/feat_importance/feat_importance_2017_JobSatisfaction_class.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w~modelu klasyfikacji dla zmiennej zależnej JobSatisfaction dla ankiety StackOverflow z~roku 2017}{result2}
 
-\imagescale{0.6}{../code/feat_importance/feat_importance_2018_JobSatisfaction_class.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu klasyfikacji dla zmiennej zależnej JobSatisfaction dla ankiety StackOverflow z roku 2018}{result12}
+\imagescale{0.6}{../code/feat_importance/feat_importance_2018_JobSatisfaction_class.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w~modelu klasyfikacji dla zmiennej zależnej JobSatisfaction dla ankiety StackOverflow z~roku 2018}{result12}
 
-\imagescale{0.6}{../code/feat_importance/feat_importance_2019_JobSatisfaction_class.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu klasyfikacji dla zmiennej zależnej JobSatisfaction dla ankiety StackOverflow z roku 2019}{result22}
+\imagescale{0.6}{../code/feat_importance/feat_importance_2019_JobSatisfaction_class.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w~modelu klasyfikacji dla zmiennej zależnej JobSatisfaction dla ankiety StackOverflow z~roku 2019}{result22}
 
-\imagescale{0.6}{../code/feat_importance/feat_importance_2017_JobSeekingStatus_class.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu klasyfikacji dla zmiennej zależnej JobSeekingStatus dla ankiety StackOverflow z roku 2017}{result4}
+\imagescale{0.6}{../code/feat_importance/feat_importance_2017_JobSeekingStatus_class.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w~modelu klasyfikacji dla zmiennej zależnej JobSeekingStatus dla ankiety StackOverflow z~roku 2017}{result4}
 
-\imagescale{0.6}{../code/feat_importance/feat_importance_2018_JobSeekingStatus_class.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu klasyfikacji dla zmiennej zależnej JobSeekingStatus dla ankiety StackOverflow z roku 2018}{result14}
+\imagescale{0.6}{../code/feat_importance/feat_importance_2018_JobSeekingStatus_class.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w~modelu klasyfikacji dla zmiennej zależnej JobSeekingStatus dla ankiety StackOverflow z~roku 2018}{result14}
 
-\imagescale{0.6}{../code/feat_importance/feat_importance_2019_JobSeekingStatus_class.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w modelu klasyfikacji dla zmiennej zależnej JobSeekingStatus dla ankiety StackOverflow z roku 2019}{result24}
+\imagescale{0.6}{../code/feat_importance/feat_importance_2019_JobSeekingStatus_class.png}{Średnia siła wpływu 10 pytań najsilniej wpływających na predykcję w~modelu klasyfikacji dla zmiennej zależnej JobSeekingStatus dla ankiety StackOverflow z~roku 2019}{result24}
 
 
-W tabelach \ref{tabela:JobSatisfactionClassification} i \ref{tabela:JobSeekingStatusClassification} przedstawiono podsumowanie skuteczności modeli klasyfikacji, odpowiednio dla zmiennych zależnych JobSatisfaction i JobSeekingStatus.
+W tabelach \ref{tabela:JobSatisfactionClassification} i~\ref{tabela:JobSeekingStatusClassification} przedstawiono podsumowanie skuteczności modeli klasyfikacji, odpowiednio dla zmiennych zależnych JobSatisfaction i~JobSeekingStatus.
 
 \noindent\begin{minipage}{\textwidth}
              \begin{table}[H]
@@ -337,7 +344,7 @@ W tabelach \ref{tabela:JobSatisfactionClassification} i \ref{tabela:JobSeekingSt
                          \hline
                          Czułość    & \cellgreen{1.00} & \cellgreen{1.00} & \cellgreen{0.96} \\
                          \hline
-                         Pytania z siłą wpływu większą od 0.2 &
+                         Pytania z~siłą wpływu większą od 0.2 &
                          \begin{itemize}
                              \item HomeRemote
                              \item AssessJobProfDevel
@@ -382,7 +389,7 @@ W tabelach \ref{tabela:JobSatisfactionClassification} i \ref{tabela:JobSeekingSt
                          \hline
                          Czułość    & \cellgreen{0.99} & \cellred{0.47} & \cellred{0.53}  \\
                          \hline
-                         Pytania z siłą wpływu większą od 0.2 &
+                         Pytania z~siłą wpływu większą od 0.2 &
                          \begin{itemize}
                              \item AssessJobExp
                              \item AssessJobCommute
@@ -412,14 +419,14 @@ W tabelach \ref{tabela:JobSatisfactionClassification} i \ref{tabela:JobSeekingSt
              \end{table}
 \end{minipage}
 
-Satysfakcjonujący rezultat osiągnięto dla danych z 2017 roku i obu badanych zmiennych zależnych.
-Na tej podstawie można wnioskować, że na zadowolenie z pracy mogą mieć wpływ następujące cechy:
+Satysfakcjonujący rezultat osiągnięto dla danych z~2017 roku i~obu badanych zmiennych zależnych.
+Na tej podstawie można wnioskować, że na zadowolenie z~pracy mogą mieć wpływ następujące cechy:
 
 \begin{itemize}
     \item Jak często respondent obecnie pracuje zdalnie,
-    \item Czy respondent uważa, że możliwość rozwoju osobistego w firmie jest ważna,
-    \item Indeks rozwoju społecznego kraju, w którym mieszka respondent,
-    \item W jakim stopniu respondent czuje solidarność ze swoimi współpracownikami,
+    \item Czy respondent uważa, że możliwość rozwoju osobistego w~firmie jest ważna,
+    \item Indeks rozwoju społecznego kraju, w~którym mieszka respondent,
+    \item W~jakim stopniu respondent czuje solidarność ze swoimi współpracownikami,
     \item Czy respondent uważa, że możliwość pracy zdalnej jest ważna.
 \end{itemize}
 
@@ -428,23 +435,23 @@ Natomiast na chęć poszukiwania pracy mogą mieć wpływ następujące cechy:
 \begin{itemize}
     \item Czy respondent uważa, że doświadczenie wymagane na stanowisku pracy jest ważne,
     \item Czy respondent uważa, że czas dojazdu do pracy jest ważny,
-    \item Czy respondent uważa, że możliwość rozwoju osobistego w firmie jest ważna,
+    \item Czy respondent uważa, że możliwość rozwoju osobistego w~firmie jest ważna,
     \item Czy respondent uważa, że nazwa roli lub stanowiska pracy jest ważna,
-    \item Czy respondent uważa, że reputacja seniorów pracujących w firmie jest ważna.
+    \item Czy respondent uważa, że reputacja seniorów pracujących w~firmie jest ważna.
 \end{itemize}
 
 
 \section{Wnioski i~analiza możliwości praktycznego zastosowania zbudowanego modelu predykcji}\label{sec:analysis:model-fitness}
 
-Przeprowadzone badania wykazały, że dla zbioru danych opartego o wyniki ankiety deweloperskiej StackOverflow \cite{so-survey-info}
-można zbudować skuteczny model predykcji zarówno modelując problem jako regresję, jak i jako klasyfikację.
+Przeprowadzone badania wykazały, że dla zbioru danych opartego o~wyniki ankiety deweloperskiej StackOverflow \cite{so-survey-info}
+można zbudować skuteczny model predykcji zarówno modelując problem jako regresję, jak i~jako klasyfikację.
 
-Opracowane modele pozwoliły na wytypowanie cech silnie wpływających na możliwość predykcji zadowolenia z pracy i chęci szukania nowej pracy.
+Opracowane modele pozwoliły na wytypowanie cech silnie wpływających na możliwość predykcji zadowolenia z~pracy i~chęci szukania nowej pracy.
 
-Szczególnie wysoką jakość modelu predykcji osiągnięto dla zbioru danych z 2017 roku.
+Szczególnie wysoką jakość modelu predykcji osiągnięto dla zbioru danych z~2017 roku.
 
 Osiągnięte rezultaty mogą być uwzględnione podczas rekrutacji nowych pracowników
-oraz mogą być sugestią dla pracowników działów zasobów ludzkich, jakie aspekty funkcjonowania firmy można poprawić, aby zwiększyć retencję pracowników.
+oraz mogą być sugestią dla pracowników działów zasobów ludzkich, w~jakich aspektach można poprawić funkcjonowanie firmy, aby zwiększyć retencję pracowników.
 
 W przyszłości badania można rozszerzyć uwzględniając podział pracowników ze względu na takie cechy jak:
 
@@ -452,21 +459,21 @@ W przyszłości badania można rozszerzyć uwzględniając podział pracowników
     \item wiek,
     \item płeć,
     \item kraj zamieszkania,
-    \item obszar specjalizacji.
+    \item obszar specjalizacji;
 \end{itemize}
 
 oraz uwzględniają podział firm ze względu na takie cechy jak:
 
 \begin{itemize}
     \item rozmiar firmy,
-    \item gałąź przemysłu, w obrębie której działa firma.
+    \item gałąź przemysłu, w~obrębie której działa firma.
 \end{itemize}
 
 Przypuszczać można, że stosując taki granularny podział możliwe będzie wyszczególnienie cech szczególnie pożądanych wśród kandydatów zatrudnianych do określonej firmy
 lub cech przedsiębiorstwa, na które konkretny programista poszukujący pracy powinien zwracać uwagę.
 
-Zarówno dla bieżących modeli predykcji, jak i potencjalnie możliwych do opracowania modeli szczegółowych,
-możliwe byłoby opracowanie kwestionariusza, w którym po uzupełnieniu danych dotyczących kandydata i przedsiębiorstwa
-algorytm korzystający z opracowanych modeli predykcji byłby w stanie oszacować, w jakim stopniu pracownik będzie zadowolony z pracy.
+Zarówno dla bieżących modeli predykcji, jak i~potencjalnie możliwych do opracowania modeli szczegółowych,
+możliwe byłoby opracowanie kwestionariusza, w~którym po uzupełnieniu danych dotyczących kandydata i~przedsiębiorstwa
+algorytm korzystający z~opracowanych modeli predykcji byłby w~stanie oszacować, w~jakim stopniu pracownik będzie zadowolony z~pracy.
 
 \thispagestyle{normal}
