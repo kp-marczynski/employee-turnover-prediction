@@ -175,7 +175,9 @@ Selekcję pytań najsilniej wpływających na predykcję wykonano z wykorzystani
 
 \section{Prezentacja wyników}\label{sec:analysis:important-features}
 
-Algorytm przedstawiony na listingu \ref{listing:xgb} został uruchomiony dla znormalizowanych danych z lat 2017-2019. Wyniki zostały podzielone ze względu na modelowanie problemu jako regresję i jako klasyfikację.
+Algorytm przedstawiony na listingu \ref{listing:xgb} został uruchomiony dla znormalizowanych danych z lat 2017-2019.
+Lista atrybutów biorących udział w badaniu i odpowiadających im pytań została przedstawiona w dodatku \ref{app:dod1}.
+Wyniki zostały podzielone ze względu na modelowanie problemu jako regresję i jako klasyfikację.
 
 \subsection{Wyniki regresji}\label{sec:analysis:important-features:regression}
 
@@ -197,7 +199,7 @@ W tabelach \ref{tabela:JobSatisfactionRegression} i \ref{tabela:JobSeekingStatus
 
 \noindent\begin{minipage}{\textwidth}
              \begin{table}[H]
-                 \raggedright\caption{Regresja1\label{tabela:JobSatisfactionRegression}}
+                 \raggedright\caption{Porównanie wyników regresji dla zmiennej zależnej JobSatisfaction\label{tabela:JobSatisfactionRegression}}
                  \begin{center}
                      \begin{tabular}{|P{.1\textwidth}|P{.26\textwidth}|P{.26\textwidth}|P{.26\textwidth}|}
 
@@ -238,7 +240,7 @@ W tabelach \ref{tabela:JobSatisfactionRegression} i \ref{tabela:JobSeekingStatus
 
 \noindent\begin{minipage}{\textwidth}
              \begin{table}[H]
-                 \raggedright\caption{Regresja1\label{tabela:JobSeekingStatusRegression}}
+                 \raggedright\caption{Porównanie wyników regresji dla zmiennej zależnej JobSeekingStatus\label{tabela:JobSeekingStatusRegression}}
                  \begin{center}
                      \begin{tabular}{|P{.1\textwidth}|P{.26\textwidth}|P{.26\textwidth}|P{.26\textwidth}|}
 
@@ -309,18 +311,18 @@ W tabelach \ref{tabela:JobSatisfactionClassification} i \ref{tabela:JobSeekingSt
 
 \noindent\begin{minipage}{\textwidth}
              \begin{table}[H]
-                 \raggedright\caption{Regresja1\label{tabela:JobSatisfactionClassification}}
+                 \raggedright\caption{Porównanie wyników klasyfikacji dla zmiennej zależnej JobSatisfaction\label{tabela:JobSatisfactionClassification}}
                  \begin{center}
                      \begin{tabular}{|P{.1\textwidth}|P{.26\textwidth}|P{.26\textwidth}|P{.26\textwidth}|}
 
                          \hline
-                         Rok   & 2017             & 2018             & 2019             \\
+                         Rok        & 2017             & 2018             & 2019             \\
                          \hline
-                         Accuracy & \cellgreen{0.87} & \cellgray{0.76} & \cellgray{0.81} \\
+                         Dokładność & \cellgreen{0.87} & \cellgray{0.76}  & \cellgray{0.81}  \\
                          \hline
-                         Precision    & \cellgreen{0.87} & \cellgray{0.77}   & \cellgray{0.83}   \\
+                         Precyzja   & \cellgreen{0.87} & \cellgray{0.77}  & \cellgray{0.83}  \\
                          \hline
-                         Recall    & \cellgreen{1.00} & \cellgreen{1.00}   & \cellgreen{0.96}   \\
+                         Czułość    & \cellgreen{1.00} & \cellgreen{1.00} & \cellgreen{0.96} \\
                          \hline
                          Pytania z siłą wpływu większą od 0.2 &
                          \begin{itemize}
@@ -354,18 +356,18 @@ W tabelach \ref{tabela:JobSatisfactionClassification} i \ref{tabela:JobSeekingSt
 
 \noindent\begin{minipage}{\textwidth}
              \begin{table}[H]
-                 \raggedright\caption{Regresja1\label{tabela:JobSeekingStatusClassification}}
+                 \raggedright\caption{Porównanie wyników klasyfikacji dla zmiennej zależnej JobSeekingStatus\label{tabela:JobSeekingStatusClassification}}
                  \begin{center}
                      \begin{tabular}{|P{.1\textwidth}|P{.26\textwidth}|P{.26\textwidth}|P{.26\textwidth}|}
 
                          \hline
-                         Rok   & 2017             & 2018             & 2019             \\
+                         Rok        & 2017             & 2018           & 2019            \\
                          \hline
-                         Accuracy & \cellgreen{0.95} & \cellred{0.74} & \cellgray{0.79} \\
+                         Dokładność & \cellgreen{0.95} & \cellred{0.74} & \cellgray{0.79} \\
                          \hline
-                         Precision    & \cellgreen{0.95} & \cellred{0.68}   & \cellred{0.69}   \\
+                         Precyzja   & \cellgreen{0.95} & \cellred{0.68} & \cellred{0.69}  \\
                          \hline
-                         Recall    & \cellgreen{0.99} & \cellred{0.47}   & \cellred{0.53}   \\
+                         Czułość    & \cellgreen{0.99} & \cellred{0.47} & \cellred{0.53}  \\
                          \hline
                          Pytania z siłą wpływu większą od 0.2 &
                          \begin{itemize}
@@ -418,8 +420,40 @@ Natomiast na chęć poszukiwania pracy mogą mieć wpływ następujące cechy:
     \item Czy respondent uważa, że reputacja seniorów pracujących w firmie jest ważna.
 \end{itemize}
 
+
 \section{Wnioski i~analiza możliwości praktycznego zastosowania zbudowanego modelu predykcji}\label{sec:analysis:model-fitness}
 
-Przeprowadzone badania wykazały, że dla zbioru danych
+Przeprowadzone badania wykazały, że dla zbioru danych opartego o wyniki ankiety deweloperskiej StackOverflow \cite{so-survey-info}
+można zbudować skuteczny model predykcji zarówno modelując problem jako regresję, jak i jako klasyfikację.
+
+Opracowane modele pozwoliły na wytypowanie cech silnie wpływających na możliwość predykcji zadowolenia z pracy i chęci szukania nowej pracy.
+
+Szczególnie wysoką jakość modelu predykcji osiągnięto dla zbioru danych z 2017 roku.
+
+Osiągnięte rezultaty mogą być uwzględnione podczas rekrutacji nowych pracowników
+oraz mogą być sugestią dla pracowników działów zasobów ludzkich, jakie aspekty funkcjonowania firmy można poprawić, aby zwiększyć retencję pracowników.
+
+W przyszłości badania można rozszerzyć uwzględniając podział pracowników ze względu na takie cechy jak:
+
+\begin{itemize}
+    \item wiek,
+    \item płeć,
+    \item kraj zamieszkania,
+    \item obszar specjalizacji.
+\end{itemize}
+
+oraz uwzględniają podział firm ze względu na takie cechy jak:
+
+\begin{itemize}
+    \item rozmiar firmy,
+    \item gałąź przemysłu, w obrębie której działa firma.
+\end{itemize}
+
+Przypuszczać można, że stosując taki granularny podział możliwe będzie wyszczególnienie cech szczególnie pożądanych wśród kandydatów zatrudnianych do określonej firmy
+lub cech przedsiębiorstwa, na które konkretny programista poszukujący pracy powinien zwracać uwagę.
+
+Zarówno dla bieżących modeli predykcji, jak i potencjalnie możliwych do opracowania modeli szczegółowych,
+możliwe byłoby opracowanie kwestionariusza, w którym po uzupełnieniu danych dotyczących kandydata i przedsiębiorstwa
+algorytm korzystający z opracowanych modeli predykcji byłby w stanie oszacować, w jakim stopniu pracownik będzie zadowolony z pracy.
 
 \thispagestyle{normal}
